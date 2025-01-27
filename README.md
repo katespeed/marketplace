@@ -12,5 +12,14 @@ A web-based marketplace platform for students.
 ## Development Setup
 
 1. Install Flutter SDK and run:
-bash
+```
 flutter doctor
+```
+2. Install dependencies:
+```
+flutter pub get
+```
+3. Run the application:
+```
+flutter run -d chrome
+```
