@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                context.push('/home');
+                context.go('/home');
               },
               child: const Text('Go to Home'),
             ),
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                context.push('/product-detail/123');
+                context.push('/product-detail');
               },
               child: const Text('Go to Product Detail'),
             ),

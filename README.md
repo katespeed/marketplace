@@ -21,5 +21,5 @@ flutter pub get
 ```
 3. Run the application:
 ```
-flutter run -d chrome
+flutter run
 ```
