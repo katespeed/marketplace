@@ -62,4 +62,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'campus-flea.firebasestorage.app',
     measurementId: 'G-Y4XWSEFZP2',
   );
+
 }
