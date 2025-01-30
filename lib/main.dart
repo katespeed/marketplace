@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'firebase_options.dart';
 import 'routing/router.dart';
+import 'utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,10 +28,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Students Marketplace',
       routerConfig: router,
-      theme: ThemeData(
-        useMaterial3: false,
-        scaffoldBackgroundColor: Colors.white,
-      ),
+      theme: AppTheme.lightTheme,
+      // darkTheme: AppTheme.darkTheme,
     );
   }
 } 
