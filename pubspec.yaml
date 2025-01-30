@@ -18,6 +18,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   hooks_riverpod: ^2.4.9
   riverpod_annotation: ^2.0.0
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -27,4 +28,6 @@ dev_dependencies:
   riverpod_generator: ^2.0.0
 
 flutter:
-  uses-material-design: true 
+  uses-material-design: true
+  assets:
+    - assets/icon_1.svg 

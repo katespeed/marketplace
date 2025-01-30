@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
       title: 'Students Marketplace',
       routerConfig: router,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: false,
+        scaffoldBackgroundColor: Colors.white,
       ),
     );
   }
