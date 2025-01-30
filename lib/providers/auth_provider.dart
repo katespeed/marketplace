@@ -1,21 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final authProvider = StateNotifierProvider<AuthNotifier, AsyncValue<User?>>((ref) {
-  return AuthNotifier();
-});
+part 'auth_provider.g.dart';
 
-class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
-  AuthNotifier() : super(const AsyncValue.loading()) {
-    _init();
-  }
-
+@riverpod
+class Auth extends _$Auth {
   final _auth = FirebaseAuth.instance;
 
-  Future<void> _init() async {
-    _auth.authStateChanges().listen((user) {
-      state = AsyncValue.data(user);
-    });
+  @override
+  Stream<User?> build() {
+    return _auth.authStateChanges();
   }
 
   Future<void> signUp({
@@ -24,15 +18,13 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     required String username,
   }) async {
     try {
-      state = const AsyncValue.loading();
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       await credential.user?.updateDisplayName(username);
-      state = AsyncValue.data(credential.user);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
     }
   }
 
@@ -41,29 +33,25 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
     required String password,
   }) async {
     try {
-      state = const AsyncValue.loading();
-      final credential = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      state = AsyncValue.data(credential.user);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
     }
   }
 
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-      state = const AsyncValue.data(null);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
     }
   }
 
-  Future<void> deleteAccount(String password) async {
+  Future<void> deleteAccount({required String password}) async {
     try {
-      state = const AsyncValue.loading();
       final user = _auth.currentUser;
       if (user == null) throw Exception('No user logged in');
       
@@ -76,10 +64,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
       
       // アカウント削除
       await user.delete();
-      state = const AsyncValue.data(null);
-    } catch (e) {
-      state = AsyncValue.error(e, StackTrace.current);
-      rethrow;
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
     }
   }
 } 

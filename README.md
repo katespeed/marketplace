@@ -23,3 +23,7 @@ flutter pub get
 ```
 flutter run
 ```
+4. Generate code
+```
+flutter pub run build_runner build
+```

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../providers/auth_provider.dart';
+import 'package:my_flutter_app/providers/auth_provider.dart';
+import 'package:my_flutter_app/providers/text_editing_controllers.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
@@ -10,49 +11,43 @@ class LoginPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormState>());
-    final emailController = useTextEditingController();
-    final passwordController = useTextEditingController();
-    final usernameController = useTextEditingController();
     final isLogin = useState(true);
-
-    useEffect(() {
-      return () {
-        emailController.dispose();
-        passwordController.dispose();
-        usernameController.dispose();
-      };
-    }, []);
+    
+    final emailController = ref.watch(emailControllerProvider);
+    final passwordController = ref.watch(passwordControllerProvider);
+    final usernameController = ref.watch(usernameControllerProvider);
 
     Future<void> submit() async {
       if (!formKey.currentState!.validate()) return;
 
-      if (isLogin.value) {
-        await ref.read(authProvider.notifier).signIn(
-              email: emailController.text,
-              password: passwordController.text,
-            );
-      } else {
-        await ref.read(authProvider.notifier).signUp(
-              email: emailController.text,
-              password: passwordController.text,
-              username: usernameController.text,
-            );
+      try {
+        if (isLogin.value) {
+          await ref.read(authProvider.notifier).signIn(
+                email: emailController.text,
+                password: passwordController.text,
+              );
+        } else {
+          await ref.read(authProvider.notifier).signUp(
+                email: emailController.text,
+                password: passwordController.text,
+                username: usernameController.text,
+              );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString())),
+          );
+        }
       }
     }
 
     ref.listen(authProvider, (previous, next) {
-      next.whenOrNull(
-        data: (user) {
-          if (user != null) {
-            context.go('/home');
-          }
-        },
-        error: (error, stackTrace) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error.toString())),
-          );
-        },
-      );
+      next.whenData((user) {
+        if (user != null) {
+          context.go('/home');
+        }
+      });
     });
 
     return Scaffold(

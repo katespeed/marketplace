@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import '../../providers/auth_provider.dart';
-import '../widgets/user_info_card.dart';
+import 'package:my_flutter_app/presentation/components/cards/user_info_card.dart';
+import 'package:my_flutter_app/providers/auth_provider.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
