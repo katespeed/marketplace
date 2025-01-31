@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
 import 'package:my_flutter_app/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,13 +10,11 @@ class DeleteAccountButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
+    return CustomButton(
       onPressed: () => _showDeleteConfirmationDialog(context, ref),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.red,
-        foregroundColor: Colors.white,
-      ),
-      child: const Text('Delete Account'),
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      text: 'Delete Account',
     );
   }
 
