@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_flutter_app/presentation/components/buttons/delete_account_button.dart';
 import 'user_info_list_tile.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
-class UserInfoCard extends HookWidget {
+class UserInfoCard extends StatelessWidget {
   const UserInfoCard({
     super.key,
     required this.user,
@@ -14,18 +13,6 @@ class UserInfoCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nameController = useTextEditingController();
-    final emailController = useTextEditingController();
-    final verifiedController = useTextEditingController();
-    
-    useEffect(() {
-      return () {
-        nameController.dispose();
-        emailController.dispose();
-        verifiedController.dispose();
-      };
-    }, []);
-
     return Column(
       children: [
         const Text(
