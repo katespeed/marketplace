@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
+import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -14,6 +15,11 @@ class HomePage extends HookConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            CustomButton(
+              text: 'Proceed to Checkout',
+              onPressed: () {
+              },
+            ),
             ElevatedButton(
               onPressed: () {
                 context.push('/product-list');
