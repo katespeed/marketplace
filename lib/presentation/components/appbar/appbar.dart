@@ -15,6 +15,7 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       scrolledUnderElevation: 0,
+      toolbarHeight: 65,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1.0),
         child: Divider(
@@ -23,7 +24,7 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
         ),
       ),
       title: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SvgPicture.asset(
             'assets/icon_1.svg',
@@ -42,7 +43,7 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           const SizedBox(width: 16),
           Container(
             width: 160,
-            height: 40,
+            height: 36,
             decoration: BoxDecoration(
               color: Colors.grey[100],
               borderRadius: BorderRadius.circular(8),
@@ -54,7 +55,7 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                 prefixIcon: Icon(Icons.search, color: Color(0xFF4A739C)),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
-                  vertical: 11,
+                  vertical: 6,
                   horizontal: 16,
                 ),
               ),
@@ -94,5 +95,5 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(65.0);
+  Size get preferredSize => const Size.fromHeight(57.0);
 }
