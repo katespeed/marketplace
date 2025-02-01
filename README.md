@@ -5,7 +5,7 @@ A web-based marketplace platform for students.
 ## Team Members
 
 - Keito Yamakawa
-- Member 2
+- Sara Momen
 - Member 3
 - Member 4
 
