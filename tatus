@@ -1,0 +1,34 @@
+* [33mea03259[m[33m ([m[1;31morigin/saramomen1357-patch-1[m[33m)[m Update README.md
+* [33m0cea5d3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32msara_branch[m[33m, [m[1;31morigin/sara_branch[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m add comand (#11)
+[31m|[m *   [33m8e6ae0d[m[33m ([m[1;31morigin/feature/add--fatal-infos_--fatal-warnings[m[33m)[m Merge branch 'main' into feature/add--fatal-infos_--fatal-warnings
+[31m|[m [32m|[m[31m\[m  
+[31m|[m [32m|[m[31m/[m  
+[31m|[m[31m/[m[32m|[m   
+* [32m|[m [33m9ba6342[m fix wrning "texteditingcontroller didn't disposed" (#10)
+[33m|[m * [33m345906b[m add comand
+[33m|[m[33m/[m  
+[33m|[m *   [33m8648fdb[m[33m ([m[1;31morigin/bug-fix/textcontroller[m[33m)[m Merge branch 'main' into bug-fix/textcontroller
+[33m|[m [34m|[m[33m\[m  
+[33m|[m [34m|[m[33m/[m  
+[33m|[m[33m/[m[34m|[m   
+* [34m|[m [33me13dc7c[m develop custombutton widget (#9)
+[35m|[m * [33m2e2f4cb[m fix wrning "texteditingcontroller didn't disposed"
+[35m|[m[35m/[m  
+[35m|[m *   [33m1f45fe3[m[33m ([m[1;31morigin/feature/button[m[33m)[m Merge branch 'main' into feature/button
+[35m|[m [36m|[m[35m\[m  
+[35m|[m [36m|[m[35m/[m  
+[35m|[m[35m/[m[36m|[m   
+* [36m|[m [33m5ed652c[m test: Github Actions (#8)
+[1;31m|[m * [33m3cd7124[m develop custombutton widget
+[1;31m|[m[1;31m/[m  
+* [33m1178506[m test: Add test comment for GitHub Actions (#7)
+* [33mcf9af8c[m set up actions (#6)
+* [33m3ee616a[m Feature/AppBar (#5)
+* [33m6eab0c8[m add color theme (#4)
+* [33mb514025[m Firebase Auth (#3)
+* [33mfe9ad6a[m Feature/go router (#2)
+* [33m15e6b65[m Feature/set up firebase and etc (#1)
+* [33mdc6960c[m fix readme
+* [33m49df03f[m fix readme
+* [33m3a924f1[m delete file
+* [33me0f104e[m Initial commit

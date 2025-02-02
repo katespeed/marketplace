@@ -6,6 +6,7 @@ import 'package:my_flutter_app/presentation/pages/payment.dart';
 import 'package:my_flutter_app/presentation/pages/product_detail.dart';
 import 'package:my_flutter_app/presentation/pages/product_list.dart';
 import 'package:my_flutter_app/presentation/pages/profile.dart';
+import 'package:my_flutter_app/presentation/pages/upload_item.dart'; // Import the new page
 
 final router = GoRouter(
   initialLocation: '/login',
@@ -34,6 +35,10 @@ final router = GoRouter(
     GoRoute(
       path: '/payment',
       builder: (context, state) => const PaymentPage(),
+    ),
+    GoRoute(
+      path: '/upload-item',
+      builder: (context, state) => UploadItemPage(),
     ),
   ],
 );

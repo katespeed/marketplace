@@ -17,8 +17,7 @@ class HomePage extends HookConsumerWidget {
           children: [
             CustomButton(
               text: 'Proceed to Checkout',
-              onPressed: () {
-              },
+              onPressed: () {},
             ),
             ElevatedButton(
               onPressed: () {
@@ -37,6 +36,16 @@ class HomePage extends HookConsumerWidget {
                 context.push('/product-detail');
               },
               child: const Text('Go to Product Detail'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.push('/upload-item');
+              },
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              child: const Text(
+                "Upload Your Item to Sell/Rent",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
           ],
         ),
