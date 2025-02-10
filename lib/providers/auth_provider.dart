@@ -54,18 +54,26 @@ class Auth extends _$Auth {
     try {
       final user = _auth.currentUser;
       if (user == null) throw Exception('No user logged in');
-      
+
       // ユーザーの再認証
       final credential = EmailAuthProvider.credential(
         email: user.email!,
         password: password,
       );
       await user.reauthenticateWithCredential(credential);
-      
+
       // アカウント削除
       await user.delete();
     } catch (e, stack) {
       throw AsyncError(e, stack);
     }
   }
-} 
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
+  }
+}
