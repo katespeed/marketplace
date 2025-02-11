@@ -68,4 +68,11 @@ class Auth extends _$Auth {
       throw AsyncError(e, stack);
     }
   }
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
+  }
 } 
