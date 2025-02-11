@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/providers/auth_provider.dart';
 import 'package:my_flutter_app/providers/text_editing_controllers.dart';
 
+import '../controller/forgot_password_controller.dart';
+
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
 
@@ -111,6 +113,14 @@ class LoginPage extends HookConsumerWidget {
                   },
                 ),
                 const SizedBox(height: 24),
+                // Forgot Password Button
+                ElevatedButton(
+                  onPressed: () {
+                    ForgotPasswordController().showForgotPasswordDialog(context, ref);
+                  },
+                  child: const Text("Forgot Password?"),
+                ),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: submit,
                   child: Text(isLogin.value ? 'Login' : 'Create Account'),
@@ -129,3 +139,5 @@ class LoginPage extends HookConsumerWidget {
     );
   }
 }
+
+
