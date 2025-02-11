@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/providers/auth_provider.dart';
 import 'package:my_flutter_app/providers/text_editing_controllers.dart';
 
+import '../controller/forgot_password_controller.dart';
+
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
 
@@ -112,8 +114,10 @@ class LoginPage extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 // Forgot Password Button
-                TextButton(
-                  onPressed: () => _showForgotPasswordDialog(context, ref),
+                ElevatedButton(
+                  onPressed: () {
+                    ForgotPasswordController().showForgotPasswordDialog(context, ref);
+                  },
                   child: const Text("Forgot Password?"),
                 ),
                 ElevatedButton(
@@ -133,51 +137,6 @@ class LoginPage extends HookConsumerWidget {
       ),
     );
   }
-  void _showForgotPasswordDialog(BuildContext context, WidgetRef ref) {
-    final TextEditingController emailController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Reset Password"),
-        content: TextField(
-          controller: emailController,
-          decoration: const InputDecoration(
-            labelText: "Enter your email",
-            border: OutlineInputBorder(),
-          ),
-          keyboardType: TextInputType.emailAddress,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              if (emailController.text.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Please enter your email.")),
-                );
-                return;
-              }
-
-              try {
-                await ref.read(authProvider.notifier).sendPasswordResetEmail(emailController.text);
-                Navigator.pop(context); // Close dialog
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Password reset email sent! Check your inbox.")),
-                );
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Error: ${e.toString()}")),
-                );
-              }
-            },
-            child: const Text("Send Reset Email"),
-          ),
-        ],
-      ),
-    );
-  }
 }
+
+
