@@ -120,6 +120,7 @@ class LoginPage extends HookConsumerWidget {
                   },
                   child: const Text("Forgot Password?"),
                 ),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: submit,
                   child: Text(isLogin.value ? 'Login' : 'Create Account'),
