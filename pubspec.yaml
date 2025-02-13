@@ -19,6 +19,7 @@ dependencies:
   hooks_riverpod: ^2.4.9
   riverpod_annotation: ^2.0.0
   flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -30,4 +31,15 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/icon_1.svg 
+    - assets/icon_1.svg
+    - assets/home_image.svg
+    - assets/products/laptop.jpeg
+    - assets/products/speaker.jpeg
+    - assets/products/watch.jpeg
+    - assets/products/iphone_13.jpeg
+    - assets/products/ikea_desk.jpeg
+    - assets/products/samsung_tv.jpeg
+    - assets/products/macbook_pro.jpeg
+    - assets/products/dyson_vacuum.jpeg
+    - assets/products/nike_air_max.jpeg
+    - assets/products/canon_camera.jpeg
