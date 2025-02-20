@@ -49,7 +49,7 @@ class ProfileHeader extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             user?.email != null
-                ? "${user!.email!.split('@')[0]}"  // Extracts the part before "@"
+                ? user!.email!.split('@')[0]  // Extracts the part before "@"
                 : "@user",
             style: TextStyle(fontSize: 16, color: Colors.grey[600]),
           ),

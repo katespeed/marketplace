@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileListings extends StatelessWidget {
-  final List<Map<String, String>> listings = [
+  final List<Map<String, String>> listings = const [
     {'name': 'Canon Camera', 'image': 'assets/products/canon_camera.jpeg'},
     {'name': 'Dyson Vacuum', 'image': 'assets/products/dyson_vacuum.jpeg'},
     {'name': 'Ikea Desk', 'image': 'assets/products/ikea_desk.jpeg'},
@@ -10,7 +10,7 @@ class ProfileListings extends StatelessWidget {
     {'name': 'MacBook Pro', 'image': 'assets/products/macbook_pro.jpeg'},
   ];
 
-  ProfileListings({super.key});
+  const ProfileListings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class ProfileListings extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
               blurRadius: 4,
