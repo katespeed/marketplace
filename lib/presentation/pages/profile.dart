@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
-import 'package:my_flutter_app/presentation/components/cards/user_info_card.dart';
-import 'package:my_flutter_app/providers/auth_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_flutter_app/presentation/pages/profile/profile_header.dart';
+import 'package:my_flutter_app/presentation/pages/profile/profile_listings.dart';
+import 'package:my_flutter_app/presentation/pages/profile/profile_reviews.dart';
+import 'package:my_flutter_app/presentation/pages/profile/profile_sales.dart';
+
 
 class ProfilePage extends HookConsumerWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
+    final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      appBar: const CustomAppBar(),
-      body: Center(
-        child: authState.when(
-          data: (user) => user != null
-              ? UserInfoCard(user: user)
-              : const Text('No user logged in'),
-          loading: () => const CircularProgressIndicator(),
-          error: (error, stack) => Text('Error: $error'),
+      appBar: AppBar(title: const Text("User Profile Management")),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ProfileHeader(user: user),
+            const SizedBox(height: 16),
+            ProfileListings(),
+            const SizedBox(height: 16),
+            ProfileSales(),
+            const SizedBox(height: 16),
+            ProfileReviews(),
+          ],
         ),
       ),
     );
