@@ -24,9 +24,9 @@ class HomePage extends HookConsumerWidget {
                 alignment: Alignment.center,
                 child: Container(
                   constraints: BoxConstraints(
-                    // maxHeight: MediaQuery.of(context).size.height * 0.8,
-                    // minHeight: 100,
-                  ),
+                      // maxHeight: MediaQuery.of(context).size.height * 0.8,
+                      // minHeight: 100,
+                      ),
                   width: MediaQuery.of(context).size.width * 0.9,
                   // height: MediaQuery.of(context).size.height * 0.8,
                   decoration: BoxDecoration(
@@ -72,9 +72,9 @@ class HomePage extends HookConsumerWidget {
                       CustomButton(
                         backgroundColor: Colors.grey,
                         onPressed: () {
-                          context.push('/product-detail');
+                          context.push('/upload-item');
                         },
-                        text: 'Go to Product Detail',
+                        text: 'Upload Your Item',
                       ),
                     ],
                   ),
