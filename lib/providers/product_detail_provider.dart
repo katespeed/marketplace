@@ -15,7 +15,7 @@ class SelectedImage extends _$SelectedImage {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: false)
 List<String> productImages(ProductImagesRef ref, Product product) {
   return [
     product.imageUrl,
