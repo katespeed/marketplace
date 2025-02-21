@@ -5,16 +5,13 @@ import '../buttons/icon_button_with_background.dart';
 import '../buttons/profile_avatar_button.dart';
 
 class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
-  final bool showBackButton;
-
-  const CustomAppBar({
-    super.key,
-    this.showBackButton = false,
-  });
+  const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
@@ -67,12 +64,6 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           ),
         ],
       ),
-      leading: showBackButton
-          ? IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          : null,
       actions: [
         // Notification button
         IconButtonWithBackground(

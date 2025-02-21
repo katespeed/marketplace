@@ -38,9 +38,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        showBackButton: false,
-      ),
+      appBar: const CustomAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
