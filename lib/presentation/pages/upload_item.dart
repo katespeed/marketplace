@@ -37,7 +37,7 @@ class UploadItemPageState extends State<UploadItemPage> {
         );
       }
     } catch (e) {
-      print("Error picking images: $e");
+      debugPrint("Error picking images: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to pick images. Please try again.')),
@@ -58,7 +58,7 @@ class UploadItemPageState extends State<UploadItemPage> {
         imageBase64List.add(base64Image);
       }
     } catch (e) {
-      print("Error encoding images: $e");
+      debugPrint("Error encoding images: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Failed to encode images.')),
       );
@@ -101,7 +101,7 @@ class UploadItemPageState extends State<UploadItemPage> {
       );
       Navigator.pop(context);
     } catch (e) {
-      print("Error uploading item: $e");
+      debugPrint("Error uploading item: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to upload item. Please try again.')),
