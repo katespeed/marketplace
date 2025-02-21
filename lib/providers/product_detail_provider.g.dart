@@ -42,9 +42,23 @@ abstract class _$SelectedImage extends BuildlessAutoDisposeNotifier<String> {
 const selectedImageProvider = SelectedImageFamily();
 
 /// See also [SelectedImage].
-class SelectedImageFamily extends Family<String> {
+class SelectedImageFamily extends Family {
   /// See also [SelectedImage].
   const SelectedImageFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'selectedImageProvider';
 
   /// See also [SelectedImage].
   SelectedImageProvider call(
@@ -55,6 +69,7 @@ class SelectedImageFamily extends Family<String> {
     );
   }
 
+  @visibleForOverriding
   @override
   SelectedImageProvider getProviderOverride(
     covariant SelectedImageProvider provider,
@@ -64,19 +79,26 @@ class SelectedImageFamily extends Family<String> {
     );
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(SelectedImage Function() create) {
+    return _$SelectedImageFamilyOverride(this, create);
+  }
+}
+
+class _$SelectedImageFamilyOverride implements FamilyOverride {
+  _$SelectedImageFamilyOverride(this.overriddenFamily, this.create);
+
+  final SelectedImage Function() create;
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  final SelectedImageFamily overriddenFamily;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'selectedImageProvider';
+  SelectedImageProvider getProviderOverride(
+    covariant SelectedImageProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
 }
 
 /// See also [SelectedImage].
@@ -100,7 +122,7 @@ class SelectedImageProvider
         );
 
   SelectedImageProvider._internal(
-    super._createNotifier, {
+    super.create, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
@@ -137,8 +159,27 @@ class SelectedImageProvider
   }
 
   @override
+  (Product,) get argument {
+    return (product,);
+  }
+
+  @override
   AutoDisposeNotifierProviderElement<SelectedImage, String> createElement() {
     return _SelectedImageProviderElement(this);
+  }
+
+  SelectedImageProvider _copyWith(
+    SelectedImage Function() create,
+  ) {
+    return SelectedImageProvider._internal(
+      () => create()..product = product,
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      product: product,
+    );
   }
 
   @override
@@ -169,4 +210,4 @@ class _SelectedImageProviderElement
   Product get product => (origin as SelectedImageProvider).product;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package
