@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../buttons/icon_button_with_background.dart';
 import '../buttons/profile_avatar_button.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -33,12 +34,15 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             height: 14,
           ),
           const SizedBox(width: 8),
-          const Text(
-            'Student Marketplace',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          InkWell(
+            onTap: () => context.go('/home'),
+            child: const Text(
+              'Student Marketplace',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(width: 16),
