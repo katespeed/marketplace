@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/data/mock/featured_products.dart';
+import 'package:my_flutter_app/domain/models/product.dart';
 
 class ProfileListings extends StatelessWidget {
-  final List<Map<String, String>> listings = const [
-    {'name': 'Canon Camera', 'image': 'assets/products/canon_camera.jpeg'},
-    {'name': 'Dyson Vacuum', 'image': 'assets/products/dyson_vacuum.jpeg'},
-    {'name': 'Ikea Desk', 'image': 'assets/products/ikea_desk.jpeg'},
-    {'name': 'iPhone 13', 'image': 'assets/products/iphone_13.jpeg'},
-    {'name': 'Laptop', 'image': 'assets/products/laptop.jpeg'},
-    {'name': 'MacBook Pro', 'image': 'assets/products/macbook_pro.jpeg'},
-  ];
-
   const ProfileListings({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // mockFeaturedProductsから最初の6つの商品を取得
+    final List<Product> listings = mockFeaturedProducts.take(6).toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -21,38 +18,50 @@ class ProfileListings extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: listings.map((item) => _buildDecoratedBox(item)).toList(),
+            children: listings.map((product) => _buildDecoratedBox(product)).toList(),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildDecoratedBox(Map<String, String> item) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 150,
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 4,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            ClipRRect(
+  Widget _buildDecoratedBox(Product product) {
+    return Builder(
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          onTap: () {
+            GoRouter.of(context).push(
+              '/product-detail',
+              extra: product,
+            );
+          },
+          child: Container(
+            width: 150,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(item['image']!, width: 150, height: 120, fit: BoxFit.cover),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 4,
+                  spreadRadius: 2,
+                ),
+              ],
             ),
-            const SizedBox(height: 4),
-            Text(item['name']!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-          ],
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(product.imageUrl, width: 150, height: 120, fit: BoxFit.cover),
+                ),
+                const SizedBox(height: 4),
+                Text(product.name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                Text('\$${product.price.toStringAsFixed(2)}', 
+                  style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              ],
+            ),
+          ),
         ),
       ),
     );
