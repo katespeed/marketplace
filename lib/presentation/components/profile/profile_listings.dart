@@ -53,7 +53,7 @@ class ProfileListings extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(product.imageUrl, width: 150, height: 120, fit: BoxFit.cover),
+                  child: Image.asset(product.imageUrls[0], width: 150, height: 120, fit: BoxFit.cover),
                 ),
                 const SizedBox(height: 4),
                 Text(product.name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),

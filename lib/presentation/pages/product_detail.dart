@@ -17,7 +17,6 @@ class ProductDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedImageUrl = ref.watch(selectedImageProvider(product));
-    final productImages = ref.watch(productImagesProvider(product));
 
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -33,7 +32,7 @@ class ProductDetailPage extends ConsumerWidget {
                   child: ProductImagesViewer(
                     product: product,
                     selectedImageUrl: selectedImageUrl,
-                    productImages: productImages,
+                    productImages: product.imageUrls,
                   ),
                 ),
                 const SizedBox(width: 40),

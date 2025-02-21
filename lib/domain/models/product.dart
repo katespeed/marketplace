@@ -2,7 +2,7 @@ class Product {
   final String id;
   final String name;
   final double price;
-  final String imageUrl;
+  final List<String> imageUrls;
   final String? description;
   final List<String>? categories;
   final String? size;
@@ -20,7 +20,7 @@ class Product {
     required this.id,
     required this.name,
     required this.price,
-    required this.imageUrl,
+    required this.imageUrls,
     this.sellerImageUrl,
     this.sellerName,
     this.rentalPrice,

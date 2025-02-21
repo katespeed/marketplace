@@ -6,7 +6,7 @@ part of 'product_detail_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productImagesHash() => r'956d9029d19bbd0d98bfe1be9e379aff4bbc1a7e';
+String _$selectedImageHash() => r'562b33216ec755ff9e1c99c77b83be2e5827d991';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -28,134 +28,6 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
-
-/// See also [productImages].
-@ProviderFor(productImages)
-const productImagesProvider = ProductImagesFamily();
-
-/// See also [productImages].
-class ProductImagesFamily extends Family<List<String>> {
-  /// See also [productImages].
-  const ProductImagesFamily();
-
-  /// See also [productImages].
-  ProductImagesProvider call(
-    Product product,
-  ) {
-    return ProductImagesProvider(
-      product,
-    );
-  }
-
-  @override
-  ProductImagesProvider getProviderOverride(
-    covariant ProductImagesProvider provider,
-  ) {
-    return call(
-      provider.product,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'productImagesProvider';
-}
-
-/// See also [productImages].
-class ProductImagesProvider extends AutoDisposeProvider<List<String>> {
-  /// See also [productImages].
-  ProductImagesProvider(
-    Product product,
-  ) : this._internal(
-          (ref) => productImages(
-            ref as ProductImagesRef,
-            product,
-          ),
-          from: productImagesProvider,
-          name: r'productImagesProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$productImagesHash,
-          dependencies: ProductImagesFamily._dependencies,
-          allTransitiveDependencies:
-              ProductImagesFamily._allTransitiveDependencies,
-          product: product,
-        );
-
-  ProductImagesProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.product,
-  }) : super.internal();
-
-  final Product product;
-
-  @override
-  Override overrideWith(
-    List<String> Function(ProductImagesRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ProductImagesProvider._internal(
-        (ref) => create(ref as ProductImagesRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        product: product,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeProviderElement<List<String>> createElement() {
-    return _ProductImagesProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is ProductImagesProvider && other.product == product;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, product.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin ProductImagesRef on AutoDisposeProviderRef<List<String>> {
-  /// The parameter `product` of this provider.
-  Product get product;
-}
-
-class _ProductImagesProviderElement
-    extends AutoDisposeProviderElement<List<String>> with ProductImagesRef {
-  _ProductImagesProviderElement(super.provider);
-
-  @override
-  Product get product => (origin as ProductImagesProvider).product;
-}
-
-String _$selectedImageHash() => r'89a15a6aa2137b12e834e8a28bd6e9b12a6b5a2e';
 
 abstract class _$SelectedImage extends BuildlessAutoDisposeNotifier<String> {
   late final Product product;

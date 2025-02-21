@@ -30,7 +30,7 @@ class ProfileSales extends StatelessWidget {
   Widget _buildSalesItem(Map<String, dynamic> sale) {
     final Product product = sale['product'] as Product;
     return ListTile(
-      leading: Image.asset(product.imageUrl, width: 50, height: 50, fit: BoxFit.cover),
+      leading: Image.asset(product.imageUrls[0], width: 50, height: 50, fit: BoxFit.cover),
       title: Text(product.name),
       subtitle: Text(sale['date']),
       trailing: Text(

@@ -37,9 +37,9 @@ class ProductCard extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: product.imageUrl.startsWith('http')
+                  child: product.imageUrls[0].startsWith('http')
                       ? CachedNetworkImage(
-                          imageUrl: product.imageUrl,
+                          imageUrl: product.imageUrls[0],
                           fit: BoxFit.contain,
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(),
@@ -49,7 +49,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         )
                       : Image.asset(
-                          product.imageUrl,
+                          product.imageUrls[0],
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) => const Center(
                             child: Icon(Icons.error),
