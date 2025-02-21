@@ -55,14 +55,14 @@ class Auth extends _$Auth {
       final user = _auth.currentUser;
       if (user == null) throw Exception('No user logged in');
       
-      // ユーザーの再認証
+      // Verify password before deletion
       final credential = EmailAuthProvider.credential(
         email: user.email!,
         password: password,
       );
       await user.reauthenticateWithCredential(credential);
       
-      // アカウント削除
+      // Delete user
       await user.delete();
     } catch (e, stack) {
       throw AsyncError(e, stack);
