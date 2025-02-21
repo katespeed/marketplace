@@ -13,12 +13,16 @@ class Product {
   final DateTime? saleEndDate;
   final String? brand;
   final double? rentalPrice;
+  final String? sellerImageUrl;
+  final String? sellerName;
 
   Product({
     required this.id,
     required this.name,
     required this.price,
     required this.imageUrl,
+    this.sellerImageUrl,
+    this.sellerName,
     this.rentalPrice,
     this.description,
     this.categories,
