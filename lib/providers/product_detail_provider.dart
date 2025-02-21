@@ -16,13 +16,11 @@ class SelectedImage extends _$SelectedImage {
 }
 
 @Riverpod(keepAlive: false)
-List<String> productImages(ProductImagesRef ref, Product product) {
-  return [
-    product.imageUrl,
-    '${product.imageUrl}?v=2',
-    '${product.imageUrl}?v=3',
-    '${product.imageUrl}?v=4',
-    '${product.imageUrl}?v=5',
-    '${product.imageUrl}?v=6',
-  ];
-} 
+List<String> productImages(ProductImagesRef ref, Product product) => [
+      product.imageUrl,
+      '${product.imageUrl}?v=2',
+      '${product.imageUrl}?v=3',
+      '${product.imageUrl}?v=4',
+      '${product.imageUrl}?v=5',
+      '${product.imageUrl}?v=6',
+    ]; 
