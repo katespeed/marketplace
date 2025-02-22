@@ -6,6 +6,7 @@ import 'package:my_flutter_app/presentation/pages/payment.dart';
 import 'package:my_flutter_app/presentation/pages/product_detail.dart';
 import 'package:my_flutter_app/presentation/pages/product_list.dart';
 import 'package:my_flutter_app/presentation/pages/profile.dart';
+import 'package:my_flutter_app/domain/models/product.dart';
 
 final router = GoRouter(
   initialLocation: '/login',
@@ -29,7 +30,9 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/product-detail',
-      builder: (context, state) => const ProductDetailPage(),
+      builder: (context, state) => ProductDetailPage(
+        product: state.extra as Product,
+      ),
     ),
     GoRoute(
       path: '/payment',

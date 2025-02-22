@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../components/profile/profile_header.dart';
-import '../components/profile/profile_listings.dart';
-import '../components/profile/profile_reviews.dart';
-import '../components/profile/profile_sales.dart';
+import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
+import 'package:my_flutter_app/presentation/components/profile/profile_header.dart';
+import 'package:my_flutter_app/presentation/components/profile/profile_listings.dart';
+import 'package:my_flutter_app/presentation/components/profile/profile_reviews.dart';
+import 'package:my_flutter_app/presentation/components/profile/profile_sales.dart';
 
 
 class ProfilePage extends HookConsumerWidget {
@@ -16,7 +16,7 @@ class ProfilePage extends HookConsumerWidget {
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("User Profile Management")),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

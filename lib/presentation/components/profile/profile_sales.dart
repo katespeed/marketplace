@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:my_flutter_app/data/mock/featured_products.dart';
+import 'package:my_flutter_app/domain/models/product.dart';
 
 class ProfileSales extends StatelessWidget {
-  final List<Map<String, String>> sales = [
-    {'name': 'Nike Air Max', 'image': 'assets/products/nike_air_max.jpeg', 'date': 'Feb 23, 2023', 'price': '\$120'},
-    {'name': 'Samsung TV', 'image': 'assets/products/samsung_tv.jpeg', 'date': 'Mar 1, 2023', 'price': '\$500'},
-    {'name': 'Speaker', 'image': 'assets/products/speaker.jpeg', 'date': 'Mar 3, 2023', 'price': '\$80'},
-    {'name': 'Watch', 'image': 'assets/products/watch.jpeg', 'date': 'Mar 5, 2023', 'price': '\$150'},
-  ];
+  // mockFeaturedProductsから販売データを生成
+  final List<Map<String, dynamic>> sales = mockFeaturedProducts
+      .take(4)  // 最初の4つの商品のみ使用
+      .map((product) => {
+            'product': product,
+            'date': 'Mar ${1 + mockFeaturedProducts.indexOf(product)}, 2024',
+          })
+      .toList();
 
   ProfileSales({super.key});
 
@@ -23,12 +27,16 @@ class ProfileSales extends StatelessWidget {
     );
   }
 
-  Widget _buildSalesItem(Map<String, String> sale) {
+  Widget _buildSalesItem(Map<String, dynamic> sale) {
+    final Product product = sale['product'] as Product;
     return ListTile(
-      leading: Image.asset(sale['image']!, width: 50, height: 50, fit: BoxFit.cover),
-      title: Text(sale['name']!),
-      subtitle: Text(sale['date']!),
-      trailing: Text(sale['price']!, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+      leading: Image.asset(product.imageUrls[0], width: 50, height: 50, fit: BoxFit.cover),
+      title: Text(product.name),
+      subtitle: Text(sale['date']),
+      trailing: Text(
+        '\$${product.price.toStringAsFixed(2)}',
+        style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold)
+      ),
     );
   }
 }
