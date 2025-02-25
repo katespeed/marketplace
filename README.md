@@ -7,7 +7,6 @@ A web-based marketplace platform for students.
 - Keito Yamakawa
 - Intekhab Ahmad
 - Member 3
-- Member 4
 
 ## Development Setup
 
