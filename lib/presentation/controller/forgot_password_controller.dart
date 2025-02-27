@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/auth_provider.dart';
+import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
 
 class ForgotPasswordController {
   void showForgotPasswordDialog(BuildContext context, WidgetRef ref) {
     final TextEditingController emailController = TextEditingController();
+    final authService = ref.watch(authServiceProvider);
 
     showDialog(
       context: context,
@@ -33,9 +34,7 @@ class ForgotPasswordController {
               }
 
               try {
-                await ref
-                    .read(authProvider.notifier)
-                    .sendPasswordResetEmail(emailController.text);
+                authService.resetPassword(emailController.text);
                 Navigator.pop(context); // Close dialog
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
