@@ -41,10 +41,10 @@ class ProductCard extends StatefulWidget {
   const ProductCard({super.key, required this.product});
 
   @override
-  _ProductCardState createState() => _ProductCardState();
+  ProductCardState createState() => ProductCardState();
 }
 
-class _ProductCardState extends State<ProductCard> {
+class ProductCardState extends State<ProductCard> {
   bool isExpanded = false;
 
   @override
