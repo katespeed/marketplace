@@ -35,22 +35,6 @@ class AuthRepository {
     }
   }
 
-  /// ユーザーが管理者かどうかを判定する
-  Future<bool> isAdmin(User? user) async {
-    try{
-      if (user != null) {
-        await user.getIdTokenResult(true).then((idTokenResult) {
-          if(idTokenResult.claims?['admin'] == true){
-            return true;
-          }
-        });
-      }
-    } catch (e) {
-      return false;
-    }
-    return false;
-  }
-
   /// サインアウト
   Future<void> signOut() async {
     await auth.signOut();

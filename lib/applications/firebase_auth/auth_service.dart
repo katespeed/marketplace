@@ -30,12 +30,6 @@ class AuthService {
     return authRepository.signInWithEmailAndPassword(email, password);
   }
 
-
-  /// ユーザーが管理者かどうかを判定
-  Future<bool> isAdmin(User user) async {
-    return authRepository.isAdmin(user);
-  }
-
   /// サインアウト
   Future<void> signOut() async {
     return authRepository.signOut();
