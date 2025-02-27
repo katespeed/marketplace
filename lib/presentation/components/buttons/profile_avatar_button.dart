@@ -28,9 +28,14 @@ class ProfileAvatarButton extends HookConsumerWidget {
               radius: 16,
               backgroundColor: Colors.grey[300],
               child: ClipOval(
-                child: photoUrl != null
+                child: photoUrl != null && photoUrl.isNotEmpty
                     ? Image.network(
                         photoUrl,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return _buildDefaultAvatar(displayName);
+                        },
                         errorBuilder: (context, error, stackTrace) {
                           return _buildDefaultAvatar(displayName);
                         },
@@ -39,7 +44,13 @@ class ProfileAvatarButton extends HookConsumerWidget {
               ),
             );
           },
-          loading: () => const CircularProgressIndicator(),
+          loading: () => CircleAvatar(
+            radius: 16,
+            backgroundColor: Colors.grey[300],
+            child: ClipOval(
+              child: _buildDefaultAvatar('User'),
+            ),
+          ),
           error: (_, __) => CircleAvatar(
             radius: 16,
             backgroundColor: Colors.grey[300],
@@ -52,9 +63,16 @@ class ProfileAvatarButton extends HookConsumerWidget {
 
   Widget _buildDefaultAvatar(String displayName) {
     return Image.network(
-      'https://ui-avatars.com/api/?name=${Uri.encodeComponent(displayName)}&background=random',
+      'https://ui-avatars.com/api/?name=${Uri.encodeComponent(displayName)}&background=random&color=fff&bold=true',
+      fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
-        return const Icon(Icons.person, color: Colors.black54);
+        return Text(
+          displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
+          style: const TextStyle(
+            color: Colors.black54,
+            fontWeight: FontWeight.bold,
+          ),
+        );
       },
     );
   }
