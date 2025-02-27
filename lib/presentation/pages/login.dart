@@ -14,6 +14,8 @@ class LoginPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final isLogin = useState(true);
+
+    final passwordVisible = useState(false);
     
     final emailController = ref.watch(emailControllerProvider);
     final passwordController = ref.watch(passwordControllerProvider);
@@ -97,11 +99,20 @@ class LoginPage extends HookConsumerWidget {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: passwordController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
+                    //Show and hide password button
+                    suffixIcon: TextButton(
+                      onPressed: (){
+                        passwordVisible.value = !passwordVisible.value; //toggle visibility
+                      },
+                      child: Text(
+                        passwordVisible.value ? "Hide Password" : "Show Password", //toggle text
+                      ),
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: !passwordVisible.value, //toggle obscuring the password
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
