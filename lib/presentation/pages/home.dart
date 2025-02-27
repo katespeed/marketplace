@@ -80,7 +80,7 @@ class HomePage extends HookConsumerWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: const Text(
-                  'Featured Items',
+                  'recently posted items',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
