@@ -98,5 +98,3 @@ app.*.symbols
 .idea/
 .vscode/
 *.iml
-
-pubspec.lock
