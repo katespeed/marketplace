@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:my_flutter_app/providers/auth_provider.dart';
+import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
 
 class ProfileAvatarButton extends HookConsumerWidget {
   const ProfileAvatarButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
+    final authService = ref.watch(authServiceProvider);
+    final authStateAsyncValue = ref.watch(
+      StreamProvider((ref) => authService.authStateChanges())
+    );
 
     return Padding(
       padding: const EdgeInsets.only(right: 16.0, left: 8.0),
@@ -16,7 +19,7 @@ class ProfileAvatarButton extends HookConsumerWidget {
         onTap: () {
           context.push('/profile');
         },
-        child: authState.when(
+        child: authStateAsyncValue.when(
           data: (user) {
             final displayName = user?.displayName ?? 'User';
             final photoUrl = user?.photoURL;

@@ -8,9 +8,7 @@ part of 'auth_service.dart';
 
 String _$authServiceHash() => r'aa12763d4042092fce8cf4ec12914fa7cdefc738';
 
-/// 認証関連のサービスプロバイダー
-///
-/// Copied from [authService].
+/// See also [authService].
 @ProviderFor(authService)
 final authServiceProvider = Provider<AuthService>.internal(
   authService,

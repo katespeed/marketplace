@@ -1,42 +1,108 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 part 'auth_repository.g.dart';
 
-/// 認証関連のリポジトリプロバイダー
 @Riverpod(keepAlive: true)
 AuthRepository authRepository(AuthRepositoryRef ref) =>
     AuthRepository(FirebaseAuth.instance);
 
-/// 認証関連のリポジトリ
 class AuthRepository {
-  /// init
   AuthRepository(this.auth);
 
-  /// Firebase Auth
   final FirebaseAuth auth;
 
-  /// 現在のユーザー
   User? get authUser => auth.currentUser;
 
-  /// ユーザーの認証状態を監視する
   Stream<User?> authStateChanges() => auth.authStateChanges();
 
-  /// メールアドレスとパスワードでログイン
-  Future<bool> signInWithEmailAndPassword(String email, String password) async {
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      final user = auth.currentUser;
-      if (user == null) return false;
-      final idTokenResult = await user.getIdTokenResult(true);
-      return idTokenResult.claims?['admin'] == true;
-    } catch (e) {
-      rethrow;
+      final credential = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await credential.user?.updateDisplayName(username);
+      
+      // Check if user document exists
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(credential.user?.uid)
+          .get();
+          
+      if (!userDoc.exists) {
+        // Create user document if it doesn't exist
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(credential.user?.uid)
+            .set({
+          'uuid': credential.user?.uid,
+          'id': 'userid',
+          'name': 'unknown_name',
+          'email': credential.user?.email,
+          'created_at': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
     }
   }
 
-  /// サインアウト
+  // Sign in with email and password
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password
+      );
+    } catch (e) {
+      throw AsyncError(e, StackTrace.current);
+    }
+  }
+
+  // Sign out the user
   Future<void> signOut() async {
-    await auth.signOut();
+    try {
+      await auth.signOut();
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
+  }
+
+  Future<void> deleteAccount({required String password}) async {
+    try {
+      final user = auth.currentUser;
+      if (user == null) throw Exception('No user logged in');
+      
+      // Verify password before deletion
+      final credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: password,
+      );
+      await user.reauthenticateWithCredential(credential);
+      
+      // Delete user data from Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .delete();
+      
+      // Delete Firebase Auth user
+      await user.delete();
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
+  }
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
   }
 }

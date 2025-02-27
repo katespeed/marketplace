@@ -4,34 +4,48 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_service.g.dart';
 
-/// 認証関連のサービスプロバイダー
 @Riverpod(keepAlive: true)
 AuthService authService(AuthServiceRef ref) {
   return AuthService(ref.read(authRepositoryProvider));
 }
 
-/// 認証関連のサービス
 class AuthService {
-  /// init
   AuthService(this.authRepository);
 
-  /// 認証リポジトリ
   final AuthRepository authRepository;
-
-  /// 現在のユーザー
   User? get authUser => authRepository.authUser;
 
-  /// ユーザーの認証状態を監視
   Stream<User?> authStateChanges() => authRepository.authStateChanges();
 
-  /// メールアドレスとパスワードでログイン
-  /// ログイン成功時に管理者かどうかを返す
-  Future<bool> signInWithEmailAndPassword(String email, String password) async {
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    return authRepository.signUp(
+      email: email,
+      password: password,
+      username: username,
+    );
+  }
+
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
     return authRepository.signInWithEmailAndPassword(email, password);
   }
 
-  /// サインアウト
   Future<void> signOut() async {
     return authRepository.signOut();
+  }
+
+  Future<void> deleteAccount({required String password}) async {
+    return authRepository.deleteAccount(password: password);
+  }
+  
+  Future<void> resetPassword(String email) async {
+    try {
+      await authRepository.auth.sendPasswordResetEmail(email: email);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
   }
 }

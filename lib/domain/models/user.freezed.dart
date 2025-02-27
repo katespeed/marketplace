@@ -20,10 +20,15 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
+  String get uuid => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
   String? get profileImage => throw _privateConstructorUsedError;
+  String? get bio => throw _privateConstructorUsedError;
+  List<Product>? get sellProducts => throw _privateConstructorUsedError;
+  List<Product>? get buyProducts => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +40,16 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({String id, String name, String email, String? profileImage});
+  $Res call(
+      {String uuid,
+      String id,
+      String name,
+      String email,
+      DateTime createdAt,
+      String? profileImage,
+      String? bio,
+      List<Product>? sellProducts,
+      List<Product>? buyProducts});
 }
 
 /// @nodoc
@@ -51,12 +65,21 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uuid = null,
     Object? id = null,
     Object? name = null,
     Object? email = null,
+    Object? createdAt = null,
     Object? profileImage = freezed,
+    Object? bio = freezed,
+    Object? sellProducts = freezed,
+    Object? buyProducts = freezed,
   }) {
     return _then(_value.copyWith(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -69,10 +92,26 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as String?,
+      bio: freezed == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sellProducts: freezed == sellProducts
+          ? _value.sellProducts
+          : sellProducts // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
+      buyProducts: freezed == buyProducts
+          ? _value.buyProducts
+          : buyProducts // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
     ) as $Val);
   }
 }
@@ -84,7 +123,16 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String email, String? profileImage});
+  $Res call(
+      {String uuid,
+      String id,
+      String name,
+      String email,
+      DateTime createdAt,
+      String? profileImage,
+      String? bio,
+      List<Product>? sellProducts,
+      List<Product>? buyProducts});
 }
 
 /// @nodoc
@@ -97,12 +145,21 @@ class __$$UserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uuid = null,
     Object? id = null,
     Object? name = null,
     Object? email = null,
+    Object? createdAt = null,
     Object? profileImage = freezed,
+    Object? bio = freezed,
+    Object? sellProducts = freezed,
+    Object? buyProducts = freezed,
   }) {
     return _then(_$UserImpl(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -115,10 +172,26 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as String?,
+      bio: freezed == bio
+          ? _value.bio
+          : bio // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sellProducts: freezed == sellProducts
+          ? _value._sellProducts
+          : sellProducts // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
+      buyProducts: freezed == buyProducts
+          ? _value._buyProducts
+          : buyProducts // ignore: cast_nullable_to_non_nullable
+              as List<Product>?,
     ));
   }
 }
@@ -127,14 +200,23 @@ class __$$UserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserImpl implements _User {
   const _$UserImpl(
-      {required this.id,
+      {required this.uuid,
+      required this.id,
       required this.name,
       required this.email,
-      this.profileImage});
+      required this.createdAt,
+      this.profileImage,
+      this.bio,
+      final List<Product>? sellProducts,
+      final List<Product>? buyProducts})
+      : _sellProducts = sellProducts,
+        _buyProducts = buyProducts;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
 
+  @override
+  final String uuid;
   @override
   final String id;
   @override
@@ -142,11 +224,34 @@ class _$UserImpl implements _User {
   @override
   final String email;
   @override
+  final DateTime createdAt;
+  @override
   final String? profileImage;
+  @override
+  final String? bio;
+  final List<Product>? _sellProducts;
+  @override
+  List<Product>? get sellProducts {
+    final value = _sellProducts;
+    if (value == null) return null;
+    if (_sellProducts is EqualUnmodifiableListView) return _sellProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Product>? _buyProducts;
+  @override
+  List<Product>? get buyProducts {
+    final value = _buyProducts;
+    if (value == null) return null;
+    if (_buyProducts is EqualUnmodifiableListView) return _buyProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, profileImage: $profileImage)';
+    return 'User(uuid: $uuid, id: $id, name: $name, email: $email, createdAt: $createdAt, profileImage: $profileImage, bio: $bio, sellProducts: $sellProducts, buyProducts: $buyProducts)';
   }
 
   @override
@@ -154,16 +259,34 @@ class _$UserImpl implements _User {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
             (identical(other.profileImage, profileImage) ||
-                other.profileImage == profileImage));
+                other.profileImage == profileImage) &&
+            (identical(other.bio, bio) || other.bio == bio) &&
+            const DeepCollectionEquality()
+                .equals(other._sellProducts, _sellProducts) &&
+            const DeepCollectionEquality()
+                .equals(other._buyProducts, _buyProducts));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, email, profileImage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uuid,
+      id,
+      name,
+      email,
+      createdAt,
+      profileImage,
+      bio,
+      const DeepCollectionEquality().hash(_sellProducts),
+      const DeepCollectionEquality().hash(_buyProducts));
 
   @JsonKey(ignore: true)
   @override
@@ -181,13 +304,20 @@ class _$UserImpl implements _User {
 
 abstract class _User implements User {
   const factory _User(
-      {required final String id,
+      {required final String uuid,
+      required final String id,
       required final String name,
       required final String email,
-      final String? profileImage}) = _$UserImpl;
+      required final DateTime createdAt,
+      final String? profileImage,
+      final String? bio,
+      final List<Product>? sellProducts,
+      final List<Product>? buyProducts}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
+  @override
+  String get uuid;
   @override
   String get id;
   @override
@@ -195,7 +325,15 @@ abstract class _User implements User {
   @override
   String get email;
   @override
+  DateTime get createdAt;
+  @override
   String? get profileImage;
+  @override
+  String? get bio;
+  @override
+  List<Product>? get sellProducts;
+  @override
+  List<Product>? get buyProducts;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

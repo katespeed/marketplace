@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
 import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
-import 'package:my_flutter_app/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DeleteAccountButton extends HookConsumerWidget {
@@ -66,9 +66,7 @@ class DeleteAccountButton extends HookConsumerWidget {
         );
 
         if (confirmWithPassword == true) {
-          await ref.read(authProvider.notifier).deleteAccount(
-            password: passwordController.text,
-          );
+          await ref.read(authServiceProvider).deleteAccount(password: passwordController.text);
           if (context.mounted) {
             context.go('/login');
             ScaffoldMessenger.of(context).showSnackBar(

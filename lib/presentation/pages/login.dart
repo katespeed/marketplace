@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_flutter_app/providers/auth_provider.dart';
+import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
 import 'package:my_flutter_app/providers/text_editing_controllers.dart';
 
 import '../controller/forgot_password_controller.dart';
@@ -14,26 +14,38 @@ class LoginPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final isLogin = useState(true);
+
+    final authService = ref.watch(authServiceProvider);
     
     final emailController = ref.watch(emailControllerProvider);
     final passwordController = ref.watch(passwordControllerProvider);
     final usernameController = ref.watch(usernameControllerProvider);
+
+    useEffect(() {
+      final subscription = authService.authStateChanges().listen((user) {
+        if (user != null) {
+          context.go('/home');
+        }
+      });
+
+      return subscription.cancel;
+    }, []);
 
     Future<void> submit() async {
       if (!formKey.currentState!.validate()) return;
 
       try {
         if (isLogin.value) {
-          await ref.read(authProvider.notifier).signIn(
-                email: emailController.text,
-                password: passwordController.text,
-              );
+          authService.signInWithEmailAndPassword(
+            emailController.text,
+            passwordController.text,
+          );
         } else {
-          await ref.read(authProvider.notifier).signUp(
-                email: emailController.text,
-                password: passwordController.text,
-                username: usernameController.text,
-              );
+          authService.signUp(
+            email: emailController.text,
+            password: passwordController.text,
+            username: usernameController.text,
+          );
         }
       } catch (e) {
         if (context.mounted) {
@@ -43,14 +55,6 @@ class LoginPage extends HookConsumerWidget {
         }
       }
     }
-
-    ref.listen(authProvider, (previous, next) {
-      next.whenData((user) {
-        if (user != null) {
-          context.go('/home');
-        }
-      });
-    });
 
     return Scaffold(
       body: Center(
