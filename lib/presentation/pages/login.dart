@@ -112,7 +112,7 @@ class LoginPage extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                  obscureText: !passwordVisible.value, //toggle obscuring the password
+                  obscureText: !passwordVisible.value, //toggle obscuring the passwordg
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
