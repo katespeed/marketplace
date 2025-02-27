@@ -9,20 +9,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'storage_repository.g.dart';
 
-/// キャンペーンのリポジトリのProvider
 @Riverpod(keepAlive: true)
 StorageRepository storageRepository(StorageRepositoryRef ref) =>
     StorageRepository(ref);
 
-/// キャンペーンのリポジトリ
 class StorageRepository {
-  /// initializer
   StorageRepository(this.ref);
 
-  /// ref
   final Ref ref;
 
-  /// キャンペーンのリポジトリ
   StorageRepository get storageRepository =>
       ref.read(storageRepositoryProvider);
 
@@ -30,8 +25,6 @@ class StorageRepository {
   // FirebaseStorage get storage => FirebaseStorage.instance;
   static final storage = FirebaseStorage.instance;
 
-
-  /// 画像をダウンロードする
   static Future<Image?> downloadImage(String downloadImagePath) async {
     try {
       final url = await storage.ref().child(downloadImagePath).getDownloadURL();
@@ -56,7 +49,6 @@ class StorageRepository {
     }
   }
 
-  /// 画像をアップロードしてパスを返す
   static Future<List<String>> uploadImage({
     required Uint8List selectedNewImage,
     required String campaignCode,
@@ -64,36 +56,31 @@ class StorageRepository {
     String? selectedImageName,
   }) async {
     try {
-      /// Strageの画像がスタックするため、アップロード前に既存の画像を削除
       if (previousImagePath != null) {
         await deleteImage(
           deleteImagePath: previousImagePath,
           campaignCode: campaignCode,
         );
       }
-      /// MIMEタイプを判定
       final mimeType = lookupMimeType('', headerBytes: selectedNewImage);
       final contentType = mimeType;
       final metadata = SettableMetadata(contentType: contentType);
 
-      /// 拡張子を取得
       final extension = mimeType?.split('/').last;
       final newImagePath = extension != null
           ? 'campaigns/$campaignCode/$campaignCode.$extension'
           : '';
 
-      /// 画像をアップロード
       if (extension != null) {
         await storage.ref(newImagePath).putData(selectedNewImage, metadata);
       }
       return [newImagePath];
     } catch (e) {
       logger.e('error uploadPicture : $e');
-      rethrow;  // エラーを再スローして呼び出し元で処理できるようにする
+      rethrow;
     }
   }
 
-  /// 画像を削除する
   static Future<void> deleteImage({
     required String deleteImagePath,
     required String campaignCode,

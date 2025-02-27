@@ -8,33 +8,25 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'storage_service.g.dart';
 
-/// キャンペーンのサービスProvider
 @Riverpod(keepAlive: true)
 StorageService storageService(StorageServiceRef ref) {
   return StorageService(ref);
 }
 
-/// キャンペーンのサービス
 class StorageService {
-  /// initializer
   StorageService(this.ref);
 
-  /// ref
   final Ref ref;
 
-  /// キャンペーンリポジトリ
   StorageRepository get storageRepository =>
       ref.read(storageRepositoryProvider);
 
-  /// firestore Storage
   static final storage = FirebaseStorage.instance;
 
-  /// 画像をダウンロードする
   static Future<Image?> downloadImage(String downloadImagePath) async {
     return StorageRepository.downloadImage(downloadImagePath);
   }
 
-  /// 画像をアップロードしてパスを返す
   static Future<List<String>> uploadImage({
     required Uint8List selectedNewImage,
     required String campaignCode,
@@ -49,7 +41,6 @@ class StorageService {
     );
   }
 
-  /// 画像を削除する
   static Future<void> deleteImage({
     required String deleteImagePath,
     required String campaignCode,
