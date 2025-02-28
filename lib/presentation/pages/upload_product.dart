@@ -1,13 +1,8 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
-import '../../providers/product_provider.dart';
+import '../../providers/upload_product_controller.dart';
+import '../components/appbar/appbar.dart';
 
-final imageProvider = StateProvider<Uint8List?>((ref) => null);
-final titleControllerProvider = Provider((ref) => TextEditingController());
-final priceControllerProvider = Provider((ref) => TextEditingController());
-final descriptionControllerProvider = Provider((ref) => TextEditingController());
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});
@@ -19,55 +14,15 @@ class UploadProductPage extends ConsumerWidget {
     final priceController = ref.watch(priceControllerProvider);
     final descriptionController = ref.watch(descriptionControllerProvider);
 
-    Future<void> pickImage() async {
-      final ImagePicker picker = ImagePicker();
-      final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        final bytes = await pickedFile.readAsBytes();
-        ref.read(imageProvider.notifier).state = bytes;
-      }
-    }
-
-    void submitProduct() {
-      if (titleController.text.isEmpty || priceController.text.isEmpty || descriptionController.text.isEmpty || imageBytes == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please fill all fields and select an image')),
-        );
-        return;
-      }
-
-      // Create a new product object
-      final newProduct = Product(
-        title: titleController.text,
-        price: priceController.text,
-        description: descriptionController.text,
-        image: imageBytes,
-      );
-
-      // Add product to the list provider
-      ref.read(productListProvider.notifier).addProduct(newProduct);
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product uploaded successfully!')),
-      );
-
-      // Clear form after submission
-      titleController.clear();
-      priceController.clear();
-      descriptionController.clear();
-      ref.read(imageProvider.notifier).state = null;
-    }
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Upload Product')),
+      appBar: const CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               GestureDetector(
-                onTap: pickImage,
+                onTap: () => pickImage(ref),
                 child: Container(
                   height: 200,
                   width: double.infinity,
@@ -99,7 +54,7 @@ class UploadProductPage extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: submitProduct,
+                onPressed: () => submitProduct(context, ref),
                 child: const Text('Upload Product'),
               ),
             ],
