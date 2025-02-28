@@ -55,13 +55,14 @@ class LoginPage extends HookConsumerWidget {
     });
 
     return Scaffold(
-      body: Center(
+      body: Padding( //Left justify content
+        padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 512), //padding on horizontal borders
           child: Form(
             key: formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   isLogin.value ? 'Login' : 'Create Account',
@@ -71,9 +72,19 @@ class LoginPage extends HookConsumerWidget {
                 if (!isLogin.value)
                   TextFormField(
                     controller: usernameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Username',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -85,9 +96,19 @@ class LoginPage extends HookConsumerWidget {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'user@university.edu',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -101,7 +122,17 @@ class LoginPage extends HookConsumerWidget {
                   controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                     //Show and hide password button
                     suffixIcon: TextButton(
                       onPressed: (){
@@ -112,7 +143,7 @@ class LoginPage extends HookConsumerWidget {
                       ),
                     ),
                   ),
-                  obscureText: !passwordVisible.value, //toggle obscuring the passwordg
+                  obscureText: !passwordVisible.value, //toggle obscuring the password
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
