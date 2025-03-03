@@ -23,7 +23,6 @@ class LoginPage extends HookConsumerWidget {
     final passwordController = ref.watch(passwordControllerProvider);
     final usernameController = ref.watch(usernameControllerProvider);
 
-    //final passwordVisible = useState(false);
     final passwordVisible = ref.watch(passwordVisibilityProvider);
 
     useEffect(() {
