@@ -7,7 +7,7 @@ import 'package:my_flutter_app/providers/text_editing_controllers.dart';
 
 import '../controller/forgot_password_controller.dart';
 
-import '/providers/passwordVisibility_provider.dart';
+import '/providers/password_visibility_provider.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
