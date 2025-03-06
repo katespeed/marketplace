@@ -8,9 +8,7 @@ part of 'storage_service.dart';
 
 String _$storageServiceHash() => r'106230d40f23dc32d6846be930e829f7cc704b33';
 
-/// キャンペーンのサービスProvider
-///
-/// Copied from [storageService].
+/// See also [storageService].
 @ProviderFor(storageService)
 final storageServiceProvider = Provider<StorageService>.internal(
   storageService,
