@@ -113,7 +113,7 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {}, // TODO: Add PayPal Payment Functionality Here
+              onPressed: () {},
               child: Text("Proceed to Payment"),
             ),
           ],
