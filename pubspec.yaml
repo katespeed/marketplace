@@ -27,6 +27,7 @@ dependencies:
   simple_logger: ^1.10.0
   mime: ^1.0.4
   cloud_firestore: ^4.17.5
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -52,3 +53,4 @@ flutter:
     - assets/products/dyson_vacuum.jpeg
     - assets/products/nike_air_max.jpeg
     - assets/products/canon_camera.jpeg
+    - assets/animation/splash_animation.json

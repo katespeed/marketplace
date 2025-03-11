@@ -8,12 +8,19 @@ import 'package:my_flutter_app/presentation/pages/product_list.dart';
 import 'package:my_flutter_app/presentation/pages/profile.dart';
 import 'package:my_flutter_app/domain/models/product.dart';
 
+import '../presentation/pages/splash_screen.dart';
 import '../presentation/pages/upload_product.dart';
 
+bool isSplashDone = false;
+
 final router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: isSplashDone ? '/login' : '/splash', // Start at splash if not done
   errorBuilder: (context, state) => const NotFoundPage(),
   routes: [
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashScreen(),
+    ),
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginPage(),
