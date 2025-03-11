@@ -72,6 +72,13 @@ class HomePage extends HookConsumerWidget {
                         },
                         text: 'Go to Product Detail',
                       ),
+                      CustomButton(
+                        backgroundColor: Colors.grey,
+                        onPressed: () {
+                          context.push('/upload_product');
+                        },
+                        text: 'Upload Product',
+                      ),
                     ],
                   ),
                 ),

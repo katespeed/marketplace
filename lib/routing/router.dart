@@ -8,6 +8,8 @@ import 'package:my_flutter_app/presentation/pages/product_list.dart';
 import 'package:my_flutter_app/presentation/pages/profile.dart';
 import 'package:my_flutter_app/domain/models/product.dart';
 
+import '../presentation/pages/upload_product.dart';
+
 final router = GoRouter(
   initialLocation: '/login',
   errorBuilder: (context, state) => const NotFoundPage(),
@@ -37,6 +39,10 @@ final router = GoRouter(
     GoRoute(
       path: '/payment',
       builder: (context, state) => const PaymentPage(),
+    ),
+    GoRoute(
+      path: '/upload_product',
+      builder: (context, state) => const UploadProductPage(),
     ),
   ],
 );
