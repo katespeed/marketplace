@@ -7,6 +7,8 @@ import 'package:my_flutter_app/providers/text_editing_controllers.dart';
 
 import '../controller/forgot_password_controller.dart';
 
+import '/providers/password_visibility_provider.dart';
+
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
 
@@ -20,6 +22,8 @@ class LoginPage extends HookConsumerWidget {
     final emailController = ref.watch(emailControllerProvider);
     final passwordController = ref.watch(passwordControllerProvider);
     final usernameController = ref.watch(usernameControllerProvider);
+
+    final passwordVisible = ref.watch(passwordVisibilityProvider);
 
     useEffect(() {
       final subscription = authService.authStateChanges().listen((user) {
@@ -57,25 +61,36 @@ class LoginPage extends HookConsumerWidget {
     }
 
     return Scaffold(
-      body: Center(
+      body: Padding( //Left justify content
+        padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 512), //padding on horizontal borders
           child: Form(
             key: formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   isLogin.value ? 'Login' : 'Create Account',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 20),
-                if (!isLogin.value)
+                if (!isLogin.value) 
                   TextFormField(
                     controller: usernameController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Username',
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -84,16 +99,30 @@ class LoginPage extends HookConsumerWidget {
                       return null;
                     },
                   ),
+                
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'user@university.edu',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an email';
+                    }
+                    if(!value.contains('@smail.astate.edu')){
+                      return 'Enter a valid A-State student email';
                     }
                     return null;
                   },
@@ -101,11 +130,28 @@ class LoginPage extends HookConsumerWidget {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: passwordController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue[50]!),
+                    ),
+                    filled: true,
+                    fillColor: Colors.blue[50],
+                    //Show and hide password button
+                    suffixIcon: TextButton(
+                      onPressed: () => ref.read(passwordVisibilityProvider.notifier).state = !passwordVisible,
+                      child: Text(
+                        passwordVisible ? 'Hide Password' : 'Show Password', //toggle text
+                      ),
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: !passwordVisible, //toggle obscuring the password
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
@@ -129,6 +175,7 @@ class LoginPage extends HookConsumerWidget {
                   onPressed: submit,
                   child: Text(isLogin.value ? 'Login' : 'Create Account'),
                 ),
+                const SizedBox(height: 8),
                 TextButton(
                   onPressed: () {
                     isLogin.value = !isLogin.value;
