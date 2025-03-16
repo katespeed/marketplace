@@ -8,9 +8,7 @@ part of 'storage_repository.dart';
 
 String _$storageRepositoryHash() => r'6515d317c2c3189c6cf357922211f7dc260809eb';
 
-/// キャンペーンのリポジトリのProvider
-///
-/// Copied from [storageRepository].
+/// See also [storageRepository].
 @ProviderFor(storageRepository)
 final storageRepositoryProvider = Provider<StorageRepository>.internal(
   storageRepository,
