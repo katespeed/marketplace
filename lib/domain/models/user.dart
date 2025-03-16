@@ -12,6 +12,7 @@ class User with _$User {
     required String name,
     required String email,
     required DateTime createdAt,
+    String? paypalEmail,
     String? profileImage,
     String? bio,
     List<Product>? sellProducts,

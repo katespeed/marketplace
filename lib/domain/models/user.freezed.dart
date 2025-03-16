@@ -25,6 +25,7 @@ mixin _$User {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String? get paypalEmail => throw _privateConstructorUsedError;
   String? get profileImage => throw _privateConstructorUsedError;
   String? get bio => throw _privateConstructorUsedError;
   List<Product>? get sellProducts => throw _privateConstructorUsedError;
@@ -46,6 +47,7 @@ abstract class $UserCopyWith<$Res> {
       String name,
       String email,
       DateTime createdAt,
+      String? paypalEmail,
       String? profileImage,
       String? bio,
       List<Product>? sellProducts,
@@ -70,6 +72,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? name = null,
     Object? email = null,
     Object? createdAt = null,
+    Object? paypalEmail = freezed,
     Object? profileImage = freezed,
     Object? bio = freezed,
     Object? sellProducts = freezed,
@@ -96,6 +99,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      paypalEmail: freezed == paypalEmail
+          ? _value.paypalEmail
+          : paypalEmail // ignore: cast_nullable_to_non_nullable
+              as String?,
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
@@ -129,6 +136,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String name,
       String email,
       DateTime createdAt,
+      String? paypalEmail,
       String? profileImage,
       String? bio,
       List<Product>? sellProducts,
@@ -150,6 +158,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? createdAt = null,
+    Object? paypalEmail = freezed,
     Object? profileImage = freezed,
     Object? bio = freezed,
     Object? sellProducts = freezed,
@@ -176,6 +185,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      paypalEmail: freezed == paypalEmail
+          ? _value.paypalEmail
+          : paypalEmail // ignore: cast_nullable_to_non_nullable
+              as String?,
       profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
@@ -205,6 +218,7 @@ class _$UserImpl implements _User {
       required this.name,
       required this.email,
       required this.createdAt,
+      this.paypalEmail,
       this.profileImage,
       this.bio,
       final List<Product>? sellProducts,
@@ -225,6 +239,8 @@ class _$UserImpl implements _User {
   final String email;
   @override
   final DateTime createdAt;
+  @override
+  final String? paypalEmail;
   @override
   final String? profileImage;
   @override
@@ -251,7 +267,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(uuid: $uuid, id: $id, name: $name, email: $email, createdAt: $createdAt, profileImage: $profileImage, bio: $bio, sellProducts: $sellProducts, buyProducts: $buyProducts)';
+    return 'User(uuid: $uuid, id: $id, name: $name, email: $email, createdAt: $createdAt, paypalEmail: $paypalEmail, profileImage: $profileImage, bio: $bio, sellProducts: $sellProducts, buyProducts: $buyProducts)';
   }
 
   @override
@@ -265,6 +281,8 @@ class _$UserImpl implements _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.paypalEmail, paypalEmail) ||
+                other.paypalEmail == paypalEmail) &&
             (identical(other.profileImage, profileImage) ||
                 other.profileImage == profileImage) &&
             (identical(other.bio, bio) || other.bio == bio) &&
@@ -283,6 +301,7 @@ class _$UserImpl implements _User {
       name,
       email,
       createdAt,
+      paypalEmail,
       profileImage,
       bio,
       const DeepCollectionEquality().hash(_sellProducts),
@@ -309,6 +328,7 @@ abstract class _User implements User {
       required final String name,
       required final String email,
       required final DateTime createdAt,
+      final String? paypalEmail,
       final String? profileImage,
       final String? bio,
       final List<Product>? sellProducts,
@@ -326,6 +346,8 @@ abstract class _User implements User {
   String get email;
   @override
   DateTime get createdAt;
+  @override
+  String? get paypalEmail;
   @override
   String? get profileImage;
   @override
