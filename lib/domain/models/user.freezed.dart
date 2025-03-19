@@ -21,6 +21,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   String get uuid => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String uuid,
+      String id,
       String name,
       String email,
       DateTime createdAt,
@@ -66,6 +68,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? uuid = null,
+    Object? id = null,
     Object? name = null,
     Object? email = null,
     Object? createdAt = null,
@@ -79,6 +82,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       uuid: null == uuid
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -125,6 +132,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String uuid,
+      String id,
       String name,
       String email,
       DateTime createdAt,
@@ -146,6 +154,7 @@ class __$$UserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uuid = null,
+    Object? id = null,
     Object? name = null,
     Object? email = null,
     Object? createdAt = null,
@@ -159,6 +168,10 @@ class __$$UserImplCopyWithImpl<$Res>
       uuid: null == uuid
           ? _value.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -201,6 +214,7 @@ class __$$UserImplCopyWithImpl<$Res>
 class _$UserImpl implements _User {
   const _$UserImpl(
       {required this.uuid,
+      required this.id,
       required this.name,
       required this.email,
       required this.createdAt,
@@ -217,6 +231,8 @@ class _$UserImpl implements _User {
 
   @override
   final String uuid;
+  @override
+  final String id;
   @override
   final String name;
   @override
@@ -251,7 +267,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(uuid: $uuid, name: $name, email: $email, createdAt: $createdAt, paypalEmail: $paypalEmail, profileImage: $profileImage, bio: $bio, sellProducts: $sellProducts, buyProducts: $buyProducts)';
+    return 'User(uuid: $uuid, id: $id, name: $name, email: $email, createdAt: $createdAt, paypalEmail: $paypalEmail, profileImage: $profileImage, bio: $bio, sellProducts: $sellProducts, buyProducts: $buyProducts)';
   }
 
   @override
@@ -260,6 +276,7 @@ class _$UserImpl implements _User {
         (other.runtimeType == runtimeType &&
             other is _$UserImpl &&
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.createdAt, createdAt) ||
@@ -280,6 +297,7 @@ class _$UserImpl implements _User {
   int get hashCode => Object.hash(
       runtimeType,
       uuid,
+      id,
       name,
       email,
       createdAt,
@@ -306,6 +324,7 @@ class _$UserImpl implements _User {
 abstract class _User implements User {
   const factory _User(
       {required final String uuid,
+      required final String id,
       required final String name,
       required final String email,
       required final DateTime createdAt,
@@ -319,6 +338,8 @@ abstract class _User implements User {
 
   @override
   String get uuid;
+  @override
+  String get id;
   @override
   String get name;
   @override
