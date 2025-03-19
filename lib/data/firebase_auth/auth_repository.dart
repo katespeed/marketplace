@@ -107,8 +107,8 @@ class AuthRepository {
         ]);
         
       } catch (e) {
-        print('Failed to delete Firestore data: $e');
-        // Continue with account deletion even if Firestore deletion fails
+        FirebaseAuth.instance.signOut(); // Force sign out on error
+        throw AsyncError('Failed to delete Firestore data: $e', StackTrace.current);
       }
       
       // Delete Firebase user
@@ -121,7 +121,6 @@ class AuthRepository {
     }
   }
 
-  // Helper method to delete documents from a collection
   Future<void> _deleteCollection(FirebaseFirestore db, String collectionPath, String userId) async {
     final snapshot = await db
         .collection(collectionPath)
@@ -132,7 +131,7 @@ class AuthRepository {
       try {
         await doc.reference.delete();
       } catch (e) {
-        print('Failed to delete $collectionPath document: $e');
+        throw AsyncError('Failed to delete $collectionPath document: $e', StackTrace.current);
       }
     }
   }

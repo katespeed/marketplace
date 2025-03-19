@@ -47,6 +47,7 @@ class HomePage extends HookConsumerWidget {
               ),
               const SizedBox(height: 20),
               FeaturedProductsGrid(products: mockFeaturedProducts),
+              const SizedBox(height: 100),
             ],
           ),
         ),
