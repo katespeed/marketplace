@@ -30,7 +30,26 @@ class AuthService {
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
-    return authRepository.signInWithEmailAndPassword(email, password);
+    try {
+      await authRepository.signInWithEmailAndPassword(email, password);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case 'user-not-found':
+          throw 'No account exists with this email. Please check your email or create a new account.';
+        case 'wrong-password':
+          throw 'Incorrect password. Please try again.';
+        case 'invalid-email':
+          throw 'Invalid email format. Please enter a valid email address.';
+        case 'user-disabled':
+          throw 'This account has been disabled. Please contact support.';
+        case 'too-many-requests':
+          throw 'Too many failed login attempts. Please try again later.';
+        default:
+          throw 'Login failed. Please try again.';
+      }
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
   }
 
   Future<void> signOut() async {

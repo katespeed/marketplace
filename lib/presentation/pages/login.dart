@@ -37,13 +37,32 @@ class LoginPage extends HookConsumerWidget {
     Future<void> handleSubmit() async {
       if (!formKey.currentState!.validate()) return;
 
-      await ref.read(loginControllerProvider).submit(
-        isLogin: isLogin.value,
-        email: emailController.text,
-        password: passwordController.text,
-        username: usernameController.text,
-        context: context,
-      );
+      try {
+        await ref.read(loginControllerProvider).submit(
+          isLogin: isLogin.value,
+          email: emailController.text,
+          password: passwordController.text,
+          username: usernameController.text,
+          context: context,
+        );
+      } catch (e) {
+        if (!context.mounted) return;
+        
+        // Show error dialog
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Login Error'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
     }
 
     return Scaffold(

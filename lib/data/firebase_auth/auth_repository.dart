@@ -57,8 +57,10 @@ class AuthRepository {
     try {
       await auth.signInWithEmailAndPassword(
         email: email,
-        password: password
+        password: password,
       );
+    } on FirebaseAuthException catch (e) {
+      throw e; // Pass the FirebaseAuthException up to the service layer
     } catch (e) {
       throw AsyncError(e, StackTrace.current);
     }
