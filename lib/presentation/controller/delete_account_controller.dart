@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
 
@@ -15,7 +16,7 @@ class DeleteAccountController {
     try {
       await _authService.deleteAccount(password: password);
     } catch (e) {
-      throw Exception('Failed to delete account');
+      throw Exception('Failed to delete accounte: $e');
     }
   }
 
@@ -52,7 +53,7 @@ class DeleteAccountController {
               try {
                 await deleteAccount(passwordController.text);
                 if (context.mounted) {
-                  Navigator.pushReplacementNamed(context, '/login');
+                  context.pushReplacement('/login');
                 }
               } catch (e) {
                 if (context.mounted) {

@@ -13,6 +13,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
+  FlutterError.onError = (FlutterErrorDetails details) {
+    // アセットの読み込みエラーを無視
+    if (details.exception.toString().contains('assets/assets/products')) {
+      return;
+    }
+    // その他のエラーは通常通り処理
+    FlutterError.presentError(details);
+  };
+  
   runApp(
     const ProviderScope(
       child: MyApp(),

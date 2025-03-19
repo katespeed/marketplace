@@ -38,7 +38,11 @@ class AuthService {
   }
 
   Future<void> deleteAccount({required String password}) async {
-    return authRepository.deleteAccount(password: password);
+    try {
+      await authRepository.deleteAccount(password: password);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
   }
   
   Future<void> resetPassword(String email) async {
