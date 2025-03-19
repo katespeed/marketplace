@@ -1,5 +1,17 @@
 //PasswordVisibility_provider.dart
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final passwordVisibilityProvider = StateProvider<bool>((ref) => false);
+part 'password_visibility_provider.g.dart';
+
+@riverpod
+class PasswordVisibility extends _$PasswordVisibility {
+  @override
+  bool build() {
+    return false;
+  }
+
+  void toggle() {
+    state = !state;
+  }
+}

@@ -3,11 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
+import 'package:my_flutter_app/presentation/controller/forgot_password_controller.dart';
+import 'package:my_flutter_app/providers/password_visibility_provider.dart';
 import 'package:my_flutter_app/providers/text_editing_controllers.dart';
-
-import '../controller/forgot_password_controller.dart';
-
-import '/providers/password_visibility_provider.dart';
+import 'package:my_flutter_app/presentation/controller/login_controller.dart';
+import 'package:my_flutter_app/presentation/components/custom_text_form_field.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({super.key});
@@ -16,13 +16,11 @@ class LoginPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final isLogin = useState(true);
-
-    final authService = ref.watch(authServiceProvider);
     
+    final authService = ref.watch(authServiceProvider);
     final emailController = ref.watch(emailControllerProvider);
     final passwordController = ref.watch(passwordControllerProvider);
     final usernameController = ref.watch(usernameControllerProvider);
-
     final passwordVisible = ref.watch(passwordVisibilityProvider);
 
     useEffect(() {
@@ -35,36 +33,23 @@ class LoginPage extends HookConsumerWidget {
       return subscription.cancel;
     }, []);
 
-    Future<void> submit() async {
+    Future<void> handleSubmit() async {
       if (!formKey.currentState!.validate()) return;
 
-      try {
-        if (isLogin.value) {
-          authService.signInWithEmailAndPassword(
-            emailController.text,
-            passwordController.text,
-          );
-        } else {
-          authService.signUp(
-            email: emailController.text,
-            password: passwordController.text,
-            username: usernameController.text,
-          );
-        }
-      } catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
-        }
-      }
+      await ref.read(loginControllerProvider).submit(
+        isLogin: isLogin.value,
+        email: emailController.text,
+        password: passwordController.text,
+        username: usernameController.text,
+        context: context,
+      );
     }
 
     return Scaffold(
-      body: Padding( //Left justify content
+      body: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 512), //padding on horizontal borders
+          padding: const EdgeInsets.symmetric(horizontal: 512),
           child: Form(
             key: formKey,
             child: Column(
@@ -74,24 +59,11 @@ class LoginPage extends HookConsumerWidget {
                   isLogin.value ? 'Login' : 'Create Account',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
                 if (!isLogin.value) 
-                  TextFormField(
+                  CustomTextFormField(
                     controller: usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    filled: true,
-                    fillColor: Colors.blue[50],
-                    ),
+                    labelText: 'Username',
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter a username';
@@ -101,22 +73,9 @@ class LoginPage extends HookConsumerWidget {
                   ),
                 
                 const SizedBox(height: 16),
-                TextFormField(
+                CustomTextFormField(
                   controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'user@university.edu',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    filled: true,
-                    fillColor: Colors.blue[50],
-                  ),
+                  labelText: 'user@university.edu',
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter an email';
@@ -128,30 +87,17 @@ class LoginPage extends HookConsumerWidget {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                CustomTextFormField(
                   controller: passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[50]!),
-                    ),
-                    filled: true,
-                    fillColor: Colors.blue[50],
-                    //Show and hide password button
-                    suffixIcon: TextButton(
-                      onPressed: () => ref.read(passwordVisibilityProvider.notifier).state = !passwordVisible,
-                      child: Text(
-                        passwordVisible ? 'Hide Password' : 'Show Password', //toggle text
-                      ),
+                  labelText: 'Password',
+                  isPassword: true,
+                  obscureText: !passwordVisible,
+                  suffixIcon: TextButton(
+                    onPressed: () => ref.read(passwordVisibilityProvider.notifier).toggle(),
+                    child: Text(
+                      passwordVisible ? 'Hide Password' : 'Show Password',
                     ),
                   ),
-                  obscureText: !passwordVisible, //toggle obscuring the password
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
@@ -172,7 +118,7 @@ class LoginPage extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: submit,
+                  onPressed: handleSubmit,
                   child: Text(isLogin.value ? 'Login' : 'Create Account'),
                 ),
                 const SizedBox(height: 8),

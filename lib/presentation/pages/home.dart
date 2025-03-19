@@ -37,57 +37,9 @@ class HomePage extends HookConsumerWidget {
               ),
               const SizedBox(height: 20),
               Align(
-                alignment: Alignment.centerLeft,
-                child: Center(
-                  child: Wrap(
-                    alignment: WrapAlignment.start,
-                    spacing: 20,
-                    runSpacing: 10,
-                    children: [
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        text: 'Proceed to Checkout',
-                        onPressed: () {
-                          context.push('/forgot-password');
-                        },
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/product-list');
-                        },
-                        text: 'Go to Product List',
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/payment');
-                        },
-                        text: 'Go to Payment',
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/product-detail');
-                        },
-                        text: 'Go to Product Detail',
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/upload_product');
-                        },
-                        text: 'Upload Product',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Align(
                 alignment: Alignment.topLeft,
                 child: const Text(
-                  'recently posted items',
+                  'Recently posted items',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,

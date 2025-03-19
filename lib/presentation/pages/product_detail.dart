@@ -93,7 +93,7 @@ class ProductDetailPage extends ConsumerWidget {
                           ),
                           const SizedBox(height: 12),
                           CustomButton(
-                            text: 'Add to Cart',
+                            text: 'Rent Now',
                             backgroundColor: Colors.cyan,
                             onPressed: () {
                               // TODO: Implement add to cart functionality
