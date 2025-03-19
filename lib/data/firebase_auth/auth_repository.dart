@@ -59,8 +59,8 @@ class AuthRepository {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
-      throw e; // Pass the FirebaseAuthException up to the service layer
+    } on FirebaseAuthException {
+      rethrow;
     } catch (e) {
       throw AsyncError(e, StackTrace.current);
     }
