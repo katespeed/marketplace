@@ -47,21 +47,6 @@ class LoginPage extends HookConsumerWidget {
         );
       } catch (e) {
         if (!context.mounted) return;
-        
-        // Show error dialog
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Login Error'),
-            content: Text(e.toString()),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
       }
     }
 
