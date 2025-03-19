@@ -12,8 +12,11 @@ class FeaturedProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Calculate the height of two rows of products
+    const double twoRowsHeight = (180 * 2) + 20;
     return SizedBox(
       width: double.infinity,
+      height: twoRowsHeight,
       child: Wrap(
         alignment: WrapAlignment.start,
         spacing: 20,
