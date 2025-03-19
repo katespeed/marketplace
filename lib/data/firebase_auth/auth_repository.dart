@@ -42,8 +42,7 @@ class AuthRepository {
             .doc(credential.user?.uid)
             .set({
           'uuid': credential.user?.uid,
-          'id': 'userid',
-          'name': 'unknown_name',
+          'name': username,
           'email': credential.user?.email,
           'created_at': FieldValue.serverTimestamp(),
         });

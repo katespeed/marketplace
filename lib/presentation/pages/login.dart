@@ -49,7 +49,6 @@ class LoginPage extends HookConsumerWidget {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // 画面サイズに応じてパディングを計算
           final horizontalPadding = constraints.maxWidth > 1200 
               ? (constraints.maxWidth - 800) / 2
               : constraints.maxWidth > 600 
