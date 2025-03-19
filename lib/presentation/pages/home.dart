@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
-import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
 import 'package:my_flutter_app/data/mock/featured_products.dart';
 import 'package:my_flutter_app/presentation/components/grids/featured_products_grid.dart';
 
