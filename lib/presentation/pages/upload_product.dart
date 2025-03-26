@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/upload_product_controller.dart';
 import '../components/appbar/appbar.dart';
-import 'package:image_picker/image_picker.dart';
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});

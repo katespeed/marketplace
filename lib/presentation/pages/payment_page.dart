@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:my_flutter_app/providers/product_provider.dart';
 
 class PaymentPage extends StatelessWidget {
-  final String sellerPayPal;
+  final Product product;
   final double amount;
+  final String sellerPayPal;
 
-  const PaymentPage(
-      {required this.sellerPayPal, required this.amount, Key? key})
-      : super(key: key);
+  const PaymentPage({
+    super.key,
+    required this.product,
+    required this.amount,
+    required this.sellerPayPal,
+  });
 
   void _proceedToPay(BuildContext context) {
-    String payPalUrl = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick"
+    final String payPalUrl = "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick"
         "&business=$sellerPayPal"
         "&amount=$amount"
         "&currency_code=USD"
-        "&item_name=Marketplace Purchase";
-    launch(payPalUrl);
+        "&item_name=${Uri.encodeComponent(product.title)}";
+
+    launchUrl(Uri.parse(payPalUrl), mode: LaunchMode.externalApplication);
   }
 
   @override
@@ -26,8 +32,10 @@ class PaymentPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Paying to: $sellerPayPal",
-                style: const TextStyle(fontSize: 18)),
+            Text(
+              "Pay \$${amount.toStringAsFixed(2)} to $sellerPayPal",
+              style: const TextStyle(fontSize: 18),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => _proceedToPay(context),
