@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/upload_product_controller.dart';
 import '../components/appbar/appbar.dart';
-
+import 'package:image_picker/image_picker.dart';
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});
@@ -38,19 +38,22 @@ class UploadProductPage extends ConsumerWidget {
               const SizedBox(height: 16),
               TextFormField(
                 controller: titleController,
-                decoration: const InputDecoration(labelText: 'Product Title', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Product Title', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: priceController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Price', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Price', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: descriptionController,
                 maxLines: 3,
-                decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Description', border: OutlineInputBorder()),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
