@@ -24,6 +24,8 @@ mixin _$Product {
   String get name => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   List<String> get imageUrls => throw _privateConstructorUsedError;
+  String? get sellerId => throw _privateConstructorUsedError;
+  String? get buyerId => throw _privateConstructorUsedError;
   String? get sellerImageUrl => throw _privateConstructorUsedError;
   String? get sellerName => throw _privateConstructorUsedError;
   double? get rentalPrice => throw _privateConstructorUsedError;
@@ -52,6 +54,8 @@ abstract class $ProductCopyWith<$Res> {
       String name,
       double price,
       List<String> imageUrls,
+      String? sellerId,
+      String? buyerId,
       String? sellerImageUrl,
       String? sellerName,
       double? rentalPrice,
@@ -83,6 +87,8 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? name = null,
     Object? price = null,
     Object? imageUrls = null,
+    Object? sellerId = freezed,
+    Object? buyerId = freezed,
     Object? sellerImageUrl = freezed,
     Object? sellerName = freezed,
     Object? rentalPrice = freezed,
@@ -113,6 +119,14 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      sellerId: freezed == sellerId
+          ? _value.sellerId
+          : sellerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      buyerId: freezed == buyerId
+          ? _value.buyerId
+          : buyerId // ignore: cast_nullable_to_non_nullable
+              as String?,
       sellerImageUrl: freezed == sellerImageUrl
           ? _value.sellerImageUrl
           : sellerImageUrl // ignore: cast_nullable_to_non_nullable
@@ -177,6 +191,8 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String name,
       double price,
       List<String> imageUrls,
+      String? sellerId,
+      String? buyerId,
       String? sellerImageUrl,
       String? sellerName,
       double? rentalPrice,
@@ -206,6 +222,8 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? name = null,
     Object? price = null,
     Object? imageUrls = null,
+    Object? sellerId = freezed,
+    Object? buyerId = freezed,
     Object? sellerImageUrl = freezed,
     Object? sellerName = freezed,
     Object? rentalPrice = freezed,
@@ -236,6 +254,14 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value._imageUrls
           : imageUrls // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      sellerId: freezed == sellerId
+          ? _value.sellerId
+          : sellerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      buyerId: freezed == buyerId
+          ? _value.buyerId
+          : buyerId // ignore: cast_nullable_to_non_nullable
+              as String?,
       sellerImageUrl: freezed == sellerImageUrl
           ? _value.sellerImageUrl
           : sellerImageUrl // ignore: cast_nullable_to_non_nullable
@@ -296,6 +322,8 @@ class _$ProductImpl implements _Product {
       required this.name,
       required this.price,
       required final List<String> imageUrls,
+      this.sellerId,
+      this.buyerId,
       this.sellerImageUrl,
       this.sellerName,
       this.rentalPrice,
@@ -328,6 +356,10 @@ class _$ProductImpl implements _Product {
     return EqualUnmodifiableListView(_imageUrls);
   }
 
+  @override
+  final String? sellerId;
+  @override
+  final String? buyerId;
   @override
   final String? sellerImageUrl;
   @override
@@ -363,7 +395,7 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand)';
+    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand)';
   }
 
   @override
@@ -376,6 +408,9 @@ class _$ProductImpl implements _Product {
             (identical(other.price, price) || other.price == price) &&
             const DeepCollectionEquality()
                 .equals(other._imageUrls, _imageUrls) &&
+            (identical(other.sellerId, sellerId) ||
+                other.sellerId == sellerId) &&
+            (identical(other.buyerId, buyerId) || other.buyerId == buyerId) &&
             (identical(other.sellerImageUrl, sellerImageUrl) ||
                 other.sellerImageUrl == sellerImageUrl) &&
             (identical(other.sellerName, sellerName) ||
@@ -406,6 +441,8 @@ class _$ProductImpl implements _Product {
       name,
       price,
       const DeepCollectionEquality().hash(_imageUrls),
+      sellerId,
+      buyerId,
       sellerImageUrl,
       sellerName,
       rentalPrice,
@@ -439,6 +476,8 @@ abstract class _Product implements Product {
       required final String name,
       required final double price,
       required final List<String> imageUrls,
+      final String? sellerId,
+      final String? buyerId,
       final String? sellerImageUrl,
       final String? sellerName,
       final double? rentalPrice,
@@ -462,6 +501,10 @@ abstract class _Product implements Product {
   double get price;
   @override
   List<String> get imageUrls;
+  @override
+  String? get sellerId;
+  @override
+  String? get buyerId;
   @override
   String? get sellerImageUrl;
   @override

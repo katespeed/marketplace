@@ -42,8 +42,7 @@ class AuthRepository {
             .doc(credential.user?.uid)
             .set({
           'uuid': credential.user?.uid,
-          'id': 'userid',
-          'name': 'unknown_name',
+          'name': username,
           'email': credential.user?.email,
           'created_at': FieldValue.serverTimestamp(),
         });
@@ -58,8 +57,10 @@ class AuthRepository {
     try {
       await auth.signInWithEmailAndPassword(
         email: email,
-        password: password
+        password: password,
       );
+    } on FirebaseAuthException {
+      rethrow;
     } catch (e) {
       throw AsyncError(e, StackTrace.current);
     }
@@ -77,27 +78,65 @@ class AuthRepository {
   Future<void> deleteAccount({required String password}) async {
     try {
       final user = auth.currentUser;
-      if (user == null) throw Exception('No user logged in');
+      if (user == null || user.email == null) {
+        throw Exception('User not found');
+      }
       
-      // Verify password before deletion
-      final credential = EmailAuthProvider.credential(
-        email: user.email!,
-        password: password,
-      );
-      await user.reauthenticateWithCredential(credential);
+      try {
+        // Attempt to reauthenticate
+        final credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: password,
+        );
+        await user.reauthenticateWithCredential(credential);
+      } catch (e) {
+        throw Exception('Invalid password');
+      }
       
-      // Delete user data from Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .delete();
+      // Delete all user-related data from Firestore
+      try {
+        final db = FirebaseFirestore.instance;
+        
+        // First delete user document to ensure permissions
+        await db.collection('users').doc(user.uid).delete();
+        
+        // Delete collections in parallel for better performance
+        await Future.wait([
+          _deleteCollection(db, 'listings', user.uid),
+          _deleteCollection(db, 'reviews', user.uid),
+          _deleteCollection(db, 'sales', user.uid),
+        ]);
+        
+      } catch (e) {
+        FirebaseAuth.instance.signOut(); // Force sign out on error
+        throw AsyncError('Failed to delete Firestore data: $e', StackTrace.current);
+      }
       
-      // Delete Firebase Auth user
+      // Delete Firebase user
       await user.delete();
     } catch (e, stack) {
-      throw AsyncError(e, stack);
+      if (e is Exception) {
+        throw AsyncError(e, stack);
+      }
+      throw AsyncError('Failed to delete account', stack);
     }
   }
+
+  Future<void> _deleteCollection(FirebaseFirestore db, String collectionPath, String userId) async {
+    final snapshot = await db
+        .collection(collectionPath)
+        .where('userId', isEqualTo: userId)
+        .get();
+        
+    for (var doc in snapshot.docs) {
+      try {
+        await doc.reference.delete();
+      } catch (e) {
+        throw AsyncError('Failed to delete $collectionPath document: $e', StackTrace.current);
+      }
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await auth.sendPasswordResetEmail(email: email);

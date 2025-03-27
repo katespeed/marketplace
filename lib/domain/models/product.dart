@@ -10,6 +10,8 @@ class Product with _$Product {
     required String name,
     required double price,
     required List<String> imageUrls,
+    String? sellerId,
+    String? buyerId,
     String? sellerImageUrl,
     String? sellerName,
     double? rentalPrice,
