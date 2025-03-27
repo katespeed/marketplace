@@ -1,21 +1,7 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:typed_data';
-
-final imageProvider = StateProvider<Uint8List?>((ref) => null);
-
-Future<void> pickImage(WidgetRef ref) async {
-  final ImagePicker picker = ImagePicker();
-  final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-  if (image != null) {
-    final bytes = await image.readAsBytes();
-    ref.read(imageProvider.notifier).state = bytes;
-  }
-}
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final titleControllerProvider = StateProvider((ref) => TextEditingController());
 final priceControllerProvider = StateProvider((ref) => TextEditingController());
@@ -34,14 +20,12 @@ Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
   }
 
   final title = ref.read(titleControllerProvider).text.trim();
-  final priceText = ref.read(priceControllerProvider).text.trim();
+  final price = double.tryParse(ref.read(priceControllerProvider).text.trim());
   final description = ref.read(descriptionControllerProvider).text.trim();
-
-  double? price = double.tryParse(priceText); // Convert price to double
 
   if (title.isEmpty || price == null || description.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Please enter valid product details.")),
+      const SnackBar(content: Text("Please fill all fields correctly.")),
     );
     return;
   }
@@ -53,11 +37,7 @@ Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
         .doc(user.uid)
         .get();
 
-    final data = userDoc.data() as Map<String, dynamic>?;
-
-    String? sellerPayPalEmail = data != null && data.containsKey('paypalEmail')
-        ? data['paypalEmail']
-        : null;
+    String? sellerPayPalEmail = userDoc.exists ? userDoc['paypalEmail'] : null;
 
     if (sellerPayPalEmail == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -68,13 +48,8 @@ Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
       return;
     }
 
-    // Generate a unique ID for the product
-    DocumentReference productRef =
-        FirebaseFirestore.instance.collection('products').doc();
-
-    // Save product to Firestore
-    await productRef.set({
-      'id': productRef.id, // Unique product ID
+    // Add product to Firestore with sellerId and PayPal email
+    await FirebaseFirestore.instance.collection('products').add({
       'title': title,
       'price': price,
       'description': description,
@@ -87,7 +62,7 @@ Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
       const SnackBar(content: Text("Product uploaded successfully!")),
     );
 
-    // Clear input fields after submission
+    // Clear fields after upload
     ref.read(titleControllerProvider).clear();
     ref.read(priceControllerProvider).clear();
     ref.read(descriptionControllerProvider).clear();

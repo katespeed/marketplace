@@ -1,38 +1,41 @@
-import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Product Model
 class Product {
+  final String id;
   final String title;
-  final String price;
+  final double price;
   final String description;
-  final Uint8List image;
+  final String sellerId;
+  final String? sellerPayPalEmail;
 
   Product({
+    required this.id,
     required this.title,
     required this.price,
     required this.description,
-    required this.image,
+    required this.sellerId,
+    this.sellerPayPalEmail,
   });
+
+  /// Convert Firestore document to Product object
+  factory Product.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Product(
+      id: doc.id,
+      title: data['title'],
+      price: (data['price'] as num).toDouble(),
+      description: data['description'],
+      sellerId: data['sellerId'],
+      sellerPayPalEmail: data['sellerPayPal'] ?? "Not Available",
+    );
+  }
 }
 
-final productListProvider = StateNotifierProvider<ProductListNotifier, List<Product>>((ref) {
-  return ProductListNotifier();
+/// **Create a FutureProvider to fetch products**
+final productListProvider = FutureProvider<List<Product>>((ref) async {
+  final snapshot =
+      await FirebaseFirestore.instance.collection('products').get();
+  return snapshot.docs.map((doc) => Product.fromFirestore(doc)).toList();
 });
-
-class ProductListNotifier extends StateNotifier<List<Product>> {
-  ProductListNotifier() : super([]);
-
-  void addProduct(Product product) {
-    state = List.unmodifiable([...state, product]); // Ensures immutability
-  }
-
-  void removeProduct(int index) {
-    if (index >= 0 && index < state.length) {
-      state = List.unmodifiable([...state]..removeAt(index));
-    }
-  }
-
-  void clearProducts() {
-    state = [];
-  }
-}
