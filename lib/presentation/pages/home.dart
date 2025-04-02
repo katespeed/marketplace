@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
+import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
 import 'package:my_flutter_app/data/mock/featured_products.dart';
 import 'package:my_flutter_app/presentation/components/grids/featured_products_grid.dart';
 
@@ -35,9 +37,55 @@ class HomePage extends HookConsumerWidget {
               ),
               const SizedBox(height: 20),
               Align(
+                alignment: Alignment.centerLeft,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CustomButton(
+                        backgroundColor: Colors.grey,
+                        text: 'Proceed to Checkout',
+                        onPressed: () {
+                          context.push('/forgot-password');
+                        },
+                      ),
+                      CustomButton(
+                        backgroundColor: Colors.grey,
+                        onPressed: () {
+                          context.push('/product-list');
+                        },
+                        text: 'Go to Product List',
+                      ),
+                      CustomButton(
+                        backgroundColor: Colors.grey,
+                        onPressed: () {
+                          context.push('/payment');
+                        },
+                        text: 'Go to Payment',
+                      ),
+                      CustomButton(
+                        backgroundColor: Colors.grey,
+                        onPressed: () {
+                          context.push('/product-detail');
+                        },
+                        text: 'Go to Product Detail',
+                      ),
+                      CustomButton(
+                        backgroundColor: Colors.grey,
+                        onPressed: () {
+                          context.push('/upload_product');
+                        },
+                        text: 'Upload Product',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Align(
                 alignment: Alignment.topLeft,
                 child: const Text(
-                  'Recently posted items',
+                  'recently posted items',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -47,7 +95,6 @@ class HomePage extends HookConsumerWidget {
               ),
               const SizedBox(height: 20),
               FeaturedProductsGrid(products: mockFeaturedProducts),
-              const SizedBox(height: 100),
             ],
           ),
         ),
