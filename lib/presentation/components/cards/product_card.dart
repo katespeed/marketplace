@@ -37,7 +37,8 @@ class ProductCard extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: product.imageUrls[0].startsWith('http')
+                  child: product.imageUrls?.isNotEmpty == true &&
+                          product.imageUrls!.first.startsWith('http')
                       ? CachedNetworkImage(
                           imageUrl: product.imageUrls[0],
                           fit: BoxFit.contain,
@@ -48,8 +49,10 @@ class ProductCard extends StatelessWidget {
                             child: Icon(Icons.error),
                           ),
                         )
-                      : Image.asset(
-                          product.imageUrls[0],
+                      : Image.network(
+                          product.imageUrls?.isNotEmpty == true
+                          ? product.imageUrls[0]
+                          : 'https://via.placeholder.com/150',
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) => const Center(
                             child: Icon(Icons.error),

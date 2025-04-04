@@ -33,9 +33,11 @@ class ProductCardListingState extends State<ProductCardListing> {
                   const BorderRadius.all(Radius.circular(12)),
               child: AspectRatio(
                 aspectRatio: 1,
-                child: widget.product.image.isNotEmpty
-                    ? Image.memory(
-                        widget.product.image,
+                child: widget.product.imageUrls?.isNotEmpty == true
+                    ? Image.network(
+                        widget.product.imageUrls?.isNotEmpty == true
+                        ? widget.product.imageUrls!.first
+                        : 'https://via.placeholder.com/150',
                         width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
@@ -60,7 +62,7 @@ class ProductCardListingState extends State<ProductCardListing> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.product.title,
+                  widget.product.name,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 14),
                   maxLines: 1,

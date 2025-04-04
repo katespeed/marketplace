@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_flutter_app/providers/product_provider.dart';
+import 'package:my_flutter_app/domain/models/product.dart';
 import 'package:my_flutter_app/presentation/pages/payment_page.dart';
 
 class ProductCardListing extends StatelessWidget {
@@ -22,7 +22,7 @@ class ProductCardListing extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(product.title,
+            Text(product.name,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             Text("\$${product.price.toStringAsFixed(2)}"),
