@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
+import 'package:my_flutter_app/domain/models/product.dart';
 
 class PaymentPage extends StatelessWidget {
   final Product product;
@@ -19,7 +20,7 @@ class PaymentPage extends StatelessWidget {
         "&business=$sellerPayPal"
         "&amount=$amount"
         "&currency_code=USD"
-        "&item_name=${Uri.encodeComponent(product.title)}";
+        "&item_name=${Uri.encodeComponent(product.name)}";
 
     launchUrl(Uri.parse(payPalUrl), mode: LaunchMode.externalApplication);
   }

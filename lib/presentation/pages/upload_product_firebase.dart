@@ -56,6 +56,7 @@ Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
       'sellerId': user.uid, // Save seller's Firebase UID
       'sellerPayPal': sellerPayPalEmail, // Store seller's PayPal email
       'created_at': Timestamp.now(),
+      'imageUrls': ['https://via.placeholder.com/100'],
     });
 
     ScaffoldMessenger.of(context).showSnackBar(

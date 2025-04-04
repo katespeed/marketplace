@@ -30,21 +30,21 @@ class ProductCardListing extends StatelessWidget {
                 maxLines: 2, overflow: TextOverflow.ellipsis),
             const SizedBox(height: 8),
             Text(
-              product.sellerPayPalEmail != null
-                  ? "Seller PayPal: ${product.sellerPayPalEmail}"
+              product.sellerPayPal != null
+                  ? "Seller PayPal: ${product.sellerPayPal}"
                   : "Seller PayPal: Not Available",
               style: TextStyle(color: Colors.blue, fontSize: 12),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: product.sellerPayPalEmail != null
+              onPressed: product.sellerPayPal != null
                   ? () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => PaymentPage(
                             product: product,
-                            sellerPayPal: product.sellerPayPalEmail!,
+                            sellerPayPal: product.sellerPayPal!,
                             amount: product.price,
                           ),
                         ),

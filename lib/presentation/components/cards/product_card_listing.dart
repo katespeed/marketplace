@@ -19,7 +19,7 @@ class ProductCardListing extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                product.imageUrls?.isNotEmpty == true
+                product.imageUrls.isNotEmpty
                     ? product.imageUrls.first
                     : 'https://via.placeholder.com/100',
                 width: 80,

@@ -38,6 +38,7 @@ mixin _$Product {
   bool? get isAvailable => throw _privateConstructorUsedError;
   DateTime? get saleEndDate => throw _privateConstructorUsedError;
   String? get brand => throw _privateConstructorUsedError;
+  String? get sellerPayPal => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -67,7 +68,8 @@ abstract class $ProductCopyWith<$Res> {
       int? reviewCount,
       bool? isAvailable,
       DateTime? saleEndDate,
-      String? brand});
+      String? brand,
+      String? sellerPayPal});
 }
 
 /// @nodoc
@@ -101,6 +103,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? isAvailable = freezed,
     Object? saleEndDate = freezed,
     Object? brand = freezed,
+    Object? sellerPayPal = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -175,6 +178,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.brand
           : brand // ignore: cast_nullable_to_non_nullable
               as String?,
+      sellerPayPal: freezed == sellerPayPal
+          ? _value.sellerPayPal
+          : sellerPayPal // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -204,7 +211,8 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       int? reviewCount,
       bool? isAvailable,
       DateTime? saleEndDate,
-      String? brand});
+      String? brand,
+      String? sellerPayPal});
 }
 
 /// @nodoc
@@ -236,6 +244,7 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? isAvailable = freezed,
     Object? saleEndDate = freezed,
     Object? brand = freezed,
+    Object? sellerPayPal = freezed,
   }) {
     return _then(_$ProductImpl(
       id: null == id
@@ -310,6 +319,10 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.brand
           : brand // ignore: cast_nullable_to_non_nullable
               as String?,
+      sellerPayPal: freezed == sellerPayPal
+          ? _value.sellerPayPal
+          : sellerPayPal // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -335,7 +348,8 @@ class _$ProductImpl implements _Product {
       this.reviewCount,
       this.isAvailable,
       this.saleEndDate,
-      this.brand})
+      this.brand,
+      this.sellerPayPal})
       : _imageUrls = imageUrls,
         _categories = categories;
 
@@ -392,10 +406,12 @@ class _$ProductImpl implements _Product {
   final DateTime? saleEndDate;
   @override
   final String? brand;
+  @override
+  final String? sellerPayPal;
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand)';
+    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand, sellerPayPal: $sellerPayPal)';
   }
 
   @override
@@ -430,31 +446,35 @@ class _$ProductImpl implements _Product {
                 other.isAvailable == isAvailable) &&
             (identical(other.saleEndDate, saleEndDate) ||
                 other.saleEndDate == saleEndDate) &&
-            (identical(other.brand, brand) || other.brand == brand));
+            (identical(other.brand, brand) || other.brand == brand) &&
+            (identical(other.sellerPayPal, sellerPayPal) ||
+                other.sellerPayPal == sellerPayPal));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      name,
-      price,
-      const DeepCollectionEquality().hash(_imageUrls),
-      sellerId,
-      buyerId,
-      sellerImageUrl,
-      sellerName,
-      rentalPrice,
-      description,
-      const DeepCollectionEquality().hash(_categories),
-      size,
-      color,
-      rating,
-      reviewCount,
-      isAvailable,
-      saleEndDate,
-      brand);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        name,
+        price,
+        const DeepCollectionEquality().hash(_imageUrls),
+        sellerId,
+        buyerId,
+        sellerImageUrl,
+        sellerName,
+        rentalPrice,
+        description,
+        const DeepCollectionEquality().hash(_categories),
+        size,
+        color,
+        rating,
+        reviewCount,
+        isAvailable,
+        saleEndDate,
+        brand,
+        sellerPayPal
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -489,7 +509,8 @@ abstract class _Product implements Product {
       final int? reviewCount,
       final bool? isAvailable,
       final DateTime? saleEndDate,
-      final String? brand}) = _$ProductImpl;
+      final String? brand,
+      final String? sellerPayPal}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
@@ -529,6 +550,8 @@ abstract class _Product implements Product {
   DateTime? get saleEndDate;
   @override
   String? get brand;
+  @override
+  String? get sellerPayPal;
   @override
   @JsonKey(ignore: true)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
