@@ -30,9 +30,9 @@ class ProfileSales extends StatelessWidget {
   Widget _buildSalesItem(Map<String, dynamic> sale) {
     final Product product = sale['product'] as Product;
     return ListTile(
-      leading: product.imageUrls?.isNotEmpty == true
+      leading: product.imageUrls.isNotEmpty == true
       ? Image.network(
-        product.imageUrls![0],
+        product.imageUrls[0],
         width: 50, 
         height: 50,
         fit: BoxFit.cover,

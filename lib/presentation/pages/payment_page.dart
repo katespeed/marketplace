@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:my_flutter_app/providers/product_provider.dart';
 import 'package:my_flutter_app/domain/models/product.dart';
 
 class PaymentPage extends StatelessWidget {

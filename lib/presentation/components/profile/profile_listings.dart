@@ -53,9 +53,9 @@ class ProfileListings extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: product.imageUrls?.isNotEmpty == true
+                  child: product.imageUrls.isNotEmpty == true
                   ? Image.network(
-                    product.imageUrls![0],
+                    product.imageUrls[0],
                     width: 150,
                     height: 120,
                     fit: BoxFit.cover,

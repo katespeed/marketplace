@@ -9,12 +9,13 @@ final productListProvider = FutureProvider<List<Product>>((ref) async {
   final snapshot = await FirebaseFirestore.instance.collection('products').get();
 
   return snapshot.docs.map((doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data();
     return Product.fromJson({
       ...data,
       'id': doc.id,
       'name': data['title'],
       'imageUrls': data['imageUrls'] ?? <String>[],
-    });
+
+   });
   }).toList();
 });

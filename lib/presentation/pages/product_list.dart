@@ -10,8 +10,6 @@ class ProductListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncProducts = ref.watch(productListProvider);
 
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(title: const Text('Product List')),
       body: asyncProducts.when(
