@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../buttons/icon_button_with_background.dart';
 import '../buttons/profile_avatar_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -69,31 +68,27 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        // Notification button
-        IconButtonWithBackground(
-          icon: const Icon(Icons.notifications_outlined, color: Colors.black),
-          onPressed: () {
-            // TODO: Navigate to notifications screen
-          },
+        TextButton(
+          onPressed: () => context.push('/upload_product'),
+          child: const Text(
+            'Upload Product',
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 14,
+            ),
+          ),
         ),
-        const SizedBox(width: 8), // Add space between buttons
-        // Favorites button
-        IconButtonWithBackground(
-          icon: const Icon(Icons.favorite_outline, color: Colors.black),
-          onPressed: () {
-            // TODO: Navigate to favorites screen
-          },
+        TextButton(
+          onPressed: () => context.push('/product-list'),
+          child: const Text(
+            'Product List',
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 14,
+            ),
+          ),
         ),
-        const SizedBox(width: 8), // Add space between buttons
-        // Cart button
-        IconButtonWithBackground(
-          icon: const Icon(Icons.shopping_cart_outlined, color: Colors.black),
-          onPressed: () {
-            // TODO: Navigate to cart screen
-          },
-        ),
-        const SizedBox(width: 8), // Add space between buttons
-        // Profile button
+        const SizedBox(width: 24), // Spacing between buttons
         const ProfileAvatarButton(),
       ],
     );

@@ -43,6 +43,7 @@ flutter:
   assets:
     - assets/icon_1.svg
     - assets/home_image.svg
+    - assets/home_image.jpg
     - assets/products/laptop.jpeg
     - assets/products/speaker.jpeg
     - assets/products/watch.jpeg
