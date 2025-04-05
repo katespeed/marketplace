@@ -19,9 +19,9 @@ class ProductCardListing extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                product.imageUrls.isNotEmpty
-                    ? product.imageUrls.first
-                    : 'https://via.placeholder.com/100',
+                product.imageUrls?.isNotEmpty == true
+                ? product.imageUrls!.first 
+                : 'https://via.placeholder.com/100',
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
@@ -65,10 +65,16 @@ class ProductCardListing extends StatelessWidget {
 
             const SizedBox(width: 12),
 
+            ElevatedButton(
+              onPressed: (){
+                //Implement Intekhab <3
+              },
+              child: const Text('Chat with seller'),
+            ),
             // Button
             ElevatedButton(
               onPressed: () {
-                // To be implemented later
+                // Implement Sara <3
               },
               child: const Text('Proceed to payment'),
             ),

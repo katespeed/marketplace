@@ -26,8 +26,10 @@ class ProductCardListing extends StatelessWidget {
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             Text("\$${product.price.toStringAsFixed(2)}"),
-            Text(product.description,
-                maxLines: 2, overflow: TextOverflow.ellipsis),
+            Text(product.description ?? 'No Description', 
+              maxLines: 2, 
+              overflow: TextOverflow.ellipsis
+              ),
             const SizedBox(height: 8),
             Text(
               product.sellerPayPal != null
