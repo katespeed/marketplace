@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../buttons/icon_button_with_background.dart';
 import '../buttons/profile_avatar_button.dart';
 import 'package:go_router/go_router.dart';
 
