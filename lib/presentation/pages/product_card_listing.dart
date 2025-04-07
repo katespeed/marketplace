@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_flutter_app/providers/product_provider.dart';
+import 'package:my_flutter_app/domain/models/product.dart';
 import 'package:my_flutter_app/presentation/pages/payment_page.dart';
 
 class ProductCardListing extends StatelessWidget {
@@ -22,29 +22,31 @@ class ProductCardListing extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(product.title,
+            Text(product.name,
                 style:
                     const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             Text("\$${product.price.toStringAsFixed(2)}"),
-            Text(product.description,
-                maxLines: 2, overflow: TextOverflow.ellipsis),
+            Text(product.description ?? 'No Description', 
+              maxLines: 2, 
+              overflow: TextOverflow.ellipsis
+              ),
             const SizedBox(height: 8),
             Text(
-              product.sellerPayPalEmail != null
-                  ? "Seller PayPal: ${product.sellerPayPalEmail}"
+              product.sellerPayPal != null
+                  ? "Seller PayPal: ${product.sellerPayPal}"
                   : "Seller PayPal: Not Available",
               style: TextStyle(color: Colors.blue, fontSize: 12),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: product.sellerPayPalEmail != null
+              onPressed: product.sellerPayPal != null
                   ? () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => PaymentPage(
                             product: product,
-                            sellerPayPal: product.sellerPayPalEmail!,
+                            sellerPayPal: product.sellerPayPal!,
                             amount: product.price,
                           ),
                         ),

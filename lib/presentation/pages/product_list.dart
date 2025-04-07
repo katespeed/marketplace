@@ -10,8 +10,6 @@ class ProductListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncProducts = ref.watch(productListProvider);
 
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(title: const Text('Product List')),
       body: asyncProducts.when(
@@ -19,13 +17,7 @@ class ProductListPage extends ConsumerWidget {
             ? const Center(child: Text('No products uploaded yet'))
             : Padding(
                 padding: const EdgeInsets.all(12),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: screenWidth > 600 ? 3 : 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 0.8,
-                  ),
+                child: ListView.builder(
                   itemCount: productList.length,
                   itemBuilder: (context, index) {
                     final product = productList[index];

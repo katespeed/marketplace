@@ -7,7 +7,9 @@ part 'product_detail_provider.g.dart';
 class SelectedImage extends _$SelectedImage {
   @override
   String build(Product product) {
-    return product.imageUrls.isNotEmpty ? product.imageUrls.first : '';
+    return product.imageUrls.isNotEmpty == true
+    ? product.imageUrls.first
+    : '';
   }
 
   void selectImage(String imageUrl) {
