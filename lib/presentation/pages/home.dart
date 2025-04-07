@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
-import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
 import 'package:my_flutter_app/data/mock/featured_products.dart';
 import 'package:my_flutter_app/presentation/components/grids/featured_products_grid.dart';
 
@@ -22,76 +20,79 @@ class HomePage extends HookConsumerWidget {
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Container(
-                  constraints: BoxConstraints(),
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: SvgPicture.asset(
-                    'assets/home_image.svg',
-                    fit: BoxFit.cover,
-                  ),
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image.asset(
+                        'assets/home_image.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black.withOpacity(0.3),
+                                Colors.black.withOpacity(0.1),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Student Marketplace',
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(2, 2),
+                            blurRadius: 3.0,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                          Shadow(
+                            offset: Offset(-1, -1),
+                            blurRadius: 1.0,
+                            color: Colors.black.withOpacity(0.3),
+                          ),
+                        ],
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        text: 'Proceed to Checkout',
-                        onPressed: () {
-                          context.push('/forgot-password');
-                        },
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/product-list');
-                        },
-                        text: 'Go to Product List',
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/payment');
-                        },
-                        text: 'Go to Payment',
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/product-detail');
-                        },
-                        text: 'Go to Product Detail',
-                      ),
-                      CustomButton(
-                        backgroundColor: Colors.grey,
-                        onPressed: () {
-                          context.push('/upload_product');
-                        },
-                        text: 'Upload Product',
-                      ),
-                    ],
+              Row(
+                children: [
+                  const Text(
+                    'Recently posted items',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.topLeft,
-                child: const Text(
-                  'recently posted items',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  IconButton(
+                    icon: const Icon(Icons.arrow_forward),
+                    onPressed: () => context.push('/product-list'),
                   ),
-                ),
+                ],
               ),
               const SizedBox(height: 20),
               FeaturedProductsGrid(products: mockFeaturedProducts),
