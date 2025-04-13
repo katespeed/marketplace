@@ -88,6 +88,16 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
             ),
           ),
         ),
+        TextButton(
+          onPressed: () => context.push('/payment'),
+          child: const Text(
+            'Go to Payment',
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 14,
+            ),
+          ),
+        ),
         const SizedBox(width: 24), // Spacing between buttons
         const ProfileAvatarButton(),
       ],
