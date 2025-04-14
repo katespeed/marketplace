@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 
 class ProfileHeader extends StatelessWidget {
   final User? user;
@@ -22,6 +26,10 @@ class ProfileHeader extends StatelessWidget {
               child: user?.photoURL == null
                   ? const Icon(Icons.person, size: 40)
                   : null,
+            ),
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => _updateProfileImage(context),
             ),
             const SizedBox(width: 16),
             Column(
@@ -73,5 +81,36 @@ class ProfileHeader extends StatelessWidget {
         const SizedBox(height: 16),
       ],
     );
+  }
+
+  Future<void> _updateProfileImage(BuildContext context) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 512,
+        maxHeight: 512,
+      );
+      
+      if (image == null) return;
+
+      // 画像のパスを取得
+      final String imagePath = image.path;
+      print('Selected image path: $imagePath'); // デバッグ用
+
+      // Firestoreのユーザードキュメントを更新
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .update({'profileImage': imagePath});
+
+      // Firebase Authのプロフィールも更新
+      await user!.updatePhotoURL(imagePath);
+
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update image: $e')),
+      );
+    }
   }
 }

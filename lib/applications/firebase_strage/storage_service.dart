@@ -27,20 +27,6 @@ class StorageService {
     return StorageRepository.downloadImage(downloadImagePath);
   }
 
-  static Future<List<String>> uploadImage({
-    required Uint8List selectedNewImage,
-    required String campaignCode,
-    String? previousImagePath,
-    String? selectedImageName,
-  }) async {
-    return StorageRepository.uploadImage(
-      selectedNewImage: selectedNewImage,
-      campaignCode: campaignCode,
-      previousImagePath: previousImagePath,
-      selectedImageName: selectedImageName,
-    );
-  }
-
   static Future<void> deleteImage({
     required String deleteImagePath,
     required String campaignCode,
