@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:io';
 
 class ProfileHeader extends StatefulWidget {
   final User? user;
@@ -43,14 +39,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           children: [
             Row(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 40,
-                  backgroundImage: widget.user?.photoURL != null
-                      ? CachedNetworkImageProvider(widget.user!.photoURL!)
-                      : null,
-                  child: widget.user?.photoURL == null
-                      ? const Icon(Icons.person, size: 40)
-                      : null,
+                  backgroundColor: Colors.grey,
+                  child: Icon(Icons.person, size: 40, color: Colors.white),
                 ),
                 // IconButton(
                 //   icon: const Icon(Icons.edit),
