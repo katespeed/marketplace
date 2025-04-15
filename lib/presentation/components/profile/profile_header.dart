@@ -36,6 +36,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       builder: (context, snapshot) {
         final userData = snapshot.data?.data() as Map<String, dynamic>?;
         final bio = userData?['bio'] as String?;
+        final displayName = userData?['displayName'] as String?;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,10 +52,10 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                       ? const Icon(Icons.person, size: 40)
                       : null,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () => _updateProfileImage(context),
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.edit),
+                //   onPressed: () => _updateProfileImage(context),
+                // ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +63,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     Row(
                       children: [
                         Text(
-                          widget.user?.displayName ?? '@user',
+                          displayName ?? '@user',
                           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         if (FirebaseAuth.instance.currentUser?.uid == widget.user?.uid)
@@ -126,44 +127,53 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     );
   }
 
-  Future<void> _updateProfileImage(BuildContext context) async {
-    try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 512,
-        maxHeight: 512,
-      );
+  // Future<void> _updateProfileImage(BuildContext context) async {
+  //   try {
+  //     final ImagePicker picker = ImagePicker();
+  //     final XFile? image = await picker.pickImage(
+  //       source: ImageSource.gallery,
+  //       maxWidth: 512,
+  //       maxHeight: 512,
+  //     );
       
-      if (image == null) return;
+  //     if (image == null) return;
 
-      // Get the image path
-      final String imagePath = image.path;
-      // print('Selected image path: $imagePath'); // For debugging
+  //     // Get the image path
+  //     final String imagePath = image.path;
+  //     // print('Selected image path: $imagePath'); // For debugging
 
-      // Update user document in Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(widget.user!.uid)
-          .update({'profileImage': imagePath});
+  //     // Update user document in Firestore
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(widget.user!.uid)
+  //         .update({'profileImage': imagePath});
 
-      // Update Firebase Auth profile as well
-      await widget.user!.updatePhotoURL(imagePath);
+  //     // Update Firebase Auth profile as well
+  //     await widget.user!.updatePhotoURL(imagePath);
 
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update image: $e')),
-      );
-    }
-  }
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Failed to update image: $e')),
+  //     );
+  //   }
+  // }
 
   Future<void> _editDisplayName(BuildContext context) async {
-    final TextEditingController controller = TextEditingController(text: widget.user?.displayName);
+    final userData = (await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.user?.uid)
+            .get())
+        .data();
+    final currentDisplayName = userData?['displayName'] as String?;
+    
+    final TextEditingController controller = TextEditingController(text: currentDisplayName ?? '@user');
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Edit Display Name'),
-        content: TextField(controller: controller),
+        content: TextField(
+          controller: controller,
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -178,6 +188,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     .doc(widget.user?.uid)
                     .update({'displayName': controller.text});
                 Navigator.pop(context);
+                // StreamBuilderが自動的に更新を検知するので、setStateは不要
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Failed to update display name: $e')),
@@ -192,7 +203,9 @@ class _ProfileHeaderState extends State<ProfileHeader> {
   }
 
   Future<void> _editBio(BuildContext context, String? currentBio) async {
-    final TextEditingController controller = TextEditingController(text: currentBio);
+    final TextEditingController controller = TextEditingController(
+      text: currentBio ?? "I'm a student at Astate Jonesboro. I love to read."
+    );
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -214,6 +227,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
                     .doc(widget.user?.uid)
                     .update({'bio': controller.text});
                 Navigator.pop(context);
+                // StreamBuilderが自動的に更新を検知するので、setStateは不要
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Failed to update bio: $e')),
