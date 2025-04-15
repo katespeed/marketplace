@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,20 +23,6 @@ class StorageService {
 
   static Future<Image?> downloadImage(String downloadImagePath) async {
     return StorageRepository.downloadImage(downloadImagePath);
-  }
-
-  static Future<List<String>> uploadImage({
-    required Uint8List selectedNewImage,
-    required String campaignCode,
-    String? previousImagePath,
-    String? selectedImageName,
-  }) async {
-    return StorageRepository.uploadImage(
-      selectedNewImage: selectedNewImage,
-      campaignCode: campaignCode,
-      previousImagePath: previousImagePath,
-      selectedImageName: selectedImageName,
-    );
   }
 
   static Future<void> deleteImage({

@@ -1,77 +1,235 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProfileHeader extends StatelessWidget {
+class ProfileHeader extends StatefulWidget {
   final User? user;
 
   const ProfileHeader({super.key, this.user});
 
   @override
+  State<ProfileHeader> createState() => _ProfileHeaderState();
+}
+
+class _ProfileHeaderState extends State<ProfileHeader> {
+  Stream<DocumentSnapshot>? _userStream;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.user != null) {
+      _userStream = FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.user!.uid)
+          .snapshots();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+    return StreamBuilder<DocumentSnapshot>(
+      stream: _userStream,
+      builder: (context, snapshot) {
+        final userData = snapshot.data?.data() as Map<String, dynamic>?;
+        final bio = userData?['bio'] as String?;
+        final displayName = userData?['displayName'] as String?;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundImage: user?.photoURL != null
-                  ? CachedNetworkImageProvider(user!.photoURL!)
-                  : null,
-              child: user?.photoURL == null
-                  ? const Icon(Icons.person, size: 40)
-                  : null,
-            ),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
               children: [
-                Text(
-                  user?.displayName ?? '@user',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                const CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.grey,
+                  child: Icon(Icons.person, size: 40, color: Colors.white),
                 ),
-                Text(user?.email ?? 'User@example.com'),
+                // IconButton(
+                //   icon: const Icon(Icons.edit),
+                //   onPressed: () => _updateProfileImage(context),
+                // ),
+                const SizedBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          displayName ?? '@user',
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        if (FirebaseAuth.instance.currentUser?.uid == widget.user?.uid)
+                          IconButton(
+                            icon: const Icon(Icons.edit, size: 16),
+                            onPressed: () => _editDisplayName(context),
+                          ),
+                      ],
+                    ),
+                    Text(widget.user?.email ?? 'User@example.com'),
+                  ],
+                ),
               ],
             ),
+            const SizedBox(height: 16),
+
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "How others can find you",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                widget.user?.email != null
+                    ? widget.user!.email!.split('@')[0]  // Extracts the part before "@"
+                    : "@user",
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Bio",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    bio ?? "I'm a student at Astate Jonesboro. I love to read.",
+                    style: const TextStyle(fontSize: 16, color: Colors.black87),
+                  ),
+                ),
+                if (FirebaseAuth.instance.currentUser?.uid == widget.user?.uid)
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 16),
+                    onPressed: () => _editBio(context, bio),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
           ],
-        ),
-        const SizedBox(height: 16),
+        );
+      },
+    );
+  }
 
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "How others can find you",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            user?.email != null
-                ? user!.email!.split('@')[0]  // Extracts the part before "@"
-                : "@user",
-            style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-          ),
-        ),
-        const SizedBox(height: 16),
+  // Future<void> _updateProfileImage(BuildContext context) async {
+  //   try {
+  //     final ImagePicker picker = ImagePicker();
+  //     final XFile? image = await picker.pickImage(
+  //       source: ImageSource.gallery,
+  //       maxWidth: 512,
+  //       maxHeight: 512,
+  //     );
+      
+  //     if (image == null) return;
 
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Bio",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+  //     // Get the image path
+  //     final String imagePath = image.path;
+  //     // print('Selected image path: $imagePath'); // For debugging
+
+  //     // Update user document in Firestore
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(widget.user!.uid)
+  //         .update({'profileImage': imagePath});
+
+  //     // Update Firebase Auth profile as well
+  //     await widget.user!.updatePhotoURL(imagePath);
+
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Failed to update image: $e')),
+  //     );
+  //   }
+  // }
+
+  Future<void> _editDisplayName(BuildContext context) async {
+    final userData = (await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.user?.uid)
+            .get())
+        .data();
+    final currentDisplayName = userData?['displayName'] as String?;
+    
+    final TextEditingController controller = TextEditingController(text: currentDisplayName ?? '@user');
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Display Name'),
+        content: TextField(
+          controller: controller,
         ),
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "I'm a student at Astate Jonesboro. I love to read.",
-            style: TextStyle(fontSize: 16, color: Colors.black87),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
           ),
+          TextButton(
+            onPressed: () async {
+              try {
+                await widget.user?.updateDisplayName(controller.text);
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(widget.user?.uid)
+                    .update({'displayName': controller.text});
+                Navigator.pop(context);
+                // StreamBuilderが自動的に更新を検知するので、setStateは不要
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Failed to update display name: $e')),
+                );
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _editBio(BuildContext context, String? currentBio) async {
+    final TextEditingController controller = TextEditingController(
+      text: currentBio ?? "I'm a student at Astate Jonesboro. I love to read."
+    );
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Bio'),
+        content: TextField(
+          controller: controller,
+          maxLines: 3,
         ),
-        const SizedBox(height: 16),
-      ],
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              try {
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(widget.user?.uid)
+                    .update({'bio': controller.text});
+                Navigator.pop(context);
+                // StreamBuilderが自動的に更新を検知するので、setStateは不要
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Failed to update bio: $e')),
+                );
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 }
