@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../pages/chat_list_screen.dart';
 import '../buttons/profile_avatar_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,6 +69,13 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
+        IconButton(
+          icon: const Icon(Icons.chat),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ChatListScreen()),
+          ),
+        ),
         TextButton(
           onPressed: () => context.push('/upload_product'),
           child: const Text(

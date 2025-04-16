@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../buttons/chat_button.dart';
+
 class ProductCardListing extends StatelessWidget {
   final dynamic product;
 
@@ -65,12 +67,8 @@ class ProductCardListing extends StatelessWidget {
 
             const SizedBox(width: 12),
 
-            ElevatedButton(
-              onPressed: (){
-                //Implement Intekhab <3
-              },
-              child: const Text('Chat with seller'),
-            ),
+            // Intekhab:
+            ChatButton(sellerId: product.sellerId), // Use actual seller ID from your product model
             // Button
             ElevatedButton(
               onPressed: () {
