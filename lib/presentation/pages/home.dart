@@ -24,7 +24,7 @@ class HomePage extends HookConsumerWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     Container(
-                      constraints: BoxConstraints(),
+                      constraints: const BoxConstraints(),
                       width: MediaQuery.of(context).size.width * 0.9,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
@@ -45,8 +45,8 @@ class HomePage extends HookConsumerWidget {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                Colors.black.withOpacity(0.3),
-                                Colors.black.withOpacity(0.1),
+                                Colors.black.withAlpha((0.3 * 255).toInt()),
+                                Colors.black.withAlpha((0.1 * 255).toInt()),
                               ],
                             ),
                           ),
@@ -61,14 +61,14 @@ class HomePage extends HookConsumerWidget {
                         color: Colors.white,
                         shadows: [
                           Shadow(
-                            offset: Offset(2, 2),
+                            offset: const Offset(2, 2),
                             blurRadius: 3.0,
-                            color: Colors.black.withOpacity(0.5),
+                            color: Colors.black.withAlpha((0.5 * 255).toInt()),
                           ),
                           Shadow(
-                            offset: Offset(-1, -1),
+                            offset: const Offset(-1, -1),
                             blurRadius: 1.0,
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withAlpha((0.3 * 255).toInt()),
                           ),
                         ],
                         letterSpacing: 1.2,
