@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/upload_product_controller.dart';
@@ -68,6 +69,18 @@ class UploadProductPage extends ConsumerWidget {
     );
   }
 
+  String _getFileExtension(List<int> bytes) {
+    if (bytes.length < 2) return '.jpg';
+    
+    if (bytes[0] == 0xFF && bytes[1] == 0xD8) return '.jpg';
+    if (bytes[0] == 0x89 && bytes[1] == 0x50) return '.png';
+    if (bytes[0] == 0x47 && bytes[1] == 0x49) return '.gif';
+    if (bytes[0] == 0x42 && bytes[1] == 0x4D) return '.bmp';
+    if (bytes[0] == 0x52 && bytes[1] == 0x49) return '.webp';
+    
+    return '.jpg'; // デフォルト
+  }
+
   Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
     try {
       final imageBytes = ref.read(imageProvider);
@@ -78,14 +91,23 @@ class UploadProductPage extends ConsumerWidget {
         return;
       }
 
-      // Upload image to Firebase Storage
-      final storageRef = FirebaseStorage.instance.ref();
-      final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final productImageRef = storageRef.child('products/$fileName');
+      // Get file extension based on MIME type
+      final extension = _getFileExtension(imageBytes);
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
+      final productImageRef = FirebaseStorage.instance.ref().child('products/$fileName');
       
+      // Determine content type based on extension
+      final contentType = extension == '.png' 
+          ? 'image/png' 
+          : extension == '.gif' 
+              ? 'image/gif' 
+              : extension == '.webp' 
+                  ? 'image/webp' 
+                  : 'image/jpeg';
+
       await productImageRef.putData(
         imageBytes,
-        SettableMetadata(contentType: 'image/jpeg'),
+        SettableMetadata(contentType: contentType),
       );
 
       // Get image URL
@@ -100,8 +122,10 @@ class UploadProductPage extends ConsumerWidget {
         'title': titleController.text,
         'price': int.parse(priceController.text),
         'description': descriptionController.text,
-        'imageUrl': imageUrl,
+        'imageUrls': ['products/$fileName'],
         'createdAt': FieldValue.serverTimestamp(),
+        'sellerId': FirebaseAuth.instance.currentUser?.uid,
+        'sellerPayPal': FirebaseAuth.instance.currentUser?.email,
       });
 
       // clear fields after upload

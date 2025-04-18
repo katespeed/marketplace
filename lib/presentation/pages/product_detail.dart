@@ -16,7 +16,7 @@ class ProductDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedImageUrl = ref.watch(selectedImageProvider(product));
+    // final selectedImageUrl = ref.watch(selectedImageProvider(product));
 
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -27,14 +27,14 @@ class ProductDetailPage extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 5,
-                  child: ProductImagesViewer(
-                    product: product,
-                    selectedImageUrl: selectedImageUrl,
-                    productImages: product.imageUrls,
-                  ),
-                ),
+                // Expanded(
+                //   flex: 5,
+                //   child: ProductImagesViewer(
+                //     product: product,
+                //     selectedImageUrl: selectedImageUrl,
+                //     productImages: product.imageUrls,
+                //   ),
+                // ),
                 const SizedBox(width: 40),
                 // Right Column - Product Information
                 Expanded(

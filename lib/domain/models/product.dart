@@ -25,7 +25,6 @@ class Product with _$Product {
     bool? isAvailable,
     DateTime? saleEndDate,
     String? brand,
-
     String? sellerPayPal,
   }) = _Product;
 
