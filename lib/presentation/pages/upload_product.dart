@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/upload_product_controller.dart';
 import '../components/appbar/appbar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});
@@ -64,5 +66,60 @@ class UploadProductPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
+    try {
+      final imageBytes = ref.read(imageProvider);
+      if (imageBytes == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please select an image')),
+        );
+        return;
+      }
+
+      // Upload image to Firebase Storage
+      final storageRef = FirebaseStorage.instance.ref();
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final productImageRef = storageRef.child('products/$fileName');
+      
+      await productImageRef.putData(
+        imageBytes,
+        SettableMetadata(contentType: 'image/jpeg'),
+      );
+
+      // Get image URL
+      final imageUrl = await productImageRef.getDownloadURL();
+
+      // Save product information to Firestore
+      final titleController = ref.read(titleControllerProvider);
+      final priceController = ref.read(priceControllerProvider);
+      final descriptionController = ref.read(descriptionControllerProvider);
+
+      await FirebaseFirestore.instance.collection('products').add({
+        'title': titleController.text,
+        'price': int.parse(priceController.text),
+        'description': descriptionController.text,
+        'imageUrl': imageUrl,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+
+      // 成功したらフォームをクリア
+      ref.read(imageProvider.notifier).state = null;
+      titleController.clear();
+      priceController.clear();
+      descriptionController.clear();
+
+      // 成功メッセージを表示
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Product uploaded successfully')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading product: $e')),
+      );
+    }
   }
 }
