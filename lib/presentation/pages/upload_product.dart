@@ -104,17 +104,18 @@ class UploadProductPage extends ConsumerWidget {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      // 成功したらフォームをクリア
+      // clear fields after upload
       ref.read(imageProvider.notifier).state = null;
       titleController.clear();
       priceController.clear();
       descriptionController.clear();
 
-      // 成功メッセージを表示
+      // show success message and navigate back to home
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Product uploaded successfully')),
         );
+        Navigator.of(context).pop(); // ホーム画面に戻る
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
