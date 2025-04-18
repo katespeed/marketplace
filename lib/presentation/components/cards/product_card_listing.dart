@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../buttons/chat_button.dart';
 
-class ProductCardListing extends StatelessWidget {
+final imageUrlProvider = FutureProvider.family<String, String>((ref, path) async {
+  try {
+    final ref = FirebaseStorage.instance.ref(path);
+    final url = await ref.getDownloadURL();
+    final cleanUrl = url.split('?')[0];
+    final resizedUrl = '$cleanUrl?alt=media&token=${DateTime.now().millisecondsSinceEpoch}';
+    return resizedUrl;
+  } catch (e) {
+    rethrow;
+  }
+});
+
+class ProductCardListing extends ConsumerWidget {
   final dynamic product;
 
   const ProductCardListing({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
@@ -20,20 +34,64 @@ class ProductCardListing extends StatelessWidget {
             // Image
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                product.imageUrls?.isNotEmpty == true
-                ? product.imageUrls!.first 
-                : 'https://via.placeholder.com/100',
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.image_not_supported, size: 50),
-              ),
+              child: product.imageUrls?.isNotEmpty == true
+                  ? ref.watch(imageUrlProvider(product.imageUrls![0])).when(
+                        data: (url) => Image.network(
+                          url,
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          cacheWidth: 80,
+                          cacheHeight: 80,
+                          headers: const {
+                            'Origin': 'https://campus-flea.firebasestorage.app',
+                          },
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              color: Colors.grey[200],
+                              width: 80,
+                              height: 80,
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.grey[200],
+                              width: 80,
+                              height: 80,
+                              child: const Icon(Icons.error, size: 30, color: Colors.red),
+                            );
+                          },
+                        ),
+                        loading: () => Container(
+                          color: Colors.grey[200],
+                          width: 80,
+                          height: 80,
+                          child: const CircularProgressIndicator(),
+                        ),
+                        error: (error, stackTrace) {
+                          return Container(
+                            color: Colors.grey[200],
+                            width: 80,
+                            height: 80,
+                            child: const Icon(Icons.error, size: 30, color: Colors.red),
+                          );
+                        },
+                      )
+                  : Container(
+                      color: Colors.red[200],
+                      width: 80,
+                      height: 80,
+                      child: const Icon(Icons.image_not_supported, size: 30),
+                    ),
             ),
-
             const SizedBox(width: 12),
-
             // Product info
             Expanded(
               child: Column(

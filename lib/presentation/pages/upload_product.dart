@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/upload_product_controller.dart';
 import '../components/appbar/appbar.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});
@@ -64,5 +67,81 @@ class UploadProductPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  String _getFileExtension(List<int> bytes) {
+    if (bytes.length < 2) return '.jpg';
+    
+    if (bytes[0] == 0xFF && bytes[1] == 0xD8) return '.jpg';
+    if (bytes[0] == 0x89 && bytes[1] == 0x50) return '.png';
+    if (bytes[0] == 0x47 && bytes[1] == 0x49) return '.gif';
+    if (bytes[0] == 0x42 && bytes[1] == 0x4D) return '.bmp';
+    if (bytes[0] == 0x52 && bytes[1] == 0x49) return '.webp';
+    
+    return '.jpg'; // デフォルト
+  }
+
+  Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
+    try {
+      final imageBytes = ref.read(imageProvider);
+      if (imageBytes == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please select an image')),
+        );
+        return;
+      }
+
+      // Get file extension based on MIME type
+      final extension = _getFileExtension(imageBytes);
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
+      final productImageRef = FirebaseStorage.instance.ref().child('products/$fileName');
+      
+      // Determine content type based on extension
+      final contentType = extension == '.png' 
+          ? 'image/png' 
+          : extension == '.gif' 
+              ? 'image/gif' 
+              : extension == '.webp' 
+                  ? 'image/webp' 
+                  : 'image/jpeg';
+
+      await productImageRef.putData(
+        imageBytes,
+        SettableMetadata(contentType: contentType),
+      );
+
+      // Save product information to Firestore
+      final titleController = ref.read(titleControllerProvider);
+      final priceController = ref.read(priceControllerProvider);
+      final descriptionController = ref.read(descriptionControllerProvider);
+
+      await FirebaseFirestore.instance.collection('products').add({
+        'title': titleController.text,
+        'price': int.parse(priceController.text),
+        'description': descriptionController.text,
+        'imageUrls': ['products/$fileName'],
+        'createdAt': FieldValue.serverTimestamp(),
+        'sellerId': FirebaseAuth.instance.currentUser?.uid,
+        'sellerPayPal': FirebaseAuth.instance.currentUser?.email,
+      });
+
+      // clear fields after upload
+      ref.read(imageProvider.notifier).state = null;
+      titleController.clear();
+      priceController.clear();
+      descriptionController.clear();
+
+      // show success message and navigate back to home
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Product uploaded successfully')),
+        );
+        Navigator.of(context).pop(); // ホーム画面に戻る
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error uploading product: $e')),
+      );
+    }
   }
 }

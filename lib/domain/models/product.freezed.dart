@@ -26,6 +26,7 @@ mixin _$Product {
   List<String> get imageUrls => throw _privateConstructorUsedError;
   String? get sellerId => throw _privateConstructorUsedError;
   String? get buyerId => throw _privateConstructorUsedError;
+  String? get imagePath => throw _privateConstructorUsedError;
   String? get sellerImageUrl => throw _privateConstructorUsedError;
   String? get sellerName => throw _privateConstructorUsedError;
   double? get rentalPrice => throw _privateConstructorUsedError;
@@ -57,6 +58,7 @@ abstract class $ProductCopyWith<$Res> {
       List<String> imageUrls,
       String? sellerId,
       String? buyerId,
+      String? imagePath,
       String? sellerImageUrl,
       String? sellerName,
       double? rentalPrice,
@@ -91,6 +93,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? imageUrls = null,
     Object? sellerId = freezed,
     Object? buyerId = freezed,
+    Object? imagePath = freezed,
     Object? sellerImageUrl = freezed,
     Object? sellerName = freezed,
     Object? rentalPrice = freezed,
@@ -129,6 +132,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
       buyerId: freezed == buyerId
           ? _value.buyerId
           : buyerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imagePath: freezed == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
               as String?,
       sellerImageUrl: freezed == sellerImageUrl
           ? _value.sellerImageUrl
@@ -200,6 +207,7 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       List<String> imageUrls,
       String? sellerId,
       String? buyerId,
+      String? imagePath,
       String? sellerImageUrl,
       String? sellerName,
       double? rentalPrice,
@@ -232,6 +240,7 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? imageUrls = null,
     Object? sellerId = freezed,
     Object? buyerId = freezed,
+    Object? imagePath = freezed,
     Object? sellerImageUrl = freezed,
     Object? sellerName = freezed,
     Object? rentalPrice = freezed,
@@ -270,6 +279,10 @@ class __$$ProductImplCopyWithImpl<$Res>
       buyerId: freezed == buyerId
           ? _value.buyerId
           : buyerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      imagePath: freezed == imagePath
+          ? _value.imagePath
+          : imagePath // ignore: cast_nullable_to_non_nullable
               as String?,
       sellerImageUrl: freezed == sellerImageUrl
           ? _value.sellerImageUrl
@@ -337,6 +350,7 @@ class _$ProductImpl implements _Product {
       required final List<String> imageUrls,
       this.sellerId,
       this.buyerId,
+      this.imagePath,
       this.sellerImageUrl,
       this.sellerName,
       this.rentalPrice,
@@ -375,6 +389,8 @@ class _$ProductImpl implements _Product {
   @override
   final String? buyerId;
   @override
+  final String? imagePath;
+  @override
   final String? sellerImageUrl;
   @override
   final String? sellerName;
@@ -411,7 +427,7 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand, sellerPayPal: $sellerPayPal)';
+    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, imagePath: $imagePath, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand, sellerPayPal: $sellerPayPal)';
   }
 
   @override
@@ -427,6 +443,8 @@ class _$ProductImpl implements _Product {
             (identical(other.sellerId, sellerId) ||
                 other.sellerId == sellerId) &&
             (identical(other.buyerId, buyerId) || other.buyerId == buyerId) &&
+            (identical(other.imagePath, imagePath) ||
+                other.imagePath == imagePath) &&
             (identical(other.sellerImageUrl, sellerImageUrl) ||
                 other.sellerImageUrl == sellerImageUrl) &&
             (identical(other.sellerName, sellerName) ||
@@ -461,6 +479,7 @@ class _$ProductImpl implements _Product {
         const DeepCollectionEquality().hash(_imageUrls),
         sellerId,
         buyerId,
+        imagePath,
         sellerImageUrl,
         sellerName,
         rentalPrice,
@@ -498,6 +517,7 @@ abstract class _Product implements Product {
       required final List<String> imageUrls,
       final String? sellerId,
       final String? buyerId,
+      final String? imagePath,
       final String? sellerImageUrl,
       final String? sellerName,
       final double? rentalPrice,
@@ -526,6 +546,8 @@ abstract class _Product implements Product {
   String? get sellerId;
   @override
   String? get buyerId;
+  @override
+  String? get imagePath;
   @override
   String? get sellerImageUrl;
   @override
