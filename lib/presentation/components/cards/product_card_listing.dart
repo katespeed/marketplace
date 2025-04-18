@@ -6,18 +6,12 @@ import '../buttons/chat_button.dart';
 
 final imageUrlProvider = FutureProvider.family<String, String>((ref, path) async {
   try {
-    print('Fetching image URL for path: $path');
     final ref = FirebaseStorage.instance.ref(path);
     final url = await ref.getDownloadURL();
     final cleanUrl = url.split('?')[0];
     final resizedUrl = '$cleanUrl?alt=media&token=${DateTime.now().millisecondsSinceEpoch}';
-    print('Successfully fetched URL: $resizedUrl');
     return resizedUrl;
-  } catch (e, stackTrace) {
-    print('Error getting download URL: $e');
-    print('Stack trace: $stackTrace');
-    print('Storage path: $path');
-    print('Storage bucket: ${FirebaseStorage.instance.app.options.storageBucket}');
+  } catch (e) {
     rethrow;
   }
 });
@@ -67,11 +61,6 @@ class ProductCardListing extends ConsumerWidget {
                             );
                           },
                           errorBuilder: (context, error, stackTrace) {
-                            print('Error loading image:');
-                            print('URL: $url');
-                            print('Error type: ${error.runtimeType}');
-                            print('Error message: $error');
-                            print('Stack trace: $stackTrace');
                             return Container(
                               color: Colors.grey[200],
                               width: 80,
@@ -87,8 +76,6 @@ class ProductCardListing extends ConsumerWidget {
                           child: const CircularProgressIndicator(),
                         ),
                         error: (error, stackTrace) {
-                          print('Provider error: $error');
-                          print('Stack trace: $stackTrace');
                           return Container(
                             color: Colors.grey[200],
                             width: 80,

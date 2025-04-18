@@ -110,9 +110,6 @@ class UploadProductPage extends ConsumerWidget {
         SettableMetadata(contentType: contentType),
       );
 
-      // Get image URL
-      final imageUrl = await productImageRef.getDownloadURL();
-
       // Save product information to Firestore
       final titleController = ref.read(titleControllerProvider);
       final priceController = ref.read(priceControllerProvider);
