@@ -32,7 +32,7 @@ class ProfilePage extends HookConsumerWidget {
             const SizedBox(height: 16),
             ProfileSales(),
             const SizedBox(height: 16),
-            ProfileReviews(),
+            ProfileReviews(userId: user!.uid),
             const SizedBox(height: 32),
             Center(
               child: Column(
@@ -52,7 +52,8 @@ class ProfilePage extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   TextButton(
-                    onPressed: () => deleteAccountController.showDeleteAccountDialog(context),
+                    onPressed: () => deleteAccountController
+                        .showDeleteAccountDialog(context),
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.red,
                       minimumSize: const Size(200, 40),
