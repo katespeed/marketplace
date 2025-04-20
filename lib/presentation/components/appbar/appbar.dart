@@ -99,7 +99,7 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
         TextButton(
           onPressed: () => context.push('/payment'),
           child: const Text(
-            'Go to Payment',
+            'My Uploads',
             style: TextStyle(
               color: Colors.black87,
               fontSize: 14,

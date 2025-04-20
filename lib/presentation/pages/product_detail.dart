@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_app/domain/models/product.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
-import 'package:my_flutter_app/providers/product_detail_provider.dart';
-import 'package:my_flutter_app/presentation/components/image_viewer/product_images_viewer.dart';
 
 class ProductDetailPage extends ConsumerWidget {
   final Product product;
@@ -16,7 +14,7 @@ class ProductDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedImageUrl = ref.watch(selectedImageProvider(product));
+    // final selectedImageUrl = ref.watch(selectedImageProvider(product));
 
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -27,14 +25,14 @@ class ProductDetailPage extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  flex: 5,
-                  child: ProductImagesViewer(
-                    product: product,
-                    selectedImageUrl: selectedImageUrl,
-                    productImages: product.imageUrls,
-                  ),
-                ),
+                // Expanded(
+                //   flex: 5,
+                //   child: ProductImagesViewer(
+                //     product: product,
+                //     selectedImageUrl: selectedImageUrl,
+                //     productImages: product.imageUrls,
+                //   ),
+                // ),
                 const SizedBox(width: 40),
                 // Right Column - Product Information
                 Expanded(

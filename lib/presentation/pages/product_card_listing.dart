@@ -4,10 +4,12 @@ import 'package:my_flutter_app/presentation/pages/payment_page.dart';
 
 class ProductCardListing extends StatelessWidget {
   final Product product;
+  final bool showChatButton;
 
   const ProductCardListing({
     super.key,
     required this.product,
+    this.showChatButton = true,
   });
 
   @override

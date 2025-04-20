@@ -12,6 +12,7 @@ class Product with _$Product {
     required List<String> imageUrls,
     String? sellerId,
     String? buyerId,
+    String? imagePath,
     String? sellerImageUrl,
     String? sellerName,
     double? rentalPrice,
@@ -24,7 +25,6 @@ class Product with _$Product {
     bool? isAvailable,
     DateTime? saleEndDate,
     String? brand,
-
     String? sellerPayPal,
   }) = _Product;
 

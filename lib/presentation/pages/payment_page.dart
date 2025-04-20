@@ -39,7 +39,7 @@ class PaymentPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => _proceedToPay(context),
-              child: const Text("Proceed to Payment"),
+              child: const Text("My Uploads"),
             ),
           ],
         ),

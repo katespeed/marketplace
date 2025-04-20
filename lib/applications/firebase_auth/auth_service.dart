@@ -17,6 +17,8 @@ class AuthService {
 
   Stream<User?> authStateChanges() => authRepository.authStateChanges();
 
+  Stream<User?> userChanges() => authRepository.userChanges();
+
   Future<void> signUp({
     required String email,
     required String password,
@@ -67,6 +69,18 @@ class AuthService {
   Future<void> resetPassword(String email) async {
     try {
       await authRepository.auth.sendPasswordResetEmail(email: email);
+    } catch (e, stack) {
+      throw AsyncError(e, stack);
+    }
+  }
+
+  bool isEmailVerified() {
+    return authRepository.isEmailVerified();
+  }
+
+  Future<void> resendVerificationEmail() async {
+    try {
+      await authRepository.resendVerificationEmail();
     } catch (e, stack) {
       throw AsyncError(e, stack);
     }
