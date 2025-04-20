@@ -25,9 +25,44 @@ class LoginPage extends HookConsumerWidget {
     final passwordVisible = ref.watch(passwordVisibilityProvider);
 
     useEffect(() {
-      final subscription = authService.authStateChanges().listen((user) {
+      final subscription = authService.userChanges().listen((user) {
         if (user != null) {
-          context.go('/home');
+          if (user.emailVerified) {
+            // Close any existing dialog
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            context.go('/home');
+          } else {
+            // Close any existing dialog before showing new one
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            // Show verification required dialog
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => AlertDialog(
+                title: const Text('Email Verification Required'),
+                content: const Text('Please verify your email address before accessing the app.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      authService.resendVerificationEmail();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Verification email has been resent')),
+                      );
+                    },
+                    child: const Text('Resend Verification Email'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      authService.signOut();
+                    },
+                    child: const Text('Sign Out'),
+                  ),
+                ],
+              ),
+            );
+          }
         }
       });
 
