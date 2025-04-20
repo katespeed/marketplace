@@ -49,7 +49,7 @@ class AuthRepository {
           'uuid': credential.user?.uid,
           'name': username,
           'email': credential.user?.email,
-          'created_at': FieldValue.serverTimestamp(),
+          'createdAt': FieldValue.serverTimestamp(),
         });
       }
     } catch (e, stack) {

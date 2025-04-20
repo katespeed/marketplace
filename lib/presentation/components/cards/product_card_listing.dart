@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 import '../buttons/chat_button.dart';
 
@@ -18,8 +20,9 @@ final imageUrlProvider = FutureProvider.family<String, String>((ref, path) async
 
 class ProductCardListing extends ConsumerWidget {
   final dynamic product;
+  final bool showChatButton;
 
-  const ProductCardListing({super.key, required this.product});
+  const ProductCardListing({super.key, required this.product, this.showChatButton = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -126,14 +129,24 @@ class ProductCardListing extends ConsumerWidget {
             const SizedBox(width: 12),
 
             // Intekhab:
-            ChatButton(sellerId: product.sellerId), // Use actual seller ID from your product model
-            // Button
-            ElevatedButton(
-              onPressed: () {
-                // Implement Sara <3
-              },
-              child: const Text('Proceed to payment'),
-            ),
+            ...[
+            if(showChatButton)
+              ChatButton(sellerId: product.sellerId) // Use actual seller ID from your product model
+            else 
+              ElevatedButton(
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                    .collection('products')
+                    .doc(product.id)
+                    .update({'isAvailable': false});
+                  
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Marked as Sold")),
+                  );
+                },
+                child: Text("Mark Item as Sold"),
+              ),
+            ]
           ],
         ),
       ),
