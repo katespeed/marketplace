@@ -9,7 +9,7 @@ final productListProvider = FutureProvider<List<Product>>((ref) async {
   try {
     final snapshot = await FirebaseFirestore.instance
         .collection('products')
-        .orderBy('createdAt', descending: true)
+        .where('isAvailable', isEqualTo: true)
         .get();
 
     return snapshot.docs.map((doc) {

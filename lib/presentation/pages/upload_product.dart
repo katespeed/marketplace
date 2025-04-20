@@ -123,6 +123,7 @@ class UploadProductPage extends ConsumerWidget {
         'createdAt': FieldValue.serverTimestamp(),
         'sellerId': FirebaseAuth.instance.currentUser?.uid,
         'sellerPayPal': FirebaseAuth.instance.currentUser?.email,
+        'isAvailable': true,
       });
 
       // clear fields after upload
