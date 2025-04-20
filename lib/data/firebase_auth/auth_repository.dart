@@ -16,6 +16,8 @@ class AuthRepository {
   User? get authUser => auth.currentUser;
 
   Stream<User?> authStateChanges() => auth.authStateChanges();
+  
+  Stream<User?> userChanges() => auth.userChanges();
 
   Future<void> signUp({
     required String email,
@@ -28,6 +30,9 @@ class AuthRepository {
         password: password,
       );
       await credential.user?.updateDisplayName(username);
+      
+      // Send email verification
+      await credential.user?.sendEmailVerification();
       
       // Check if user document exists
       final userDoc = await FirebaseFirestore.instance
@@ -142,6 +147,21 @@ class AuthRepository {
       await auth.sendPasswordResetEmail(email: email);
     } catch (e, stack) {
       throw AsyncError(e, stack);
+    }
+  }
+
+  // Add new method for checking email verification status
+  bool isEmailVerified() {
+    return auth.currentUser?.emailVerified ?? false;
+  }
+
+  // Add new method for resending verification email
+  Future<void> resendVerificationEmail() async {
+    final user = auth.currentUser;
+    if (user != null) {
+      await user.sendEmailVerification();
+    } else {
+      throw Exception('No user is currently signed in');
     }
   }
 }
