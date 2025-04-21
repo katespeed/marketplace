@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../providers/chat_provider.dart';
 import '../../pages/chat_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatButton extends ConsumerWidget {
   final String sellerId;
@@ -24,9 +25,18 @@ class ChatButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
       onPressed: () async {
+        final buyer = FirebaseAuth.instance.currentUser!;
+        final buyerName = buyer.displayName ?? buyer.email!;
         final sellerName = await _fetchSellerName();
-        final chatId = await ref.read(chatRepositoryProvider)
-            .getOrCreateChat(sellerId);
+        final chatId =
+            await ref.read(chatRepositoryProvider).getOrCreateChat(sellerId);
+        // 4) write both names into the chat doc (merge so we don’t clobber other fields)
+        await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
+          'participantNames': {
+            sellerId: sellerName,
+            buyer.uid: buyerName,
+          },
+        }, SetOptions(merge: true));
         Navigator.push(
           context,
           MaterialPageRoute(
