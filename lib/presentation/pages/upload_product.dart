@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/upload_product_controller.dart';
-import '../components/appbar/appbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
+import 'package:my_flutter_app/providers/upload_product_controller.dart';
+import 'package:my_flutter_app/providers/product_provider.dart';
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});
@@ -134,6 +135,9 @@ class UploadProductPage extends ConsumerWidget {
 
       // show success message and navigate back to home
       if (context.mounted) {
+        // Trigger refresh of product list
+        ref.read(refreshTriggerProvider.notifier).state++;
+        
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Product uploaded successfully')),
         );
