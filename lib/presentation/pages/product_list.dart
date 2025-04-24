@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_app/presentation/components/cards/product_card_listing.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductListPage extends ConsumerWidget {
   const ProductListPage({super.key});
@@ -13,18 +14,30 @@ class ProductListPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Product List')),
       body: asyncProducts.when(
-        data: (productList) => productList.isEmpty
-            ? const Center(child: Text('No products uploaded yet'))
-            : Padding(
-                padding: const EdgeInsets.all(12),
-                child: ListView.builder(
-                  itemCount: productList.length,
-                  itemBuilder: (context, index) {
-                    final product = productList[index];
-                    return ProductCardListing(product: product);
-                  },
-                ),
-              ),
+        data: (productList) {
+          // Preload images
+          for (final product in productList) {
+            if (product.imageUrls.isNotEmpty) {
+              precacheImage(
+                NetworkImage(product.imageUrls[0]),
+                context,
+              );
+            }
+          }
+          
+          return productList.isEmpty
+              ? const Center(child: Text('No products uploaded yet'))
+              : Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: ListView.builder(
+                    itemCount: productList.length,
+                    itemBuilder: (context, index) {
+                      final product = productList[index];
+                      return ProductCardListing(product: product);
+                    },
+                  ),
+                );
+        },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) =>
             Center(child: Text("Error loading products: $error")),

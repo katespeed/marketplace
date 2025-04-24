@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/presentation/components/grids/featured_products_grid.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -32,9 +33,13 @@ class HomePage extends HookConsumerWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       clipBehavior: Clip.antiAlias,
-                      child: Image.asset(
-                        'assets/home_image.jpg',
+                      child: CachedNetworkImage(
+                        imageUrl: 'assets/home_image.jpg',
                         fit: BoxFit.cover,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
                     SizedBox(
@@ -98,7 +103,18 @@ class HomePage extends HookConsumerWidget {
               ),
               const SizedBox(height: 20),
               asyncProducts.when(
-                data: (products) => FeaturedProductsGrid(products: products),
+                data: (products) {
+                  // Preload images
+                  for (final product in products) {
+                    if (product.imageUrls.isNotEmpty) {
+                      precacheImage(
+                        NetworkImage(product.imageUrls[0]),
+                        context,
+                      );
+                    }
+                  }
+                  return FeaturedProductsGrid(products: products);
+                },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stackTrace) => Center(
                   child: Text("Error loading products: $error"),

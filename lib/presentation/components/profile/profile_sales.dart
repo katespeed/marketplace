@@ -4,6 +4,7 @@ import 'package:my_flutter_app/domain/models/product.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 final imageUrlProvider = FutureProvider.family<String, String>((ref, path) async {
   try {
@@ -30,11 +31,23 @@ class ProfileSales extends ConsumerWidget {
       children: [
         const Text("Sales", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         asyncProducts.when(
-          data: (products) => products.isEmpty
-              ? const Center(child: Text('No products uploaded yet'))
-              : Column(
-                  children: products.map((product) => _buildSalesItem(ref, product)).toList(),
-                ),
+          data: (products) {
+            // Preload images
+            for (final product in products) {
+              if (product.imageUrls.isNotEmpty) {
+                precacheImage(
+                  NetworkImage(product.imageUrls[0]),
+                  context,
+                );
+              }
+            }
+            
+            return products.isEmpty
+                ? const Center(child: Text('No products uploaded yet'))
+                : Column(
+                    children: products.map((product) => _buildSalesItem(ref, product)).toList(),
+                  );
+          },
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, stackTrace) =>
               Center(child: Text("Error loading products: $error")),
@@ -54,16 +67,19 @@ class ProfileSales extends ConsumerWidget {
     return ListTile(
       leading: product.imageUrls.isNotEmpty
           ? ref.watch(imageUrlProvider(product.imageUrls[0])).when(
-                data: (url) => Image.network(
-                  url,
+                data: (url) => CachedNetworkImage(
+                  imageUrl: url,
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
-                  headers: const {
-                    'Origin': 'https://campus-flea.firebasestorage.app',
-                  },
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.broken_image),
+                  memCacheWidth: 50,
+                  memCacheHeight: 50,
+                  placeholder: (context, url) => const SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.broken_image),
                 ),
                 loading: () => const SizedBox(
                   width: 50,
