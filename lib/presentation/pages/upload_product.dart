@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/upload_product_controller.dart';
-import '../components/appbar/appbar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
+import 'package:my_flutter_app/providers/upload_product_controller.dart';
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});
