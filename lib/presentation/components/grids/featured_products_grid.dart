@@ -74,13 +74,15 @@ class FeaturedProductsGrid extends ConsumerWidget {
                               ),
                             );
                           },
-                          errorBuilder: (context, error, stackTrace) =>
-                              Container(
-                                width: 180,
-                                height: 120,
-                                color: Colors.grey[200],
-                                child: const Icon(Icons.image_not_supported),
-                              ),
+                          errorBuilder: (context, error, stackTrace) {
+                            debugPrint('Error loading image: $error');
+                            return Container(
+                              width: 180,
+                              height: 120,
+                              color: Colors.grey[200],
+                              child: const Icon(Icons.image_not_supported),
+                            );
+                          },
                         ),
                         loading: () => Container(
                           width: 180,

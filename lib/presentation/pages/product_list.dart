@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/presentation/components/cards/product_card_listing.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductListPage extends ConsumerWidget {
   const ProductListPage({super.key});
@@ -12,16 +12,25 @@ class ProductListPage extends ConsumerWidget {
     final asyncProducts = ref.watch(productListProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Product List')),
+      appBar: CustomAppBar(),
       body: asyncProducts.when(
         data: (productList) {
           // Preload images
           for (final product in productList) {
             if (product.imageUrls.isNotEmpty) {
-              precacheImage(
-                NetworkImage(product.imageUrls[0]),
-                context,
-              );
+              try {
+                final imageUrl = product.imageUrls[0];
+                if (imageUrl.startsWith('http')) {
+                  precacheImage(
+                    NetworkImage(imageUrl),
+                    context,
+                  ).catchError((error) {
+                    debugPrint('Failed to precache image: $error');
+                  });
+                }
+              } catch (e) {
+                debugPrint('Error precaching image: $e');
+              }
             }
           }
           

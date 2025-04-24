@@ -35,10 +35,19 @@ class ProfileSales extends ConsumerWidget {
             // Preload images
             for (final product in products) {
               if (product.imageUrls.isNotEmpty) {
-                precacheImage(
-                  NetworkImage(product.imageUrls[0]),
-                  context,
-                );
+                try {
+                  final imageUrl = product.imageUrls[0];
+                  if (imageUrl.startsWith('http')) {
+                    precacheImage(
+                      NetworkImage(imageUrl),
+                      context,
+                    ).catchError((error) {
+                      debugPrint('Failed to precache image: $error');
+                    });
+                  }
+                } catch (e) {
+                  debugPrint('Error precaching image: $e');
+                }
               }
             }
             
