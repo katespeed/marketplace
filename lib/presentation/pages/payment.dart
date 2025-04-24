@@ -41,6 +41,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
               'id': doc.id,
               'name': data['title'],
               'imageUrls': data['imageUrls'] ?? [],
+              'createdAt': (data['createdAt'] as Timestamp).toDate().toIso8601String(),
             });
           }).toList();
 
