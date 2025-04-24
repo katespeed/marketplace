@@ -3,9 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:my_flutter_app/domain/models/product.dart'; 
 
+// Add a refresh trigger provider
+final refreshTriggerProvider = StateProvider<int>((ref) => 0);
 
 /// **Create a FutureProvider to fetch products**
 final productListProvider = FutureProvider<List<Product>>((ref) async {
+  // Watch the refresh trigger to force a refresh
+  ref.watch(refreshTriggerProvider);
+  
   try {
     final snapshot = await FirebaseFirestore.instance
         .collection('products')

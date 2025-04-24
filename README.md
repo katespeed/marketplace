@@ -22,6 +22,9 @@ flutter pub get
 3. Run the application:
 ```
 flutter run
+
+## Chrome
+flutter run -d chrome
 ```
 4. Generate code
 ```
