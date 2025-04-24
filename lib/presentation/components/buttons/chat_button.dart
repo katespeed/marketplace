@@ -24,13 +24,17 @@ class ChatButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
       onPressed: () async {
         final buyer = FirebaseAuth.instance.currentUser!;
         final buyerName = buyer.displayName ?? buyer.email!;
         final sellerName = await _fetchSellerName();
         final chatId =
             await ref.read(chatRepositoryProvider).getOrCreateChat(sellerId);
-        // 4) write both names into the chat doc (merge so we don’t clobber other fields)
+        // 4) write both names into the chat doc (merge so we don't clobber other fields)
         await FirebaseFirestore.instance.collection('chats').doc(chatId).set({
           'participantNames': {
             sellerId: sellerName,

@@ -5,6 +5,7 @@ import 'package:my_flutter_app/providers/product_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 
 final imageUrlProvider = FutureProvider.family<String, String>((ref, path) async {
   try {
@@ -54,7 +55,7 @@ class ProfileSales extends ConsumerWidget {
             return products.isEmpty
                 ? const Center(child: Text('No products uploaded yet'))
                 : Column(
-                    children: products.map((product) => _buildSalesItem(ref, product)).toList(),
+                    children: products.map((product) => _buildSalesItem(context, ref, product)).toList(),
                   );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -65,7 +66,7 @@ class ProfileSales extends ConsumerWidget {
     );
   }
 
-  Widget _buildSalesItem(WidgetRef ref, Product product) {
+  Widget _buildSalesItem(BuildContext context, WidgetRef ref, Product product) {
     final date = product.createdAt != null
         ? DateTime.parse(product.createdAt!).toLocal()
         : null;
@@ -73,36 +74,44 @@ class ProfileSales extends ConsumerWidget {
         ? '${date.year}/${date.month}/${date.day}'
         : 'No date';
 
-    return ListTile(
-      leading: product.imageUrls.isNotEmpty
-          ? ref.watch(imageUrlProvider(product.imageUrls[0])).when(
-                data: (url) => CachedNetworkImage(
-                  imageUrl: url,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  memCacheWidth: 50,
-                  memCacheHeight: 50,
-                  placeholder: (context, url) => const SizedBox(
+    return InkWell(
+      onTap: () {
+        context.push(
+          '/product-detail',
+          extra: product,
+        );
+      },
+      child: ListTile(
+        leading: product.imageUrls.isNotEmpty
+            ? ref.watch(imageUrlProvider(product.imageUrls[0])).when(
+                  data: (url) => CachedNetworkImage(
+                    imageUrl: url,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    memCacheWidth: 50,
+                    memCacheHeight: 50,
+                    placeholder: (context, url) => const SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) => const Icon(Icons.broken_image),
+                  ),
+                  loading: () => const SizedBox(
                     width: 50,
                     height: 50,
                     child: CircularProgressIndicator(),
                   ),
-                  errorWidget: (context, url, error) => const Icon(Icons.broken_image),
-                ),
-                loading: () => const SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(),
-                ),
-                error: (error, stackTrace) => const Icon(Icons.broken_image),
-              )
-          : const Icon(Icons.image_not_supported),
-      title: Text(product.name),
-      subtitle: Text(formattedDate),
-      trailing: Text(
-        '\$${product.price.toStringAsFixed(2)}',
-        style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                  error: (error, stackTrace) => const Icon(Icons.broken_image),
+                )
+            : const Icon(Icons.image_not_supported),
+        title: Text(product.name),
+        subtitle: Text(formattedDate),
+        trailing: Text(
+          '\$${product.price.toStringAsFixed(2)}',
+          style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
