@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:my_flutter_app/domain/models/product.dart'; 
 
 // Add a refresh trigger provider
