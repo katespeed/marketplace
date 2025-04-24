@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_app/domain/models/product.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
-import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
 import 'package:my_flutter_app/presentation/components/image_viewer/product_images_viewer.dart';
-import 'package:my_flutter_app/providers/product_detail_provider.dart';
 import 'package:my_flutter_app/applications/firebase_storage/storage_service.dart';
 import 'package:my_flutter_app/presentation/components/buttons/chat_button.dart';
 
