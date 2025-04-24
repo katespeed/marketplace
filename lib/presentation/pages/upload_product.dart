@@ -6,9 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/providers/upload_product_controller.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'dart:io';
 
 class UploadProductPage extends ConsumerWidget {
   const UploadProductPage({super.key});
@@ -83,28 +80,6 @@ class UploadProductPage extends ConsumerWidget {
     if (bytes[0] == 0x52 && bytes[1] == 0x49) return '.webp';
     
     return '.jpg'; // デフォルト
-  }
-
-  Future<void> pickImage(WidgetRef ref) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    
-    if (pickedFile != null) {
-      final bytes = await pickedFile.readAsBytes();
-      
-      // Compress and convert image to JPEG
-      final result = await FlutterImageCompress.compressWithList(
-        bytes,
-        minHeight: 1920,
-        minWidth: 1080,
-        quality: 90,
-        format: CompressFormat.jpeg,
-      );
-      
-      if (result != null) {
-        ref.read(imageProvider.notifier).state = result;
-      }
-    }
   }
 
   Future<void> submitProduct(BuildContext context, WidgetRef ref) async {
