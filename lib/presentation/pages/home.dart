@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
+import 'package:flutter/rendering.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
@@ -18,10 +20,24 @@ class HomePage extends HookConsumerWidget {
     // Show login modal if user is not logged in
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (authService.currentUser == null) {
-        showDialog(
+        showGeneralDialog(
           context: context,
           barrierDismissible: false,
-          builder: (context) => const LoginModal(),
+          barrierColor: Colors.black.withOpacity(0.5),
+          barrierLabel: '',
+          transitionDuration: const Duration(milliseconds: 300),
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return const LoginModal();
+          },
+          transitionBuilder: (context, animation, secondaryAnimation, child) {
+            return BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
         );
       }
     });
