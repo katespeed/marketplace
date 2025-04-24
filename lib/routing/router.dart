@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/pages/home.dart';
 import 'package:my_flutter_app/presentation/pages/not_found.dart';
