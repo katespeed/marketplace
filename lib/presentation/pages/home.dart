@@ -19,6 +19,9 @@ class HomePage extends HookConsumerWidget {
     // Show login modal if user is not logged in
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (authService.currentUser == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please login to continue')),
+        );
         showGeneralDialog(
           context: context,
           barrierDismissible: false,
@@ -29,12 +32,9 @@ class HomePage extends HookConsumerWidget {
             return const LoginModal();
           },
           transitionBuilder: (context, animation, secondaryAnimation, child) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-              child: FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
+            return FadeTransition(
+              opacity: animation,
+              child: child,
             );
           },
         );
