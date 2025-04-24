@@ -33,6 +33,7 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['saleEndDate'] as String),
       brand: json['brand'] as String?,
       sellerPayPal: json['sellerPayPal'] as String?,
+      createdAt: json['createdAt'] as String?,
     );
 
 Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
@@ -57,4 +58,5 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'saleEndDate': instance.saleEndDate?.toIso8601String(),
       'brand': instance.brand,
       'sellerPayPal': instance.sellerPayPal,
+      'createdAt': instance.createdAt,
     };

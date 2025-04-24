@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
-import 'package:my_flutter_app/data/mock/featured_products.dart';
 import 'package:my_flutter_app/presentation/components/grids/featured_products_grid.dart';
+import 'package:my_flutter_app/providers/product_provider.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final asyncProducts = ref.watch(productListProvider);
+
     return Scaffold(
       appBar: const CustomAppBar(),
       body: SingleChildScrollView(
@@ -95,7 +97,33 @@ class HomePage extends HookConsumerWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              FeaturedProductsGrid(products: mockFeaturedProducts),
+              asyncProducts.when(
+                data: (products) {
+                  // Preload images
+                  for (final product in products) {
+                    if (product.imageUrls.isNotEmpty) {
+                      try {
+                        final imageUrl = product.imageUrls[0];
+                        if (imageUrl.startsWith('http')) {
+                          precacheImage(
+                            NetworkImage(imageUrl),
+                            context,
+                          ).catchError((error) {
+                            debugPrint('Failed to precache image: $error');
+                          });
+                        }
+                      } catch (e) {
+                        debugPrint('Error precaching image: $e');
+                      }
+                    }
+                  }
+                  return FeaturedProductsGrid(products: products);
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stackTrace) => Center(
+                  child: Text("Error loading products: $error"),
+                ),
+              ),
             ],
           ),
         ),

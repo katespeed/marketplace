@@ -40,6 +40,7 @@ mixin _$Product {
   DateTime? get saleEndDate => throw _privateConstructorUsedError;
   String? get brand => throw _privateConstructorUsedError;
   String? get sellerPayPal => throw _privateConstructorUsedError;
+  String? get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -71,7 +72,8 @@ abstract class $ProductCopyWith<$Res> {
       bool? isAvailable,
       DateTime? saleEndDate,
       String? brand,
-      String? sellerPayPal});
+      String? sellerPayPal,
+      String? createdAt});
 }
 
 /// @nodoc
@@ -107,6 +109,7 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? saleEndDate = freezed,
     Object? brand = freezed,
     Object? sellerPayPal = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -189,6 +192,10 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.sellerPayPal
           : sellerPayPal // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -220,7 +227,8 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       bool? isAvailable,
       DateTime? saleEndDate,
       String? brand,
-      String? sellerPayPal});
+      String? sellerPayPal,
+      String? createdAt});
 }
 
 /// @nodoc
@@ -254,6 +262,7 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? saleEndDate = freezed,
     Object? brand = freezed,
     Object? sellerPayPal = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_$ProductImpl(
       id: null == id
@@ -336,6 +345,10 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.sellerPayPal
           : sellerPayPal // ignore: cast_nullable_to_non_nullable
               as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -363,7 +376,8 @@ class _$ProductImpl implements _Product {
       this.isAvailable,
       this.saleEndDate,
       this.brand,
-      this.sellerPayPal})
+      this.sellerPayPal,
+      this.createdAt})
       : _imageUrls = imageUrls,
         _categories = categories;
 
@@ -424,10 +438,12 @@ class _$ProductImpl implements _Product {
   final String? brand;
   @override
   final String? sellerPayPal;
+  @override
+  final String? createdAt;
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, imagePath: $imagePath, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand, sellerPayPal: $sellerPayPal)';
+    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, imagePath: $imagePath, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand, sellerPayPal: $sellerPayPal, createdAt: $createdAt)';
   }
 
   @override
@@ -466,7 +482,9 @@ class _$ProductImpl implements _Product {
                 other.saleEndDate == saleEndDate) &&
             (identical(other.brand, brand) || other.brand == brand) &&
             (identical(other.sellerPayPal, sellerPayPal) ||
-                other.sellerPayPal == sellerPayPal));
+                other.sellerPayPal == sellerPayPal) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
@@ -492,7 +510,8 @@ class _$ProductImpl implements _Product {
         isAvailable,
         saleEndDate,
         brand,
-        sellerPayPal
+        sellerPayPal,
+        createdAt
       ]);
 
   @JsonKey(ignore: true)
@@ -530,7 +549,8 @@ abstract class _Product implements Product {
       final bool? isAvailable,
       final DateTime? saleEndDate,
       final String? brand,
-      final String? sellerPayPal}) = _$ProductImpl;
+      final String? sellerPayPal,
+      final String? createdAt}) = _$ProductImpl;
 
   factory _Product.fromJson(Map<String, dynamic> json) = _$ProductImpl.fromJson;
 
@@ -574,6 +594,8 @@ abstract class _Product implements Product {
   String? get brand;
   @override
   String? get sellerPayPal;
+  @override
+  String? get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
