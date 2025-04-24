@@ -23,7 +23,7 @@ flutter pub get
 ```
 flutter run
 
-## Chrome
+## Chrome run
 flutter run -d chrome
 ```
 4. Generate code
