@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:my_flutter_app/domain/models/product.dart';
-import 'package:my_flutter_app/presentation/pages/product_detail.dart';
 import 'package:go_router/go_router.dart';
 
 final imageUrlProvider = FutureProvider.family<String, String>((ref, path) async {
