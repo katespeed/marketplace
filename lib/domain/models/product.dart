@@ -26,6 +26,7 @@ class Product with _$Product {
     DateTime? saleEndDate,
     String? brand,
     String? sellerPayPal,
+    String? createdAt,
   }) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
