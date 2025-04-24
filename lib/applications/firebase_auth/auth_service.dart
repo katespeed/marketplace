@@ -14,6 +14,7 @@ class AuthService {
 
   final AuthRepository authRepository;
   User? get authUser => authRepository.authUser;
+  User? get currentUser => authRepository.auth.currentUser;
 
   Stream<User?> authStateChanges() => authRepository.authStateChanges();
 

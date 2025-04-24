@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/presentation/components/grids/featured_products_grid.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
+import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
+import 'package:my_flutter_app/presentation/components/modals/login_modal.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -11,6 +13,18 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncProducts = ref.watch(productListProvider);
+    final authService = ref.watch(authServiceProvider);
+
+    // Show login modal if user is not logged in
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (authService.currentUser == null) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const LoginModal(),
+        );
+      }
+    });
 
     return Scaffold(
       appBar: const CustomAppBar(),

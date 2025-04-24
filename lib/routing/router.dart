@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/pages/home.dart';
-import 'package:my_flutter_app/presentation/pages/login.dart';
 import 'package:my_flutter_app/presentation/pages/not_found.dart';
 import 'package:my_flutter_app/presentation/pages/payment.dart';
 import 'package:my_flutter_app/presentation/pages/product_detail.dart';
@@ -12,28 +11,9 @@ import 'package:my_flutter_app/domain/models/product.dart';
 import '../presentation/pages/upload_product.dart';
 
 final router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/home',
   errorBuilder: (context, state) => const NotFoundPage(),
-  redirect: (context, state) {
-    final user = FirebaseAuth.instance.currentUser;
-    final isLoggedIn = user != null;
-    final isLoginPage = state.uri.path == '/login';
-
-    if (!isLoggedIn && !isLoginPage) {
-      return '/login';
-    }
-
-    if (isLoggedIn && isLoginPage) {
-      return '/home';
-    }
-
-    return null;
-  },
   routes: [
-    GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginPage(),
-    ),
     GoRoute(
       path: '/home',
       builder: (context, state) => const HomePage(),
