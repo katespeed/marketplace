@@ -18,5 +18,10 @@
       "**/.*",
       "**/node_modules/**"
     ]
+  },
+  "apphosting": {
+    "backend": {
+      "runtime": "nodejs20"
+    }
   }
 }
