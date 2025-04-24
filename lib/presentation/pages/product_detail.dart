@@ -3,6 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_app/domain/models/product.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/presentation/components/buttons/custom_button.dart';
+import 'package:my_flutter_app/presentation/components/image_viewer/product_images_viewer.dart';
+import 'package:my_flutter_app/providers/product_detail_provider.dart';
+import 'package:my_flutter_app/applications/firebase_storage/storage_service.dart';
+import 'package:my_flutter_app/presentation/components/buttons/chat_button.dart';
+
+final storageServiceProvider = Provider((ref) => StorageService());
+
+final productImageUrlsProvider = FutureProvider.family<List<String>, List<String>>((ref, paths) async {
+  final storageService = ref.watch(storageServiceProvider);
+  return storageService.getImageUrls(paths);
+});
 
 class ProductDetailPage extends ConsumerWidget {
   final Product product;
@@ -14,7 +25,7 @@ class ProductDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final selectedImageUrl = ref.watch(selectedImageProvider(product));
+    final imageUrlsAsync = ref.watch(productImageUrlsProvider(product.imageUrls));
 
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -25,14 +36,31 @@ class ProductDetailPage extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Expanded(
-                //   flex: 5,
-                //   child: ProductImagesViewer(
-                //     product: product,
-                //     selectedImageUrl: selectedImageUrl,
-                //     productImages: product.imageUrls,
-                //   ),
-                // ),
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    height: 400,
+                    color: Colors.grey[100],
+                    child: Column(
+                      children: [
+                        // Image viewer
+                        Expanded(
+                          child: imageUrlsAsync.when(
+                            data: (urls) => ProductImagesViewer(
+                              product: product,
+                              selectedImageUrl: urls.isNotEmpty ? urls[0] : '',
+                              productImages: urls,
+                            ),
+                            loading: () => const Center(child: CircularProgressIndicator()),
+                            error: (error, stack) => Center(
+                              child: Text('Error loading images: $error'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(width: 40),
                 // Right Column - Product Information
                 Expanded(
@@ -82,21 +110,13 @@ class ProductDetailPage extends ConsumerWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          CustomButton(
-                            text: 'Buy Now',
-                            backgroundColor: Colors.blue,
-                            onPressed: () {
-                              // TODO: Implement checkout functionality
-                            },
-                          ),
-                          const SizedBox(height: 12),
-                          CustomButton(
-                            text: 'Rent Now',
-                            backgroundColor: Colors.cyan,
-                            onPressed: () {
-                              // TODO: Implement add to cart functionality
-                            },
-                          ),
+                          if (product.sellerId != null)
+                            ChatButton(sellerId: product.sellerId!)
+                          else
+                            const Text(
+                              'Seller information not available',
+                              style: TextStyle(color: Colors.red),
+                            ),
                         ],
                       ),
                       const Divider(height: 32),

@@ -21,93 +21,102 @@ class ProductImagesViewer extends ConsumerWidget {
     return Column(
       children: [
         // Main Image
-        InteractiveViewer(
-          boundaryMargin: const EdgeInsets.all(20.0),
-          minScale: 0.3,
-          maxScale: 4.0,
-          child: SizedBox(
-            height: 400,
-            child: _buildMainImage(selectedImageUrl),
-          ),
+        Expanded(
+          child: _buildMainImage(),
         ),
-        const SizedBox(height: 16),
-        // Thumbnail Images
-        SizedBox(
-          height: 80,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+        // Thumbnails
+        if (productImages.length > 1)
+          SizedBox(
+            height: 80,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: productImages.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: _buildThumbnail(ref, productImages[index]),
+                );
+              },
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildMainImage() {
+    if (selectedImageUrl.isEmpty) {
+      return const Center(
+        child: Icon(Icons.image_not_supported, size: 48),
+      );
+    }
+
+    return InteractiveViewer(
+      minScale: 0.5,
+      maxScale: 3.0,
+      child: CachedNetworkImage(
+        imageUrl: selectedImageUrl,
+        fit: BoxFit.contain,
+        placeholder: (context, url) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        errorWidget: (context, url, error) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: productImages.length,
-                  separatorBuilder: (context, index) => const SizedBox(width: 8),
-                  itemBuilder: (context, index) => _buildThumbnail(
-                    ref,
-                    productImages[index],
-                    selectedImageUrl,
-                  ),
+              const Icon(Icons.error_outline, size: 48),
+              const SizedBox(height: 8),
+              Text(
+                'Failed to load image',
+                style: TextStyle(
+                  color: Colors.grey[600],
                 ),
               ),
             ],
           ),
         ),
-      ],
+      ),
     );
   }
 
-  Widget _buildMainImage(String imageUrl) {
-    return imageUrl.startsWith('http')
-        ? CachedNetworkImage(
-            imageUrl: imageUrl,
-            fit: BoxFit.contain,
-            placeholder: (context, url) => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            errorWidget: (context, url, error) => const Center(
-              child: Icon(Icons.error),
-            ),
-          )
-        : Image.asset(
-            imageUrl,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) => const Center(
-              child: Icon(Icons.error),
-            ),
-          );
-  }
+  Widget _buildThumbnail(WidgetRef ref, String imageUrl) {
+    if (imageUrl.isEmpty) {
+      return Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey, width: 2),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: const Center(
+          child: Icon(Icons.image_not_supported),
+        ),
+      );
+    }
 
-  Widget _buildThumbnail(WidgetRef ref, String imageUrl, String selectedImageUrl) {
     return GestureDetector(
       onTap: () {
         ref.read(selectedImageProvider(product).notifier).selectImage(imageUrl);
       },
       child: Container(
         width: 80,
+        height: 80,
         decoration: BoxDecoration(
           border: Border.all(
-            color: selectedImageUrl == imageUrl ? Colors.blue : Colors.grey[300]!,
+            color: selectedImageUrl == imageUrl ? Colors.blue : Colors.grey,
             width: 2,
           ),
+          borderRadius: BorderRadius.circular(4),
         ),
-        child: imageUrl.startsWith('http')
-            ? CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                errorWidget: (context, url, error) => const Center(
-                  child: Icon(Icons.error),
-                ),
-              )
-            : Image.asset(
-                imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const Center(
-                  child: Icon(Icons.error),
-                ),
-              ),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          errorWidget: (context, url, error) => const Center(
+            child: Icon(Icons.error_outline),
+          ),
+        ),
       ),
     );
   }
