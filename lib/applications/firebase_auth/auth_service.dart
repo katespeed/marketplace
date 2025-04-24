@@ -55,7 +55,7 @@ class AuthService {
   }
 
   Future<void> signOut() async {
-    return authRepository.signOut();
+    await authRepository.signOut();
   }
 
   Future<void> deleteAccount({required String password}) async {
@@ -84,5 +84,20 @@ class AuthService {
     } catch (e, stack) {
       throw AsyncError(e, stack);
     }
+  }
+
+  Future<void> changePassword(String currentPassword, String newPassword) async {
+    final user = authRepository.auth.currentUser;
+    if (user == null) throw Exception('User not logged in');
+
+    // Reauthenticate user
+    final credential = EmailAuthProvider.credential(
+      email: user.email!,
+      password: currentPassword,
+    );
+    await user.reauthenticateWithCredential(credential);
+
+    // Change password
+    await user.updatePassword(newPassword);
   }
 }
