@@ -27,10 +27,40 @@ final productListProvider = FutureProvider<List<Product>>((ref) async {
         'description': data['description'] ?? '',
         'sellerId': data['sellerId'] ?? '',
         'isAvailable': data['isAvailable'] ?? true,
-        'createdAt': data['createdAt']?.toDate() ?? DateTime.now(),
+        'createdAt': data['createdAt']?.toDate().toIso8601String(),
       });
     }).toList();
   } catch (e) {
     throw Exception('Failed to fetch products: $e');
+  }
+});
+
+/// **Create a FutureProvider to fetch products by seller ID**
+final sellerProductsProvider = FutureProvider.family<List<Product>, String>((ref, sellerId) async {
+  ref.watch(refreshTriggerProvider);
+  
+  try {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('products')
+        .where('sellerId', isEqualTo: sellerId)
+        .where('isAvailable', isEqualTo: true)
+        .get();
+
+    return snapshot.docs.map((doc) {
+      final data = doc.data();
+      return Product.fromJson({
+        ...data,
+        'id': doc.id,
+        'name': data['title'] ?? data['name'] ?? '',
+        'price': (data['price'] as num?)?.toDouble() ?? 0.0,
+        'imageUrls': List<String>.from(data['imageUrls'] ?? []),
+        'description': data['description'] ?? '',
+        'sellerId': data['sellerId'] ?? '',
+        'isAvailable': data['isAvailable'] ?? true,
+        'createdAt': data['createdAt']?.toDate().toIso8601String(),
+      });
+    }).toList();
+  } catch (e) {
+    throw Exception('Failed to fetch seller products: $e');
   }
 });
