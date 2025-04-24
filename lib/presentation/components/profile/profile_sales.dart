@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/presentation/controller/delete_product_controller.dart';
 
 final imageUrlProvider = FutureProvider.family<String, String>((ref, path) async {
   try {
@@ -26,6 +27,7 @@ class ProfileSales extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = FirebaseAuth.instance.currentUser;
     final asyncProducts = ref.watch(sellerProductsProvider(user!.uid));
+    final deleteProductController = DeleteProductController();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +57,7 @@ class ProfileSales extends ConsumerWidget {
             return products.isEmpty
                 ? const Center(child: Text('No products uploaded yet'))
                 : Column(
-                    children: products.map((product) => _buildSalesItem(context, ref, product)).toList(),
+                    children: products.map((product) => _buildSalesItem(context, ref, product, deleteProductController)).toList(),
                   );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -66,7 +68,7 @@ class ProfileSales extends ConsumerWidget {
     );
   }
 
-  Widget _buildSalesItem(BuildContext context, WidgetRef ref, Product product) {
+  Widget _buildSalesItem(BuildContext context, WidgetRef ref, Product product, DeleteProductController deleteProductController) {
     final date = product.createdAt != null
         ? DateTime.parse(product.createdAt!).toLocal()
         : null;
@@ -108,9 +110,18 @@ class ProfileSales extends ConsumerWidget {
             : const Icon(Icons.image_not_supported),
         title: Text(product.name),
         subtitle: Text(formattedDate),
-        trailing: Text(
-          '\$${product.price.toStringAsFixed(2)}',
-          style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '\$${product.price.toStringAsFixed(2)}',
+              style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () => deleteProductController.showDeleteProductDialog(context, product),
+            ),
+          ],
         ),
       ),
     );

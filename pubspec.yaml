@@ -29,6 +29,9 @@ dependencies:
   mime: ^1.0.4
   cloud_firestore: ^4.17.5
   json_annotation: ^4.9.0
+  heic_to_jpg: ^0.2.0
+  image: ^4.5.4
+  flutter_image_compress: ^2.3.0
 
 dev_dependencies:
   flutter_test:
