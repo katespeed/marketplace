@@ -125,7 +125,7 @@ class AuthRepository {
                   final ref = storage.ref(imageUrl);
                   await ref.delete();
                 } catch (e) {
-                  print('Error deleting image: $e');
+                  throw AsyncError('Failed to delete image: $e', StackTrace.current);
                 }
               }
             }
