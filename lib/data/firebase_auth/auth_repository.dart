@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 part 'auth_repository.g.dart';
 
@@ -101,9 +102,40 @@ class AuthRepository {
       // Delete all user-related data from Firestore
       try {
         final db = FirebaseFirestore.instance;
+        final storage = FirebaseStorage.instance;
         
         // First delete user document to ensure permissions
         await db.collection('users').doc(user.uid).delete();
+        
+        // Delete user's products
+        final productsSnapshot = await db
+            .collection('products')
+            .where('sellerId', isEqualTo: user.uid)
+            .get();
+            
+        for (var doc in productsSnapshot.docs) {
+          try {
+            // Delete product images from storage
+            final productData = doc.data();
+            final imageUrls = productData['imageUrls'] as List<dynamic>?;
+            
+            if (imageUrls != null) {
+              for (final imageUrl in imageUrls) {
+                try {
+                  final ref = storage.ref(imageUrl);
+                  await ref.delete();
+                } catch (e) {
+                  print('Error deleting image: $e');
+                }
+              }
+            }
+            
+            // Delete product document
+            await doc.reference.delete();
+          } catch (e) {
+            throw AsyncError('Failed to delete product document: $e', StackTrace.current);
+          }
+        }
         
         // Delete collections in parallel for better performance
         await Future.wait([
