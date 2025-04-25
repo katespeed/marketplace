@@ -64,3 +64,22 @@ final sellerProductsProvider = FutureProvider.family<List<Product>, String>((ref
     throw Exception('Failed to fetch seller products: $e');
   }
 });
+
+/// **Create a StateProvider for search query**
+final searchQueryProvider = StateProvider<String>((ref) => '');
+
+/// **Create a Provider for filtered products**
+final filteredProductsProvider = Provider<List<Product>>((ref) {
+  final searchQuery = ref.watch(searchQueryProvider);
+  final products = ref.watch(productListProvider).value ?? [];
+
+  if (searchQuery.isEmpty) {
+    return products;
+  }
+
+  return products.where((product) {
+    final nameMatch = product.name.toLowerCase().contains(searchQuery.toLowerCase());
+    final descriptionMatch = product.description?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false;
+    return nameMatch || descriptionMatch;
+  }).toList();
+});

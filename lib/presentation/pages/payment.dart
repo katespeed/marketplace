@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/presentation/components/cards/product_card_listing.dart';
 import 'package:my_flutter_app/domain/models/product.dart'; 
 
@@ -19,7 +20,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("My Uploads")),
+      appBar: CustomAppBar(),
       body: FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance
           .collection('products')
