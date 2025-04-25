@@ -30,3 +30,8 @@ flutter run -d chrome
 ```
 flutter pub run build_runner build
 ```
+5. Build & Deloy
+```
+flutter build web
+firebase deploy --only hosting
+```
