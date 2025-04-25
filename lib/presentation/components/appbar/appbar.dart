@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../pages/chat_list_screen.dart';
-import '../buttons/profile_avatar_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/presentation/components/buttons/profile_avatar_button.dart';
+import 'package:my_flutter_app/presentation/pages/chat_list_screen.dart';
+import 'package:my_flutter_app/providers/product_provider.dart';
 
 class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searchController = TextEditingController();
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -53,17 +55,32 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
               color: Colors.grey[100],
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const TextField(
-              decoration: InputDecoration(
-                hintText: 'Search',
-                hintStyle: TextStyle(color: Color(0xFF4A739C)),
-                prefixIcon: Icon(Icons.search, color: Color(0xFF4A739C)),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 6,
-                  horizontal: 16,
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: searchController,
+                    decoration: const InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: Color(0xFF4A739C)),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 6,
+                        horizontal: 16,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                IconButton(
+                  icon: const Icon(Icons.search, color: Color(0xFF4A739C)),
+                  onPressed: () {
+                    ref.read(searchQueryProvider.notifier).state = searchController.text;
+                    if (searchController.text.isNotEmpty) {
+                      context.go('/search');
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ],
