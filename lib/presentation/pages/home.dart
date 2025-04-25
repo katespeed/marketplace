@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
@@ -19,6 +18,9 @@ class HomePage extends HookConsumerWidget {
     // Show login modal if user is not logged in
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (authService.currentUser == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please login to continue')),
+        );
         showGeneralDialog(
           context: context,
           barrierDismissible: false,
@@ -29,12 +31,9 @@ class HomePage extends HookConsumerWidget {
             return const LoginModal();
           },
           transitionBuilder: (context, animation, secondaryAnimation, child) {
-            return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-              child: FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
+            return FadeTransition(
+              opacity: animation,
+              child: child,
             );
           },
         );
