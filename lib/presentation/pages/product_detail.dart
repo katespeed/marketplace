@@ -30,7 +30,7 @@ class ProductDetailPage extends ConsumerWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 24),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

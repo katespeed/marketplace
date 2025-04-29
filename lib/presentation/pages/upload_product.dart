@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,52 +20,147 @@ class UploadProductPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () => pickImage(ref),
-                child: Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: imageBytes == null
-                      ? const Center(child: Text('Tap to select an image'))
-                      : Image.memory(imageBytes, fit: BoxFit.cover),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: titleController,
-                decoration: const InputDecoration(
-                    labelText: 'Product Title', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: priceController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    labelText: 'Price', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: descriptionController,
-                maxLines: 3,
-                decoration: const InputDecoration(
-                    labelText: 'Description', border: OutlineInputBorder()),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => submitProduct(context, ref),
-                child: const Text('Upload Product'),
-              ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.white,
+              Colors.grey.shade100,
             ],
           ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 24),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildImageUploadArea(imageBytes, ref),
+                const SizedBox(height: 24),
+                _buildFormField(
+                  controller: titleController,
+                  label: 'Product Name',
+                  icon: Icons.title,
+                ),
+                const SizedBox(height: 16),
+                _buildFormField(
+                  controller: priceController,
+                  label: 'Price',
+                  icon: Icons.attach_money,
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                _buildFormField(
+                  controller: descriptionController,
+                  label: 'Description',
+                  icon: Icons.description,
+                  maxLines: 4,
+                ),
+                const SizedBox(height: 32),
+                _buildUploadButton(context, ref),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageUploadArea(Uint8List? imageBytes, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () => pickImage(ref),
+      child: Container(
+        height: 250,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 2,
+          ),
+        ),
+        child: imageBytes == null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add_photo_alternate_outlined,
+                    size: 48,
+                    color: Colors.grey.shade400,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Select Image',
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              )
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.memory(
+                  imageBytes,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildFormField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType? keyboardType,
+    int maxLines = 1,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.blue.shade400, width: 2),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildUploadButton(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+      onPressed: () => submitProduct(context, ref),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue.shade600,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        elevation: 2,
+      ),
+      child: const Text(
+        'Upload Product',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
     );
@@ -116,14 +212,26 @@ class UploadProductPage extends ConsumerWidget {
       final priceController = ref.read(priceControllerProvider);
       final descriptionController = ref.read(descriptionControllerProvider);
 
+      // Get user information
+      final user = FirebaseAuth.instance.currentUser;
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid)
+          .get();
+      
+      final userData = userDoc.data() as Map<String, dynamic>?;
+
       await FirebaseFirestore.instance.collection('products').add({
         'title': titleController.text,
         'price': int.parse(priceController.text),
         'description': descriptionController.text,
         'imageUrls': ['products/$fileName'],
         'createdAt': FieldValue.serverTimestamp(),
-        'sellerId': FirebaseAuth.instance.currentUser?.uid,
-        'sellerPayPal': FirebaseAuth.instance.currentUser?.email,
+        'sellerId': user?.uid,
+        'sellerPayPal': user?.email,
+        'sellerName': userData?['name'] ?? user?.displayName,
+        'sellerBio': userData?['bio'],
+        'sellerProfileImage': userData?['profileImage'],
         'isAvailable': true,
       });
 
