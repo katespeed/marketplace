@@ -27,105 +27,121 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
           height: 1.0,
         ),
       ),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SvgPicture.asset(
-            'assets/icon_1.svg',
-            width: 12,
-            height: 14,
-          ),
-          const SizedBox(width: 8),
-          InkWell(
-            onTap: () => context.go('/home'),
-            child: const Text(
-              'Student Marketplace',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+      title: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icon_1.svg',
+                        width: 12,
+                        height: 14,
+                      ),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () => context.go('/home'),
+                        child: const Text(
+                          'Student Marketplace',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Container(
+                        width: 160,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: searchController,
+                                decoration: const InputDecoration(
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(color: Color(0xFF4A739C)),
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.symmetric(
+                                    vertical: 6,
+                                    horizontal: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.search, color: Color(0xFF4A739C)),
+                              onPressed: () {
+                                ref.read(searchQueryProvider.notifier).state = searchController.text;
+                                if (searchController.text.isNotEmpty) {
+                                  context.go('/search');
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.chat),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const ChatListScreen()),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => context.push('/upload_product'),
+                        child: const Text(
+                          'Upload Product',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => context.push('/product-list'),
+                        child: const Text(
+                          'Product List',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => context.push('/payment'),
+                        child: const Text(
+                          'My Uploads',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      const ProfileAvatarButton(),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Container(
-            width: 160,
-            height: 36,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: searchController,
-                    decoration: const InputDecoration(
-                      hintText: 'Search',
-                      hintStyle: TextStyle(color: Color(0xFF4A739C)),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 16,
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.search, color: Color(0xFF4A739C)),
-                  onPressed: () {
-                    ref.read(searchQueryProvider.notifier).state = searchController.text;
-                    if (searchController.text.isNotEmpty) {
-                      context.go('/search');
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
+          );
+        },
       ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.chat),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const ChatListScreen()),
-          ),
-        ),
-        TextButton(
-          onPressed: () => context.push('/upload_product'),
-          child: const Text(
-            'Upload Product',
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 14,
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: () => context.push('/product-list'),
-          child: const Text(
-            'Product List',
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 14,
-            ),
-          ),
-        ),
-        TextButton(
-          onPressed: () => context.push('/payment'),
-          child: const Text(
-            'My Uploads',
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 14,
-            ),
-          ),
-        ),
-        const SizedBox(width: 24), // Spacing between buttons
-        const ProfileAvatarButton(),
-      ],
     );
   }
 
