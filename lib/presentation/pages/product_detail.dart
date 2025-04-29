@@ -66,14 +66,6 @@ class ProductDetailPage extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (product.brand != null)
-                        Text(
-                          product.brand!,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                        ),
                       Text(
                         product.name,
                         style: const TextStyle(
@@ -93,14 +85,6 @@ class ProductDetailPage extends ConsumerWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          if (product.rentalPrice != null)
-                            Text(
-                              'or rent for \$${product.rentalPrice!.toStringAsFixed(2)}/day',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                              ),
-                            ),
                         ],
                       ),
                       const SizedBox(height: 24),
@@ -167,21 +151,6 @@ class ProductDetailPage extends ConsumerWidget {
                         ),
                         const SizedBox(height: 24),
                       ],
-                      if (product.color != null && product.color!.isNotEmpty) ...[
-                        const Text(
-                          'Color',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          product.color!,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
                       const Divider(height: 32),
                       // Seller Information
                       const Text(
@@ -216,23 +185,6 @@ class ProductDetailPage extends ConsumerWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 4),
-                                if (product.rating != null && product.reviewCount != null)
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.orange,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        '${product.rating!.toStringAsFixed(1)} (${product.reviewCount} reviews)',
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                               ],
                             ),
                           ),

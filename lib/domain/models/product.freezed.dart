@@ -29,16 +29,11 @@ mixin _$Product {
   String? get imagePath => throw _privateConstructorUsedError;
   String? get sellerImageUrl => throw _privateConstructorUsedError;
   String? get sellerName => throw _privateConstructorUsedError;
-  double? get rentalPrice => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   List<String>? get categories => throw _privateConstructorUsedError;
   String? get size => throw _privateConstructorUsedError;
-  String? get color => throw _privateConstructorUsedError;
-  double? get rating => throw _privateConstructorUsedError;
-  int? get reviewCount => throw _privateConstructorUsedError;
   bool? get isAvailable => throw _privateConstructorUsedError;
   DateTime? get saleEndDate => throw _privateConstructorUsedError;
-  String? get brand => throw _privateConstructorUsedError;
   String? get sellerPayPal => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
 
@@ -62,16 +57,11 @@ abstract class $ProductCopyWith<$Res> {
       String? imagePath,
       String? sellerImageUrl,
       String? sellerName,
-      double? rentalPrice,
       String? description,
       List<String>? categories,
       String? size,
-      String? color,
-      double? rating,
-      int? reviewCount,
       bool? isAvailable,
       DateTime? saleEndDate,
-      String? brand,
       String? sellerPayPal,
       String? createdAt});
 }
@@ -98,16 +88,11 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
     Object? imagePath = freezed,
     Object? sellerImageUrl = freezed,
     Object? sellerName = freezed,
-    Object? rentalPrice = freezed,
     Object? description = freezed,
     Object? categories = freezed,
     Object? size = freezed,
-    Object? color = freezed,
-    Object? rating = freezed,
-    Object? reviewCount = freezed,
     Object? isAvailable = freezed,
     Object? saleEndDate = freezed,
-    Object? brand = freezed,
     Object? sellerPayPal = freezed,
     Object? createdAt = freezed,
   }) {
@@ -148,10 +133,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.sellerName
           : sellerName // ignore: cast_nullable_to_non_nullable
               as String?,
-      rentalPrice: freezed == rentalPrice
-          ? _value.rentalPrice
-          : rentalPrice // ignore: cast_nullable_to_non_nullable
-              as double?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -164,18 +145,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as String?,
-      color: freezed == color
-          ? _value.color
-          : color // ignore: cast_nullable_to_non_nullable
-              as String?,
-      rating: freezed == rating
-          ? _value.rating
-          : rating // ignore: cast_nullable_to_non_nullable
-              as double?,
-      reviewCount: freezed == reviewCount
-          ? _value.reviewCount
-          : reviewCount // ignore: cast_nullable_to_non_nullable
-              as int?,
       isAvailable: freezed == isAvailable
           ? _value.isAvailable
           : isAvailable // ignore: cast_nullable_to_non_nullable
@@ -184,10 +153,6 @@ class _$ProductCopyWithImpl<$Res, $Val extends Product>
           ? _value.saleEndDate
           : saleEndDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      brand: freezed == brand
-          ? _value.brand
-          : brand // ignore: cast_nullable_to_non_nullable
-              as String?,
       sellerPayPal: freezed == sellerPayPal
           ? _value.sellerPayPal
           : sellerPayPal // ignore: cast_nullable_to_non_nullable
@@ -217,16 +182,11 @@ abstract class _$$ProductImplCopyWith<$Res> implements $ProductCopyWith<$Res> {
       String? imagePath,
       String? sellerImageUrl,
       String? sellerName,
-      double? rentalPrice,
       String? description,
       List<String>? categories,
       String? size,
-      String? color,
-      double? rating,
-      int? reviewCount,
       bool? isAvailable,
       DateTime? saleEndDate,
-      String? brand,
       String? sellerPayPal,
       String? createdAt});
 }
@@ -251,16 +211,11 @@ class __$$ProductImplCopyWithImpl<$Res>
     Object? imagePath = freezed,
     Object? sellerImageUrl = freezed,
     Object? sellerName = freezed,
-    Object? rentalPrice = freezed,
     Object? description = freezed,
     Object? categories = freezed,
     Object? size = freezed,
-    Object? color = freezed,
-    Object? rating = freezed,
-    Object? reviewCount = freezed,
     Object? isAvailable = freezed,
     Object? saleEndDate = freezed,
-    Object? brand = freezed,
     Object? sellerPayPal = freezed,
     Object? createdAt = freezed,
   }) {
@@ -301,10 +256,6 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.sellerName
           : sellerName // ignore: cast_nullable_to_non_nullable
               as String?,
-      rentalPrice: freezed == rentalPrice
-          ? _value.rentalPrice
-          : rentalPrice // ignore: cast_nullable_to_non_nullable
-              as double?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -317,18 +268,6 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as String?,
-      color: freezed == color
-          ? _value.color
-          : color // ignore: cast_nullable_to_non_nullable
-              as String?,
-      rating: freezed == rating
-          ? _value.rating
-          : rating // ignore: cast_nullable_to_non_nullable
-              as double?,
-      reviewCount: freezed == reviewCount
-          ? _value.reviewCount
-          : reviewCount // ignore: cast_nullable_to_non_nullable
-              as int?,
       isAvailable: freezed == isAvailable
           ? _value.isAvailable
           : isAvailable // ignore: cast_nullable_to_non_nullable
@@ -337,10 +276,6 @@ class __$$ProductImplCopyWithImpl<$Res>
           ? _value.saleEndDate
           : saleEndDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      brand: freezed == brand
-          ? _value.brand
-          : brand // ignore: cast_nullable_to_non_nullable
-              as String?,
       sellerPayPal: freezed == sellerPayPal
           ? _value.sellerPayPal
           : sellerPayPal // ignore: cast_nullable_to_non_nullable
@@ -366,16 +301,11 @@ class _$ProductImpl implements _Product {
       this.imagePath,
       this.sellerImageUrl,
       this.sellerName,
-      this.rentalPrice,
       this.description,
       final List<String>? categories,
       this.size,
-      this.color,
-      this.rating,
-      this.reviewCount,
       this.isAvailable,
       this.saleEndDate,
-      this.brand,
       this.sellerPayPal,
       this.createdAt})
       : _imageUrls = imageUrls,
@@ -409,8 +339,6 @@ class _$ProductImpl implements _Product {
   @override
   final String? sellerName;
   @override
-  final double? rentalPrice;
-  @override
   final String? description;
   final List<String>? _categories;
   @override
@@ -425,17 +353,9 @@ class _$ProductImpl implements _Product {
   @override
   final String? size;
   @override
-  final String? color;
-  @override
-  final double? rating;
-  @override
-  final int? reviewCount;
-  @override
   final bool? isAvailable;
   @override
   final DateTime? saleEndDate;
-  @override
-  final String? brand;
   @override
   final String? sellerPayPal;
   @override
@@ -443,7 +363,7 @@ class _$ProductImpl implements _Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, imagePath: $imagePath, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, rentalPrice: $rentalPrice, description: $description, categories: $categories, size: $size, color: $color, rating: $rating, reviewCount: $reviewCount, isAvailable: $isAvailable, saleEndDate: $saleEndDate, brand: $brand, sellerPayPal: $sellerPayPal, createdAt: $createdAt)';
+    return 'Product(id: $id, name: $name, price: $price, imageUrls: $imageUrls, sellerId: $sellerId, buyerId: $buyerId, imagePath: $imagePath, sellerImageUrl: $sellerImageUrl, sellerName: $sellerName, description: $description, categories: $categories, size: $size, isAvailable: $isAvailable, saleEndDate: $saleEndDate, sellerPayPal: $sellerPayPal, createdAt: $createdAt)';
   }
 
   @override
@@ -465,22 +385,15 @@ class _$ProductImpl implements _Product {
                 other.sellerImageUrl == sellerImageUrl) &&
             (identical(other.sellerName, sellerName) ||
                 other.sellerName == sellerName) &&
-            (identical(other.rentalPrice, rentalPrice) ||
-                other.rentalPrice == rentalPrice) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
             (identical(other.size, size) || other.size == size) &&
-            (identical(other.color, color) || other.color == color) &&
-            (identical(other.rating, rating) || other.rating == rating) &&
-            (identical(other.reviewCount, reviewCount) ||
-                other.reviewCount == reviewCount) &&
             (identical(other.isAvailable, isAvailable) ||
                 other.isAvailable == isAvailable) &&
             (identical(other.saleEndDate, saleEndDate) ||
                 other.saleEndDate == saleEndDate) &&
-            (identical(other.brand, brand) || other.brand == brand) &&
             (identical(other.sellerPayPal, sellerPayPal) ||
                 other.sellerPayPal == sellerPayPal) &&
             (identical(other.createdAt, createdAt) ||
@@ -489,30 +402,24 @@ class _$ProductImpl implements _Product {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hashAll([
-        runtimeType,
-        id,
-        name,
-        price,
-        const DeepCollectionEquality().hash(_imageUrls),
-        sellerId,
-        buyerId,
-        imagePath,
-        sellerImageUrl,
-        sellerName,
-        rentalPrice,
-        description,
-        const DeepCollectionEquality().hash(_categories),
-        size,
-        color,
-        rating,
-        reviewCount,
-        isAvailable,
-        saleEndDate,
-        brand,
-        sellerPayPal,
-        createdAt
-      ]);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      price,
+      const DeepCollectionEquality().hash(_imageUrls),
+      sellerId,
+      buyerId,
+      imagePath,
+      sellerImageUrl,
+      sellerName,
+      description,
+      const DeepCollectionEquality().hash(_categories),
+      size,
+      isAvailable,
+      saleEndDate,
+      sellerPayPal,
+      createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -539,16 +446,11 @@ abstract class _Product implements Product {
       final String? imagePath,
       final String? sellerImageUrl,
       final String? sellerName,
-      final double? rentalPrice,
       final String? description,
       final List<String>? categories,
       final String? size,
-      final String? color,
-      final double? rating,
-      final int? reviewCount,
       final bool? isAvailable,
       final DateTime? saleEndDate,
-      final String? brand,
       final String? sellerPayPal,
       final String? createdAt}) = _$ProductImpl;
 
@@ -573,25 +475,15 @@ abstract class _Product implements Product {
   @override
   String? get sellerName;
   @override
-  double? get rentalPrice;
-  @override
   String? get description;
   @override
   List<String>? get categories;
   @override
   String? get size;
   @override
-  String? get color;
-  @override
-  double? get rating;
-  @override
-  int? get reviewCount;
-  @override
   bool? get isAvailable;
   @override
   DateTime? get saleEndDate;
-  @override
-  String? get brand;
   @override
   String? get sellerPayPal;
   @override
