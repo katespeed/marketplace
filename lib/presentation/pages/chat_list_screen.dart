@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'chat_screen.dart';
 
 class ChatListScreen extends ConsumerWidget {
@@ -16,13 +17,13 @@ class ChatListScreen extends ConsumerWidget {
         .snapshots();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Messages')),
+      appBar: CustomAppBar(),
       body: StreamBuilder<QuerySnapshot>(
         stream: chatsStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 24),
               child: Text('Error loading chats: ${snapshot.error}'),
             );
           }

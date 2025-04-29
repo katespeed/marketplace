@@ -37,7 +37,7 @@ class ProductListPage extends ConsumerWidget {
           return productList.isEmpty
               ? const Center(child: Text('No products uploaded yet'))
               : Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(horizontal: 80),
                   child: ListView.builder(
                     itemCount: productList.length,
                     itemBuilder: (context, index) {

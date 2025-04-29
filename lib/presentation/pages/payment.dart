@@ -50,7 +50,7 @@ class _PaymentPageState extends ConsumerState<PaymentPage> {
           final soldItems = products.where((p) => p.isAvailable == false).toList();
 
           return ListView(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 24),
             children: [
               if(liveListings.isNotEmpty) ...[
                 Text("Live Listings", style: Theme.of(context).textTheme.titleMedium),

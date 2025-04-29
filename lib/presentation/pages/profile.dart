@@ -128,7 +128,7 @@ class ProfilePage extends HookConsumerWidget {
     return Scaffold(
       appBar: const CustomAppBar(),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

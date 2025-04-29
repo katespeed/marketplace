@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_flutter_app/presentation/components/buttons/profile_avatar_button.dart';
-import 'package:my_flutter_app/presentation/pages/chat_list_screen.dart';
 import 'package:my_flutter_app/providers/product_provider.dart';
 
 class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
@@ -95,11 +94,14 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                   ),
                   Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.chat),
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const ChatListScreen()),
+                      TextButton(
+                        onPressed: () => context.push('/chat-list'),
+                        child: const Text(
+                          'Chat List',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                       TextButton(

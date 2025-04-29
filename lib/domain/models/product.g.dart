@@ -18,20 +18,15 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       imagePath: json['imagePath'] as String?,
       sellerImageUrl: json['sellerImageUrl'] as String?,
       sellerName: json['sellerName'] as String?,
-      rentalPrice: (json['rentalPrice'] as num?)?.toDouble(),
       description: json['description'] as String?,
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
       size: json['size'] as String?,
-      color: json['color'] as String?,
-      rating: (json['rating'] as num?)?.toDouble(),
-      reviewCount: (json['reviewCount'] as num?)?.toInt(),
       isAvailable: json['isAvailable'] as bool?,
       saleEndDate: json['saleEndDate'] == null
           ? null
           : DateTime.parse(json['saleEndDate'] as String),
-      brand: json['brand'] as String?,
       sellerPayPal: json['sellerPayPal'] as String?,
       createdAt: json['createdAt'] as String?,
     );
@@ -47,16 +42,11 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'imagePath': instance.imagePath,
       'sellerImageUrl': instance.sellerImageUrl,
       'sellerName': instance.sellerName,
-      'rentalPrice': instance.rentalPrice,
       'description': instance.description,
       'categories': instance.categories,
       'size': instance.size,
-      'color': instance.color,
-      'rating': instance.rating,
-      'reviewCount': instance.reviewCount,
       'isAvailable': instance.isAvailable,
       'saleEndDate': instance.saleEndDate?.toIso8601String(),
-      'brand': instance.brand,
       'sellerPayPal': instance.sellerPayPal,
       'createdAt': instance.createdAt,
     };

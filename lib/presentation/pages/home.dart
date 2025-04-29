@@ -44,7 +44,7 @@ class HomePage extends HookConsumerWidget {
       appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 60.0),
+          padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 80.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
