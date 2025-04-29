@@ -219,7 +219,7 @@ class UploadProductPage extends ConsumerWidget {
           .doc(user?.uid)
           .get();
       
-      final userData = userDoc.data() as Map<String, dynamic>?;
+      final userData = userDoc.data();
 
       await FirebaseFirestore.instance.collection('products').add({
         'title': titleController.text,
