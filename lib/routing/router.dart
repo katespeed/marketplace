@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:my_flutter_app/presentation/pages/chat_list_screen.dart';
 import 'package:my_flutter_app/presentation/pages/home.dart';
 import 'package:my_flutter_app/presentation/pages/not_found.dart';
 import 'package:my_flutter_app/presentation/pages/payment.dart';
@@ -31,6 +32,10 @@ final router = GoRouter(
       builder: (context, state) => ProductDetailPage(
         product: state.extra as Product,
       ),
+    ),
+    GoRoute(
+      path: '/chat-list',
+      builder: (context, state) => const ChatListScreen(),
     ),
     GoRoute(
       path: '/payment',
