@@ -94,9 +94,15 @@ class CustomAppBar extends HookConsumerWidget implements PreferredSizeWidget {
                   ),
                   Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.chat),
+                      TextButton(
                         onPressed: () => context.push('/chat-list'),
+                        child: const Text(
+                          'Chat List',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
                       TextButton(
                         onPressed: () => context.push('/upload_product'),
