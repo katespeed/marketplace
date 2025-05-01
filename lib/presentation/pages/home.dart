@@ -6,6 +6,7 @@ import 'package:my_flutter_app/presentation/components/grids/featured_products_g
 import 'package:my_flutter_app/providers/product_provider.dart';
 import 'package:my_flutter_app/applications/firebase_auth/auth_service.dart';
 import 'package:my_flutter_app/presentation/components/modals/login_modal.dart';
+import 'package:my_flutter_app/providers/auth_provider.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
@@ -14,17 +15,18 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncProducts = ref.watch(productListProvider);
     final authService = ref.watch(authServiceProvider);
+    final isEmailVerified = ref.watch(emailVerificationProvider);
 
-    // Show login modal if user is not logged in
+    // Show login modal if user is not logged in or email is not verified
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (authService.currentUser == null) {
+      if (authService.currentUser == null || !isEmailVerified) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please login to continue')),
+          const SnackBar(content: Text('Please verify your email to continue')),
         );
         showGeneralDialog(
           context: context,
           barrierDismissible: false,
-          barrierColor: Colors.black.withOpacity(0.5),
+          barrierColor: Colors.black.withAlpha(128),
           barrierLabel: '',
           transitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, secondaryAnimation) {

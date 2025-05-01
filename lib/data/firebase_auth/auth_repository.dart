@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 
 part 'auth_repository.g.dart';
 
@@ -103,6 +104,21 @@ class AuthRepository {
       try {
         final db = FirebaseFirestore.instance;
         final storage = FirebaseStorage.instance;
+        
+        // Get user data to check for profile image
+        final userDoc = await db.collection('users').doc(user.uid).get();
+        final userData = userDoc.data();
+        final profileImagePath = userData?['profileImagePath'] as String?;
+        
+        // Delete profile image if exists
+        if (profileImagePath != null && profileImagePath.isNotEmpty) {
+          try {
+            final profileImageRef = storage.refFromURL(profileImagePath);
+            await profileImageRef.delete();
+          } catch (e) {
+            debugPrint('Error deleting profile image: $e');
+          }
+        }
         
         // First delete user document to ensure permissions
         await db.collection('users').doc(user.uid).delete();

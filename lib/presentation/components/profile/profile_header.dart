@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+// ignore: avoid_web_libraries_in_flutter, deprecated_member_use
+import 'dart:html' as html;
+import 'dart:typed_data';
+import 'package:mime/mime.dart';
 
 class ProfileHeader extends StatefulWidget {
   final User? user;
@@ -32,22 +37,27 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       builder: (context, snapshot) {
         final userData = snapshot.data?.data() as Map<String, dynamic>?;
         final bio = userData?['bio'] as String?;
-        final displayName = userData?['displayName'] as String?;
+        final displayName = userData?['name'] as String?;
+        final profileImageUrl = userData?['profileImagePath'] as String?;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.grey,
-                  child: Icon(Icons.person, size: 40, color: Colors.white),
+                GestureDetector(
+                  onTap: () => _updateProfileImage(context),
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: profileImageUrl != null
+                        ? NetworkImage(profileImageUrl)
+                        : null,
+                    child: profileImageUrl == null
+                        ? const Icon(Icons.person, size: 40, color: Colors.white)
+                        : null,
+                  ),
                 ),
-                // IconButton(
-                //   icon: const Icon(Icons.edit),
-                //   onPressed: () => _updateProfileImage(context),
-                // ),
                 const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,36 +129,86 @@ class _ProfileHeaderState extends State<ProfileHeader> {
     );
   }
 
-  // Future<void> _updateProfileImage(BuildContext context) async {
-  //   try {
-  //     final ImagePicker picker = ImagePicker();
-  //     final XFile? image = await picker.pickImage(
-  //       source: ImageSource.gallery,
-  //       maxWidth: 512,
-  //       maxHeight: 512,
-  //     );
+  Future<void> _updateProfileImage(BuildContext context) async {
+    try {
+      // Create file input element
+      final input = html.FileUploadInputElement()
+        ..accept = 'image/*'
+        ..click();
+
+      // Wait for file selection
+      await input.onChange.first;
+      if (input.files?.isEmpty ?? true) return;
+
+      final file = input.files!.first;
+      final reader = html.FileReader();
+      reader.readAsArrayBuffer(file);
+      await reader.onLoad.first;
+
+      // Show loading indicator
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // Get current user data
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.user?.uid)
+          .get();
+      final currentImageUrl = userData.data()?['profileImagePath'] as String?;
+
+      // Delete old image if exists
+      if (currentImageUrl != null) {
+        try {
+          final oldImageRef = FirebaseStorage.instance.refFromURL(currentImageUrl);
+          await oldImageRef.delete();
+        } catch (e) {
+          debugPrint('Error deleting old image: $e');
+        }
+      }
+
+      // Upload new image
+      final bytes = reader.result as Uint8List;
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('users')
+          .child('${widget.user?.uid}')
+          .child('profile.jpg');
       
-  //     if (image == null) return;
+      final uploadTask = storageRef.putData(
+        bytes,
+        SettableMetadata(contentType: lookupMimeType(file.name)),
+      );
+      final snapshot = await uploadTask;
+      final newImageUrl = await snapshot.ref.getDownloadURL();
 
-  //     // Get the image path
-  //     final String imagePath = image.path;
-  //     // print('Selected image path: $imagePath'); // For debugging
+      // Update Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.user?.uid)
+          .update({'profileImagePath': newImageUrl});
 
-  //     // Update user document in Firestore
-  //     await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(widget.user!.uid)
-  //         .update({'profileImage': imagePath});
+      // Close loading indicator
+      if (!mounted) return;
+      Navigator.pop(context);
 
-  //     // Update Firebase Auth profile as well
-  //     await widget.user!.updatePhotoURL(imagePath);
-
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Failed to update image: $e')),
-  //     );
-  //   }
-  // }
+    } catch (e) {
+      debugPrint('Error updating profile image: $e');
+      // Close loading indicator if open
+      if (mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update image: $e')),
+        );
+      }
+    }
+  }
 
   Future<void> _editDisplayName(BuildContext context) async {
     final userData = (await FirebaseFirestore.instance
