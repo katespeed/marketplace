@@ -13,7 +13,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       email: json['email'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       paypalEmail: json['paypalEmail'] as String?,
-      profileImage: json['profileImage'] as String?,
+      profileImagePath: json['profileImagePath'] as String?,
       bio: json['bio'] as String?,
       sellProducts: (json['sellProducts'] as List<dynamic>?)
           ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
@@ -31,7 +31,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'email': instance.email,
       'createdAt': instance.createdAt.toIso8601String(),
       'paypalEmail': instance.paypalEmail,
-      'profileImage': instance.profileImage,
+      'profileImagePath': instance.profileImagePath,
       'bio': instance.bio,
       'sellProducts': instance.sellProducts,
       'buyProducts': instance.buyProducts,

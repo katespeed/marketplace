@@ -26,7 +26,7 @@ mixin _$User {
   String get email => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   String? get paypalEmail => throw _privateConstructorUsedError;
-  String? get profileImage => throw _privateConstructorUsedError;
+  String? get profileImagePath => throw _privateConstructorUsedError;
   String? get bio => throw _privateConstructorUsedError;
   List<Product>? get sellProducts => throw _privateConstructorUsedError;
   List<Product>? get buyProducts => throw _privateConstructorUsedError;
@@ -48,7 +48,7 @@ abstract class $UserCopyWith<$Res> {
       String email,
       DateTime createdAt,
       String? paypalEmail,
-      String? profileImage,
+      String? profileImagePath,
       String? bio,
       List<Product>? sellProducts,
       List<Product>? buyProducts});
@@ -73,7 +73,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? email = null,
     Object? createdAt = null,
     Object? paypalEmail = freezed,
-    Object? profileImage = freezed,
+    Object? profileImagePath = freezed,
     Object? bio = freezed,
     Object? sellProducts = freezed,
     Object? buyProducts = freezed,
@@ -103,9 +103,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.paypalEmail
           : paypalEmail // ignore: cast_nullable_to_non_nullable
               as String?,
-      profileImage: freezed == profileImage
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
+      profileImagePath: freezed == profileImagePath
+          ? _value.profileImagePath
+          : profileImagePath // ignore: cast_nullable_to_non_nullable
               as String?,
       bio: freezed == bio
           ? _value.bio
@@ -137,7 +137,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String email,
       DateTime createdAt,
       String? paypalEmail,
-      String? profileImage,
+      String? profileImagePath,
       String? bio,
       List<Product>? sellProducts,
       List<Product>? buyProducts});
@@ -159,7 +159,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? email = null,
     Object? createdAt = null,
     Object? paypalEmail = freezed,
-    Object? profileImage = freezed,
+    Object? profileImagePath = freezed,
     Object? bio = freezed,
     Object? sellProducts = freezed,
     Object? buyProducts = freezed,
@@ -189,9 +189,9 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.paypalEmail
           : paypalEmail // ignore: cast_nullable_to_non_nullable
               as String?,
-      profileImage: freezed == profileImage
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
+      profileImagePath: freezed == profileImagePath
+          ? _value.profileImagePath
+          : profileImagePath // ignore: cast_nullable_to_non_nullable
               as String?,
       bio: freezed == bio
           ? _value.bio
@@ -219,7 +219,7 @@ class _$UserImpl implements _User {
       required this.email,
       required this.createdAt,
       this.paypalEmail,
-      this.profileImage,
+      this.profileImagePath,
       this.bio,
       final List<Product>? sellProducts,
       final List<Product>? buyProducts})
@@ -242,7 +242,7 @@ class _$UserImpl implements _User {
   @override
   final String? paypalEmail;
   @override
-  final String? profileImage;
+  final String? profileImagePath;
   @override
   final String? bio;
   final List<Product>? _sellProducts;
@@ -267,7 +267,7 @@ class _$UserImpl implements _User {
 
   @override
   String toString() {
-    return 'User(uuid: $uuid, id: $id, name: $name, email: $email, createdAt: $createdAt, paypalEmail: $paypalEmail, profileImage: $profileImage, bio: $bio, sellProducts: $sellProducts, buyProducts: $buyProducts)';
+    return 'User(uuid: $uuid, id: $id, name: $name, email: $email, createdAt: $createdAt, paypalEmail: $paypalEmail, profileImagePath: $profileImagePath, bio: $bio, sellProducts: $sellProducts, buyProducts: $buyProducts)';
   }
 
   @override
@@ -283,8 +283,8 @@ class _$UserImpl implements _User {
                 other.createdAt == createdAt) &&
             (identical(other.paypalEmail, paypalEmail) ||
                 other.paypalEmail == paypalEmail) &&
-            (identical(other.profileImage, profileImage) ||
-                other.profileImage == profileImage) &&
+            (identical(other.profileImagePath, profileImagePath) ||
+                other.profileImagePath == profileImagePath) &&
             (identical(other.bio, bio) || other.bio == bio) &&
             const DeepCollectionEquality()
                 .equals(other._sellProducts, _sellProducts) &&
@@ -302,7 +302,7 @@ class _$UserImpl implements _User {
       email,
       createdAt,
       paypalEmail,
-      profileImage,
+      profileImagePath,
       bio,
       const DeepCollectionEquality().hash(_sellProducts),
       const DeepCollectionEquality().hash(_buyProducts));
@@ -329,7 +329,7 @@ abstract class _User implements User {
       required final String email,
       required final DateTime createdAt,
       final String? paypalEmail,
-      final String? profileImage,
+      final String? profileImagePath,
       final String? bio,
       final List<Product>? sellProducts,
       final List<Product>? buyProducts}) = _$UserImpl;
@@ -349,7 +349,7 @@ abstract class _User implements User {
   @override
   String? get paypalEmail;
   @override
-  String? get profileImage;
+  String? get profileImagePath;
   @override
   String? get bio;
   @override
