@@ -5,12 +5,33 @@ import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'package:my_flutter_app/presentation/components/image_viewer/product_images_viewer.dart';
 import 'package:my_flutter_app/applications/firebase_storage/storage_service.dart';
 import 'package:my_flutter_app/presentation/components/buttons/chat_button.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final storageServiceProvider = Provider((ref) => StorageService());
 
 final productImageUrlsProvider = FutureProvider.family<List<String>, List<String>>((ref, paths) async {
-  final storageService = ref.watch(storageServiceProvider);
-  return storageService.getImageUrls(paths);
+  if (paths.isEmpty) return [];
+  try {
+    final storageService = ref.watch(storageServiceProvider);
+    return storageService.getImageUrls(paths);
+  } catch (e) {
+    debugPrint('Error getting product image URLs: $e');
+    return [];
+  }
+});
+
+final sellerImageUrlProvider = FutureProvider.family<String?, String?>((ref, path) async {
+  if (path == null) return null;
+  try {
+    final ref = FirebaseStorage.instance.ref(path);
+    final url = await ref.getDownloadURL();
+    final cleanUrl = url.split('?')[0];
+    final resizedUrl = '$cleanUrl?alt=media&token=${DateTime.now().millisecondsSinceEpoch}';
+    return resizedUrl;
+  } catch (e) {
+    debugPrint('Error getting seller image URL: $e');
+    return null;
+  }
 });
 
 class ProductDetailPage extends ConsumerWidget {
@@ -24,7 +45,6 @@ class ProductDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final imageUrlsAsync = ref.watch(productImageUrlsProvider(product.imageUrls));
-
     return Scaffold(
       appBar: const CustomAppBar(),
       body: SafeArea(
@@ -163,14 +183,45 @@ class ProductDetailPage extends ConsumerWidget {
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage: product.sellerImageUrl != null
-                                ? NetworkImage(product.sellerImageUrl!)
-                                : null,
-                            child: product.sellerImageUrl == null
-                                ? const Icon(Icons.person, size: 40)
-                                : null,
+                          Consumer(
+                            builder: (context, ref, child) {
+                              final sellerImageUrlAsync = ref.watch(sellerImageUrlProvider(product.sellerImageUrl));
+                              return sellerImageUrlAsync.when(
+                                data: (url) => CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.grey,
+                                  child: url != null
+                                      ? ClipOval(
+                                          child: Image.network(
+                                            url,
+                                            fit: BoxFit.cover,
+                                            cacheWidth: 60,
+                                            cacheHeight: 60,
+                                            loadingBuilder: (context, child, loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return const Center(
+                                                child: CircularProgressIndicator(),
+                                              );
+                                            },
+                                            errorBuilder: (context, error, stackTrace) => const Icon(
+                                              Icons.person,
+                                              size: 40,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        )
+                                      : const Icon(Icons.person, size: 40, color: Colors.white),
+                                ),
+                                loading: () => const CircleAvatar(
+                                  radius: 30,
+                                  child: CircularProgressIndicator(),
+                                ),
+                                error: (_, __) => const CircleAvatar(
+                                  radius: 30,
+                                  child: Icon(Icons.error),
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(width: 16),
                           Expanded(
