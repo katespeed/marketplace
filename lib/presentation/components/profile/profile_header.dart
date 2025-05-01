@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// ignore: deprecated_member_use
+// ignore: avoid_web_libraries_in_flutter, deprecated_member_use
 import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:mime/mime.dart';
@@ -166,7 +166,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
           final oldImageRef = FirebaseStorage.instance.refFromURL(currentImageUrl);
           await oldImageRef.delete();
         } catch (e) {
-          print('Error deleting old image: $e');
+          debugPrint('Error deleting old image: $e');
         }
       }
 
@@ -196,7 +196,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       Navigator.pop(context);
 
     } catch (e) {
-      print('Error updating profile image: $e');
+      debugPrint('Error updating profile image: $e');
       // Close loading indicator if open
       if (mounted && Navigator.canPop(context)) {
         Navigator.pop(context);

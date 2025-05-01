@@ -24,7 +24,7 @@ class HomePage extends HookConsumerWidget {
         showGeneralDialog(
           context: context,
           barrierDismissible: false,
-          barrierColor: Colors.black.withOpacity(0.5),
+          barrierColor: Colors.black.withAlpha(128),
           barrierLabel: '',
           transitionDuration: const Duration(milliseconds: 300),
           pageBuilder: (context, animation, secondaryAnimation) {
