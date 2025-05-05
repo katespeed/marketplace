@@ -32,6 +32,7 @@ dependencies:
   heic_to_jpg: ^0.2.0
   image: ^4.5.4
   flutter_image_compress: ^2.3.0
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:

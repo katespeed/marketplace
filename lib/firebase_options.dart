@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -52,15 +53,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB324lFOs-UBSnbfOe-Rg1bxWtf-F8AjYI',
-    appId: '1:52689345126:web:005fb51130007ef6d12ba7',
-    messagingSenderId: '52689345126',
-    projectId: 'campus-flea',
-    authDomain: 'campus-flea.firebaseapp.com',
-    databaseURL: 'https://campus-flea-default-rtdb.firebaseio.com',
-    storageBucket: 'campus-flea.firebasestorage.app',
-    measurementId: 'G-Y4XWSEFZP2',
+  static FirebaseOptions get web => FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_API_KEY'] ?? '',
+    appId: dotenv.env['FIREBASE_APP_ID'] ?? '',
+    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
+    projectId: dotenv.env['FIREBASE_PROJECT_ID'] ?? '',
+    authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN'] ?? '',
+    databaseURL: dotenv.env['FIREBASE_DATABASE_URL'] ?? '',
+    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'] ?? '',
+    measurementId: dotenv.env['FIREBASE_MEASUREMENT_ID'] ?? '',
   );
-
 }
