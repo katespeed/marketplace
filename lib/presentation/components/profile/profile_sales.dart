@@ -17,10 +17,7 @@ final imageUrlProvider =
 
 class ProfileSales extends ConsumerWidget {
   final String userId;
-  const ProfileSales({
-    Key? key,
-    required this.userId,
-  }) : super(key: key);
+  const ProfileSales({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

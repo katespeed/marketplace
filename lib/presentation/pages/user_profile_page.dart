@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
 import '../components/profile/profile_sales.dart';
 import '../components/profile/profile_reviews.dart';
 
@@ -25,10 +23,7 @@ final userAvatarUrlProvider =
 
 class UserProfilePage extends ConsumerWidget {
   final String userId;
-  const UserProfilePage({
-    Key? key,
-    required this.userId,
-  }) : super(key: key);
+  const UserProfilePage({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

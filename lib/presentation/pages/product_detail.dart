@@ -209,12 +209,12 @@ class ProductDetailPage extends ConsumerWidget {
                                             cacheHeight: 60,
                                             loadingBuilder: (context, child,
                                                 loadingProgress) {
-                                              if (loadingProgress == null)
+                                              if (loadingProgress == null) {
                                                 return child;
+                                              }
                                               return const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
+                                                  child:
+                                                      CircularProgressIndicator());
                                             },
                                             errorBuilder:
                                                 (context, error, stackTrace) =>
