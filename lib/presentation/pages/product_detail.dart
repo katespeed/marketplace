@@ -6,10 +6,13 @@ import 'package:my_flutter_app/presentation/components/image_viewer/product_imag
 import 'package:my_flutter_app/applications/firebase_storage/storage_service.dart';
 import 'package:my_flutter_app/presentation/components/buttons/chat_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:my_flutter_app/presentation/components/profile/profile_reviews.dart';
+import 'package:my_flutter_app/presentation/pages/user_profile_page.dart';
 
 final storageServiceProvider = Provider((ref) => StorageService());
 
-final productImageUrlsProvider = FutureProvider.family<List<String>, List<String>>((ref, paths) async {
+final productImageUrlsProvider =
+    FutureProvider.family<List<String>, List<String>>((ref, paths) async {
   if (paths.isEmpty) return [];
   try {
     final storageService = ref.watch(storageServiceProvider);
@@ -20,13 +23,15 @@ final productImageUrlsProvider = FutureProvider.family<List<String>, List<String
   }
 });
 
-final sellerImageUrlProvider = FutureProvider.family<String?, String?>((ref, path) async {
+final sellerImageUrlProvider =
+    FutureProvider.family<String?, String?>((ref, path) async {
   if (path == null) return null;
   try {
     final ref = FirebaseStorage.instance.ref(path);
     final url = await ref.getDownloadURL();
     final cleanUrl = url.split('?')[0];
-    final resizedUrl = '$cleanUrl?alt=media&token=${DateTime.now().millisecondsSinceEpoch}';
+    final resizedUrl =
+        '$cleanUrl?alt=media&token=${DateTime.now().millisecondsSinceEpoch}';
     return resizedUrl;
   } catch (e) {
     debugPrint('Error getting seller image URL: $e');
@@ -44,7 +49,8 @@ class ProductDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final imageUrlsAsync = ref.watch(productImageUrlsProvider(product.imageUrls));
+    final imageUrlsAsync =
+        ref.watch(productImageUrlsProvider(product.imageUrls));
     return Scaffold(
       appBar: const CustomAppBar(),
       body: SafeArea(
@@ -69,7 +75,8 @@ class ProductDetailPage extends ConsumerWidget {
                               selectedImageUrl: urls.isNotEmpty ? urls[0] : '',
                               productImages: urls,
                             ),
-                            loading: () => const Center(child: CircularProgressIndicator()),
+                            loading: () => const Center(
+                                child: CircularProgressIndicator()),
                             error: (error, stack) => Center(
                               child: Text('Error loading images: $error'),
                             ),
@@ -137,7 +144,8 @@ class ProductDetailPage extends ConsumerWidget {
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
-                      if (product.categories != null && product.categories!.isNotEmpty) ...[
+                      if (product.categories != null &&
+                          product.categories!.isNotEmpty) ...[
                         const Text(
                           'Categories',
                           style: TextStyle(
@@ -185,7 +193,9 @@ class ProductDetailPage extends ConsumerWidget {
                         children: [
                           Consumer(
                             builder: (context, ref, child) {
-                              final sellerImageUrlAsync = ref.watch(sellerImageUrlProvider(product.sellerImageUrl));
+                              final sellerImageUrlAsync = ref.watch(
+                                  sellerImageUrlProvider(
+                                      product.sellerImageUrl));
                               return sellerImageUrlAsync.when(
                                 data: (url) => CircleAvatar(
                                   radius: 30,
@@ -197,20 +207,26 @@ class ProductDetailPage extends ConsumerWidget {
                                             fit: BoxFit.cover,
                                             cacheWidth: 60,
                                             cacheHeight: 60,
-                                            loadingBuilder: (context, child, loadingProgress) {
-                                              if (loadingProgress == null) return child;
+                                            loadingBuilder: (context, child,
+                                                loadingProgress) {
+                                              if (loadingProgress == null) {
+                                                return child;
+                                              }
                                               return const Center(
-                                                child: CircularProgressIndicator(),
-                                              );
+                                                  child:
+                                                      CircularProgressIndicator());
                                             },
-                                            errorBuilder: (context, error, stackTrace) => const Icon(
+                                            errorBuilder:
+                                                (context, error, stackTrace) =>
+                                                    const Icon(
                                               Icons.person,
                                               size: 40,
                                               color: Colors.white,
                                             ),
                                           ),
                                         )
-                                      : const Icon(Icons.person, size: 40, color: Colors.white),
+                                      : const Icon(Icons.person,
+                                          size: 40, color: Colors.white),
                                 ),
                                 loading: () => const CircleAvatar(
                                   radius: 30,
@@ -228,11 +244,25 @@ class ProductDetailPage extends ConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  product.sellerName ?? 'Unknown Seller',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => UserProfilePage(
+                                          userId: product.sellerId!,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    product.sellerName ?? 'Unknown Seller',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -241,6 +271,8 @@ class ProductDetailPage extends ConsumerWidget {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 24),
+                      ProfileReviews(userId: product.sellerId!),
                     ],
                   ),
                 ),
@@ -251,4 +283,4 @@ class ProductDetailPage extends ConsumerWidget {
       ),
     );
   }
-} 
+}
