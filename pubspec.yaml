@@ -59,4 +59,3 @@ flutter:
     - assets/products/dyson_vacuum.jpeg
     - assets/products/nike_air_max.jpeg
     - assets/products/canon_camera.jpeg
-    - assets/.env
