@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_flutter_app/presentation/components/appbar/appbar.dart';
 import 'chat_screen.dart';
+import 'package:my_flutter_app/presentation/pages/user_profile_page.dart';
 
 class ChatListScreen extends ConsumerWidget {
   const ChatListScreen({super.key});
@@ -107,11 +108,24 @@ class ChatListScreen extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            otherUserName,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      UserProfilePage(userId: otherUserId),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              otherUserName,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Theme.of(context).primaryColor,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ],

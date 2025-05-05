@@ -12,7 +12,8 @@ import 'package:my_flutter_app/presentation/controller/delete_account_controller
 class ProfilePage extends HookConsumerWidget {
   const ProfilePage({super.key});
 
-  void _showChangePasswordDialog(BuildContext context, AuthService authService) {
+  void _showChangePasswordDialog(
+      BuildContext context, AuthService authService) {
     final currentPasswordController = TextEditingController();
     final newPasswordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
@@ -86,7 +87,8 @@ class ProfilePage extends HookConsumerWidget {
           ),
           TextButton(
             onPressed: () async {
-              if (newPasswordController.text != confirmPasswordController.text) {
+              if (newPasswordController.text !=
+                  confirmPasswordController.text) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('New passwords do not match')),
                 );
@@ -101,7 +103,8 @@ class ProfilePage extends HookConsumerWidget {
                 if (context.mounted) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Password changed successfully')),
+                    const SnackBar(
+                        content: Text('Password changed successfully')),
                   );
                 }
               } catch (e) {
@@ -121,7 +124,7 @@ class ProfilePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = FirebaseAuth.instance.currentUser;
+    final User user = FirebaseAuth.instance.currentUser!;
     final authService = ref.watch(authServiceProvider);
     final deleteAccountController = ref.watch(deleteAccountControllerProvider);
 
@@ -134,15 +137,16 @@ class ProfilePage extends HookConsumerWidget {
           children: [
             ProfileHeader(user: user),
             const SizedBox(height: 16),
-            ProfileSales(),
+            ProfileSales(userId: user.uid),
             const SizedBox(height: 16),
-            ProfileReviews(userId: user!.uid),
+            ProfileReviews(userId: user.uid),
             const SizedBox(height: 32),
             Center(
               child: Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () => _showChangePasswordDialog(context, authService),
+                    onPressed: () =>
+                        _showChangePasswordDialog(context, authService),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       minimumSize: const Size(200, 40),
